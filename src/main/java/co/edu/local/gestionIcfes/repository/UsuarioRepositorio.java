@@ -6,4 +6,5 @@ import co.edu.local.gestionIcfes.model.Usuario;
 
 public interface UsuarioRepositorio extends JpaRepository<Usuario, Long> {
 
+	public Usuario findByUsername(String nombre);
 }
