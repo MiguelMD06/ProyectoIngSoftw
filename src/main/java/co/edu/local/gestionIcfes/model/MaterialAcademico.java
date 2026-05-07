@@ -1,6 +1,5 @@
 package co.edu.local.gestionIcfes.model;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
