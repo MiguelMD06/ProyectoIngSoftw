@@ -6,4 +6,5 @@ import co.edu.local.gestionIcfes.model.Rol;
 
 public interface RolRepositorio extends JpaRepository<Rol, Long> {
 
+	public Rol findByNombre(String nombre);
 }
