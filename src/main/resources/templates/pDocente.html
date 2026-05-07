@@ -1,0 +1,180 @@
+<!doctype html>
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel Docente</title>
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="../static/estilos/pDocente.css" />
+  </head>
+
+  <body>
+    <!-- NAVBAR -->
+
+    <nav class="navbar navbar-expand-lg navbar-custom px-4">
+      <a class="navbar-brand fw-bold" href="#">Gestión Escolar</a>
+
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-4">
+          <li class="nav-item"><a class="nav-link" href="#">Mis Cursos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Asistencia</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Simulacros</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Reportes</a></li>
+        </ul>
+      </div>
+
+      <div class="d-flex align-items-center gap-3">
+        <span class="text-white">Prof. Santi</span>
+        <button class="btn btn-logout text-white">Cerrar sesión</button>
+      </div>
+    </nav>
+
+    <!-- HEADER -->
+
+    <div class="header container">
+      <h2>Bienvenido, Prof. SantiPrompt</h2>
+      <p class="text-muted">
+        Gestiona tu curso, registra asistencia y sube resultados.
+      </p>
+
+      <div class="info-bar mt-3">
+        <span>🏫 Colegio Caguan</span>
+        <span>📘 Curso: 11-B</span>
+        <span>👥 32 estudiantes</span>
+        <span>⏰ Jornada: Mañana</span>
+        <span>📍 Sede: Principal</span>
+      </div>
+    </div>
+
+    <!-- CONTENIDO -->
+
+    <div class="container">
+      <div class="row g-4">
+        <!-- ASISTENCIA -->
+        <div class="col-md-4">
+          <div class="card-custom">
+            <h5>Registrar Asistencia</h5>
+            <p class="text-muted">Hoy: Miércoles 30 Abr 2026</p>
+
+            <div class="badge-green mb-2">Presentes: 28</div>
+            <div class="badge-red mb-2">Ausentes: 3</div>
+            <div class="badge-yellow mb-3">Tardanzas: 1</div>
+
+            <button class="btn btn-main text-white w-100 mb-2">
+              Registrar Asistencia de Hoy
+            </button>
+
+            <button class="btn btn-outline-main w-100">Ver Historial</button>
+          </div>
+        </div>
+
+        <!-- PROMEDIOS -->
+        <div class="col-md-8">
+          <div class="card-custom">
+            <h5>Promedios por Materia</h5>
+
+            <p>Matemáticas</p>
+            <div class="progress mb-2">
+              <div class="progress-bar bg-success" style="width: 75%"></div>
+            </div>
+
+            <p>Lectura Crítica</p>
+            <div class="progress mb-2">
+              <div class="progress-bar bg-success" style="width: 85%"></div>
+            </div>
+
+            <p>Ciencias</p>
+            <div class="progress mb-2">
+              <div class="progress-bar bg-success" style="width: 78%"></div>
+            </div>
+
+            <p>Sociales</p>
+            <div class="progress mb-2">
+              <div class="progress-bar bg-success" style="width: 82%"></div>
+            </div>
+
+            <p>Inglés</p>
+            <div class="progress">
+              <div class="progress-bar bg-success" style="width: 90%"></div>
+            </div>
+
+            <button class="btn btn-outline-main w-100 mt-3">
+              Ver Reporte Completo
+            </button>
+          </div>
+        </div>
+
+        <!-- DESEMPEÑO -->
+        <div class="col-md-8">
+          <div class="card-custom">
+            <h5>Desempeño General del Curso</h5>
+
+            <div class="row text-center mt-3">
+              <div class="col">
+                <div class="p-2 bg-light rounded">
+                  <strong>72%</strong><br />
+                  Promedio General
+                </div>
+              </div>
+              <div class="col">
+                <div class="p-2 bg-success-subtle rounded">
+                  <strong>8</strong><br />
+                  Destacados
+                </div>
+              </div>
+              <div class="col">
+                <div class="p-2 bg-warning-subtle rounded">
+                  <strong>5</strong><br />
+                  En riesgo
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <small>Progreso hacia meta (80%)</small>
+              <div class="progress">
+                <div class="progress-bar" style="width: 72%"></div>
+              </div>
+            </div>
+
+            <button class="btn btn-main text-white mt-3">
+              Ver informe detallado
+            </button>
+          </div>
+        </div>
+
+        <!-- SIMULACRO -->
+        <div class="col-md-4">
+          <div class="card-custom">
+            <h5>Próximo Simulacro</h5>
+
+            <h4 class="mt-2">15 Mayo 2026</h4>
+            <p class="text-muted">Simulacro General ICFES #4</p>
+
+            <div class="progress mb-2">
+              <div class="progress-bar" style="width: 65%"></div>
+            </div>
+
+            <button class="btn btn-main text-white w-100 mb-2">
+              Ver Temario
+            </button>
+
+            <button class="btn btn-outline-main w-100">Subir Resultados</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

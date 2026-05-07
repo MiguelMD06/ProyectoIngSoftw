@@ -1,0 +1,87 @@
+body {
+  background-color: #f4f6fb;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* NAVBAR */
+.navbar-custom {
+  background-color: #2b3ea8;
+}
+
+.navbar-custom .nav-link,
+.navbar-custom .navbar-brand {
+  color: #fff;
+}
+
+.btn-logout {
+  background: #ef4444;
+  border: none;
+}
+
+.btn-logout:hover,
+.btn-delete:hover {
+  background-color: #ef4444;
+}
+
+.btn-main:hover {
+  background-color: #2b3ea8;
+}
+
+/* HEADER */
+.header {
+  padding: 30px;
+}
+
+.header h2 {
+  color: #2b3ea8;
+  font-weight: bold;
+}
+
+.info-bar {
+  background: #e9edff;
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+/* CARDS */
+.card-custom {
+  border-radius: 12px;
+  padding: 20px;
+  background: #fff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.attendance-good {
+  background: #d1fae5;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.attendance-bad {
+  background: #fee2e2;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.attendance-warning {
+  background: #fef3c7;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.progress {
+  height: 8px;
+}
+
+.btn-main {
+  background: #2b3ea8;
+  border: none;
+}
+
+.btn-outline-main {
+  border: 1px solid #2b3ea8;
+  color: #2b3ea8;
+}

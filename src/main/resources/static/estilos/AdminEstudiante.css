@@ -1,0 +1,76 @@
+body {
+  background-color: #f5f7fb;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.navbar-custom {
+  background-color: #2b3ea8;
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .nav-link {
+  color: #fff;
+}
+
+.btn-logout {
+  background: #ef4444;
+  border: none;
+}
+
+.btn-logout:hover,
+.btn-delete:hover {
+  background-color: #ef4444;
+}
+
+.btn-create:hover {
+  background-color: #22c55e;
+}
+
+/* TITLE */
+.title-section {
+  padding: 30px;
+}
+
+.title-section h2 {
+  color: #2b3ea8;
+  font-weight: bold;
+}
+
+.btn-create {
+  background: #22c55e;
+  border: none;
+  border-radius: 20px;
+}
+
+/* CARD */
+.table-card {
+  background: #fff;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.filter-badge {
+  background: #eef2ff;
+  padding: 8px 15px;
+  border-radius: 20px;
+  margin-right: 10px;
+}
+
+table th {
+  background: #e5e7eb;
+}
+
+.btn-edit {
+  background: #3b82f6;
+  border: none;
+}
+
+.btn-delete {
+  background: #ef4444;
+  border: none;
+}
+
+.pagination {
+  justify-content: center;
+}

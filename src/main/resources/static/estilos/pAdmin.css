@@ -1,0 +1,72 @@
+body {
+  background-color: #f5f7fb;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* NAVBAR */
+.navbar-custom {
+  background-color: #1e3a8a;
+}
+
+.navbar-custom .nav-link,
+.navbar-custom .navbar-brand {
+  color: #fff;
+}
+
+.btn-logout {
+  background: #ef4444;
+  border: none;
+}
+
+.btn-logout:hover,
+.btn-delete:hover {
+  background-color: #ef4444;
+}
+
+/* HERO */
+.hero {
+  padding: 40px 20px;
+}
+
+.hero h1 {
+  color: #1e3a8a;
+  font-weight: bold;
+}
+
+.badge-custom {
+  background: #e0e7ff;
+  color: #1e3a8a;
+}
+
+/* CARDS */
+.card-custom {
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: 0.3s;
+}
+
+.card-custom:hover {
+  transform: translateY(-5px);
+}
+
+/* RESUMEN */
+.summary-card {
+  border-radius: 10px;
+  padding: 15px;
+  background: #fff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* ACTIVIDAD */
+.activity-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+/* SOPORTE */
+.support-card {
+  background: #eef2ff;
+  border-radius: 10px;
+  padding: 20px;
+}
