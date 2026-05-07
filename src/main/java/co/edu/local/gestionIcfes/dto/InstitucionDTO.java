@@ -5,8 +5,7 @@ import java.util.List;
 import co.edu.local.gestionIcfes.enums.EstadoInstitucion;
 import co.edu.local.gestionIcfes.model.Docente;
 import co.edu.local.gestionIcfes.model.Estudiante;
-import co.edu.local.gestionIcfes.model.Institucion;
-import co.edu.local.gestionIcfes.model.Rol;
+
 import co.edu.local.gestionIcfes.model.Salon;
 import co.edu.local.gestionIcfes.model.Simulacro;
 import co.edu.local.gestionIcfes.model.Usuario;
@@ -23,10 +22,10 @@ public class InstitucionDTO {
 	private String direccion;
 	private EstadoInstitucion estado;
 	private List<Usuario> usuarios;
-    private List<Estudiante> estudiantes;
-    private List<Docente> docentes;
-    private List<Salon> salones;
-    private List<Simulacro> simulacros;
 
+	private List<Estudiante> estudiantes;
+	private List<Docente> docentes;
+	private List<Salon> salones;
+	private List<Simulacro> simulacros;
 
 }
