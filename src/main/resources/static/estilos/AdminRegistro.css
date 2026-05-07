@@ -1,0 +1,76 @@
+body {
+  background: linear-gradient(to bottom, #cfd9df, #e2ebf0);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Segoe UI", sans-serif;
+  padding: 20px;
+}
+
+.register-card {
+  width: 500px;
+  border-radius: 15px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.register-header {
+  background: #2b3ea8;
+  color: white;
+  padding: 18px 25px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: white;
+}
+
+.register-body {
+  padding: 30px;
+}
+
+.form-control,
+.form-select {
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.input-group-text {
+  background: white;
+  border-right: none;
+}
+
+.input-group .form-control {
+  border-left: none;
+}
+
+.btn-main {
+  background: #2b6de9;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  width: 100%;
+  font-weight: 600;
+}
+
+.btn-main:hover {
+  background: #1f57c7;
+}
+
+.error {
+  color: red;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+h4 {
+  color: #2b3ea8;
+  font-weight: bold;
+}
