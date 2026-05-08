@@ -36,6 +36,8 @@ public class Usuario {
 	
 	private Boolean enabled = true;
 	
+	private String salon;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "institucion_id")
     private Institucion institucion;
@@ -52,12 +54,13 @@ public class Usuario {
     )
     private Collection<Rol> roles;
 
-	public Usuario(String username, String password, Boolean enabled, Institucion institucion, Collection<Rol> roles) {
+	public Usuario(String username, String password, Boolean enabled, Institucion institucion,String salon, Collection<Rol> roles) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.enabled = enabled;
 		this.institucion = institucion;
+		this.salon = salon;
 		this.roles = roles;
 	}
 	

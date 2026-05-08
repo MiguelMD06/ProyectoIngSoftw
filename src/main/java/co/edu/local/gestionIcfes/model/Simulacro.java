@@ -40,14 +40,6 @@ public class Simulacro {
     private Institucion institucion;
 
     /*
-     * MUCHOS SIMULACROS -> UN SALON
-     */
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "salon_id")
-    private Salon salon;
-
-    /*
      * UN SIMULACRO -> MUCHOS RESULTADOS
      */
 

@@ -5,7 +5,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 @Data
@@ -13,23 +15,27 @@ import lombok.Data;
 public class Persona {
 
 	@Id
-	private String documentoIdentidad;
+	protected String documentoIdentidad;
 	@Enumerated(EnumType.STRING)
 	@Column(name = "dcte_tipo_identificacion", nullable = false)
-	private TipoIdentificacion tipoIdentificacion;
+	protected TipoIdentificacion tipoIdentificacion;
 	
 	@Column(name = "primer_nombre", nullable = false)
-	private String primerNombre;
+	protected String primerNombre;
 	
 	@Column(name = "segundo_nombre", nullable = true)
-	private String segundoNombre;
+	protected String segundoNombre;
 	
 	@Column(name = "primer_apellido", nullable = false)
-	private String primerApellido;
+	protected String primerApellido;
 	
 	@Column(name = "segundo_apellido", nullable = true)
-	private String segundoApellido;
+	protected String segundoApellido;
 	
 	@Column(name = "celular", nullable = false)
-	private String celular;
+	protected String celular;
+	
+	@OneToOne
+	@JoinColumn(name = "usuario_id", unique = true)
+	protected Usuario usuario;
 }

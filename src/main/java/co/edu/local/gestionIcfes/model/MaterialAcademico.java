@@ -32,14 +32,6 @@ public class MaterialAcademico {
 	private String archivo;
 	
 	private LocalDateTime fechaSubida;
-	
-	/*
-     * MUCHOS MATERIALES -> UN SALON
-     */
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "salon_id")
-    private Salon salon;
 
     /*
      * MUCHOS MATERIALES -> UN DOCENTE

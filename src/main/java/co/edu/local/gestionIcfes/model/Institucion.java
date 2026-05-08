@@ -1,5 +1,6 @@
 package co.edu.local.gestionIcfes.model;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import co.edu.local.gestionIcfes.enums.EstadoInstitucion;
@@ -33,6 +34,10 @@ public class Institucion {
 	@Column(name = "inst_direccion", nullable = false)
 	private String direccion;
 	
+	private LocalDate fechaInicio;
+	
+	private LocalDate fechaFinal;
+	
 	@Enumerated(EnumType.STRING)
 	private EstadoInstitucion estado;
 	
@@ -46,9 +51,6 @@ public class Institucion {
 
     @OneToMany(mappedBy = "institucion")
     private List<Docente> docentes;
-
-    @OneToMany(mappedBy = "institucion")
-    private List<Salon> salones;
 
     @OneToMany(mappedBy = "institucion")
     private List<Simulacro> simulacros;
