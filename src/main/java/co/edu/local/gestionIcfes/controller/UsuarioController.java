@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import co.edu.local.gestionIcfes.dto.PersonaDTO;
 import co.edu.local.gestionIcfes.dto.UsuarioDTO;
 import co.edu.local.gestionIcfes.services.UsuarioServices;
 
@@ -22,7 +23,7 @@ public class UsuarioController {
 	
 	@GetMapping("/login")
 	public String mostrarLogin() {
-		return "login";
+		return "auth/login";
 	}
 	
 	
@@ -33,8 +34,8 @@ public class UsuarioController {
 	
 	@GetMapping("/registro")
 	public String mostrarRegistro(Model model) {
-		model.addAttribute("usuario", new UsuarioDTO());
-		return "AdminRegistro";
+		model.addAttribute("persona", new PersonaDTO());
+		return "admin/AdminRegistro";
 	}
 	
 	@PostMapping("/registro")
