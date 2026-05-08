@@ -50,16 +50,16 @@ public class UsuarioController {
 	
 	@PostMapping("/registro")
 	public String registrarUsuario(@ModelAttribute("persona") PersonaDTO personaDTO) {
+		boolean exito;
 		if (personaDTO.getRol().toString() == "ROLE_DOCENTE") {
-			usuarioServicio.crearDocente(personaDTO);
-			return "redirect:/registro?exito";
+			exito =  usuarioServicio.crearDocente(personaDTO) == null ? false : true; 
 		}else if (personaDTO.getRol().toString() == "ROLE_ESTUDIANTE") {
-			usuarioServicio.crearEstudiante(personaDTO);
-			return "redirect:/registro?exito";
+			exito =  usuarioServicio.crearEstudiante(personaDTO) == null ? false : true; 
 		}
 		else {
 			return "redirect:/registro?error";
 		}
+		return exito ? "redirect:/registro?exito" : "redirect:/registro?error";
 	}
 	
 
