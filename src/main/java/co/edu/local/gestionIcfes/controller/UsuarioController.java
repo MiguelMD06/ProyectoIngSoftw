@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import co.edu.local.gestionIcfes.dto.PersonaDTO;
+import co.edu.local.gestionIcfes.enums.TipoIdentificacion;
+import co.edu.local.gestionIcfes.services.InstitucionService;
+import co.edu.local.gestionIcfes.services.RolServices;
 import co.edu.local.gestionIcfes.services.UsuarioServices;
 
 
@@ -18,6 +21,11 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioServices usuarioServicio;
 	
+	@Autowired
+	private InstitucionService institucionService;
+	
+	@Autowired
+	private RolServices rolService;
 	
 	
 	@GetMapping("/login")
@@ -34,6 +42,9 @@ public class UsuarioController {
 	@GetMapping("/registro")
 	public String mostrarRegistro(Model model) {
 		model.addAttribute("persona", new PersonaDTO());
+		model.addAttribute("tiposIdentificaciones", TipoIdentificacion.values());
+		model.addAttribute("instituciones", institucionService.listarInstituciones());
+		model.addAttribute("roles", rolService.listarRoles());
 		return "admin/AdminRegistro";
 	}
 	
