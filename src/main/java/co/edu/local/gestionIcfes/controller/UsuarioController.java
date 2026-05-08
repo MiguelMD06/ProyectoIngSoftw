@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import co.edu.local.gestionIcfes.dto.PersonaDTO;
+import co.edu.local.gestionIcfes.dto.UsuarioDTO;
 import co.edu.local.gestionIcfes.enums.TipoIdentificacion;
 import co.edu.local.gestionIcfes.services.InstitucionService;
 import co.edu.local.gestionIcfes.services.RolServices;
@@ -39,6 +40,27 @@ public class UsuarioController {
 		return new PersonaDTO();
 	}
 	
+	@ModelAttribute("usuario")
+	public UsuarioDTO nuevoUsuario() {
+		return new UsuarioDTO();
+	}
+	
+	@GetMapping("/registroAdmin")
+	public String mostrarRegistroAdmin(Model model) {
+		model.addAttribute("usuario", new UsuarioDTO());
+		return "auth/registro";
+	}
+	
+	@PostMapping("/registroAdmin")
+	public String registrarUsuarioAdmin(@ModelAttribute("usuario") UsuarioDTO usuarioDTO) {
+		boolean exito;
+		if (usuarioServicio.validarUsername(usuarioDTO.getUsername()))
+			exito =  usuarioServicio.crearAdmin(usuarioDTO) == null ? false : true; 
+		else
+			exito = false;
+		return exito ? "redirect:/registroAdmin?exito" : "redirect:/registroAdmin?error";
+	}
+	
 	@GetMapping("/registro")
 	public String mostrarRegistro(Model model) {
 		model.addAttribute("persona", new PersonaDTO());
@@ -57,7 +79,7 @@ public class UsuarioController {
 			exito =  usuarioServicio.crearEstudiante(personaDTO) == null ? false : true; 
 		}
 		else {
-			return "redirect:/registro?error";
+			exito = false;
 		}
 		return exito ? "redirect:/registro?exito" : "redirect:/registro?error";
 	}

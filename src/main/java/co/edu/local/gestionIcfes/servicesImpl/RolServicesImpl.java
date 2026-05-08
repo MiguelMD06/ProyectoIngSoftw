@@ -19,4 +19,9 @@ public class RolServicesImpl implements RolServices{
 	public List<Rol> listarRoles() {
 		return rolRepository.findAll();
 	}
+	
+	@Override
+	public Rol encontrarRol(String nombre) {
+		return rolRepository.findByNombre(nombre);
+	}
 }

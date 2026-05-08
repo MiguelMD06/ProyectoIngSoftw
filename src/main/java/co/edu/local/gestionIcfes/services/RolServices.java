@@ -7,4 +7,5 @@ import co.edu.local.gestionIcfes.model.Rol;
 public interface RolServices {
 
 	public List<Rol> listarRoles();
+	public Rol encontrarRol(String nombre);
 }

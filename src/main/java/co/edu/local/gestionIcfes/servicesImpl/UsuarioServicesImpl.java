@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import co.edu.local.gestionIcfes.dto.PersonaDTO;
+import co.edu.local.gestionIcfes.dto.UsuarioDTO;
 import co.edu.local.gestionIcfes.model.Docente;
 import co.edu.local.gestionIcfes.model.Estudiante;
 import co.edu.local.gestionIcfes.model.Rol;
@@ -22,6 +23,7 @@ import co.edu.local.gestionIcfes.model.Usuario;
 import co.edu.local.gestionIcfes.repository.DocenteRepositorio;
 import co.edu.local.gestionIcfes.repository.EstudianteRepositorio;
 import co.edu.local.gestionIcfes.repository.UsuarioRepositorio;
+import co.edu.local.gestionIcfes.services.RolServices;
 import co.edu.local.gestionIcfes.services.UsuarioServices;
 import jakarta.servlet.http.HttpSession;
 
@@ -41,7 +43,16 @@ public class UsuarioServicesImpl implements UsuarioServices{
 	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
+	private RolServices rolServicio;
+	
+	@Autowired
 	private HttpSession session;
+	
+	@Override
+	public Usuario crearAdmin(UsuarioDTO usuarioDTO) {
+		Usuario usuario = new Usuario(usuarioDTO.getUsername(), passwordEncoder.encode(usuarioDTO.getPassword()), true, Arrays.asList(rolServicio.encontrarRol("ROLE_ADMIN")));
+		return usuarioRepository.save(usuario);
+	}
 
 	@Override
 	public Estudiante crearEstudiante(PersonaDTO personaDTO) {
