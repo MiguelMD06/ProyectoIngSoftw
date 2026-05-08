@@ -24,4 +24,9 @@ public class RolServicesImpl implements RolServices{
 	public Rol encontrarRol(String nombre) {
 		return rolRepository.findByNombre(nombre);
 	}
+	
+	@Override
+	public Rol encontrarRol(Long id) {
+		return rolRepository.findById(id).get();
+	}
 }

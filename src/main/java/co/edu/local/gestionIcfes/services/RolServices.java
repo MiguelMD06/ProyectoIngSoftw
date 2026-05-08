@@ -8,4 +8,5 @@ public interface RolServices {
 
 	public List<Rol> listarRoles();
 	public Rol encontrarRol(String nombre);
+	public Rol encontrarRol(Long id);
 }

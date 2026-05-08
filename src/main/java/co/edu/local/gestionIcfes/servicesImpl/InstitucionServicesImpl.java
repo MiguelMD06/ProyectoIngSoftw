@@ -19,4 +19,9 @@ public class InstitucionServicesImpl implements InstitucionService{
 	public List<Institucion> listarInstituciones() {
 		return institucionRepository.findAll();
 	}
+	
+	@Override
+	public Institucion buscarPorId(Long id) {
+		return institucionRepository.findById(id).get();
+	}
 }
