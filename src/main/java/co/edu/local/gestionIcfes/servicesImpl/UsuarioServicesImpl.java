@@ -23,6 +23,7 @@ import co.edu.local.gestionIcfes.model.Usuario;
 import co.edu.local.gestionIcfes.repository.DocenteRepositorio;
 import co.edu.local.gestionIcfes.repository.EstudianteRepositorio;
 import co.edu.local.gestionIcfes.repository.UsuarioRepositorio;
+import co.edu.local.gestionIcfes.services.InstitucionService;
 import co.edu.local.gestionIcfes.services.RolServices;
 import co.edu.local.gestionIcfes.services.UsuarioServices;
 import jakarta.servlet.http.HttpSession;
@@ -46,6 +47,9 @@ public class UsuarioServicesImpl implements UsuarioServices{
 	private RolServices rolServicio;
 	
 	@Autowired
+	private InstitucionService institucionServicio;
+	
+	@Autowired
 	private HttpSession session;
 	
 	@Override
@@ -57,7 +61,7 @@ public class UsuarioServicesImpl implements UsuarioServices{
 	@Override
 	public Estudiante crearEstudiante(PersonaDTO personaDTO) {
 		String nombreUsuario = personaDTO.getPrimerNombre().substring(0, 2) + personaDTO.getPrimerApellido() + personaDTO.getSegundoApellido().substring(0, 2) + (obtenerIdMasAlto(usuarioRepository.findAll())+1);
-		Usuario usuario = new Usuario(nombreUsuario, passwordEncoder.encode(personaDTO.getDocumentoIdentidad()),true,personaDTO.getInstitucion(),personaDTO.getSalon(),Arrays.asList(personaDTO.getRol()));
+		Usuario usuario = new Usuario(nombreUsuario, passwordEncoder.encode(personaDTO.getDocumentoIdentidad()),true,institucionServicio.buscarPorId(personaDTO.getInstitucion()),personaDTO.getSalon(),Arrays.asList(rolServicio.encontrarRol(personaDTO.getRol())));
 		if (validarUsername(nombreUsuario)) {
 			usuarioRepository.save(usuario);
 			Estudiante estudiante = new Estudiante();
@@ -69,7 +73,7 @@ public class UsuarioServicesImpl implements UsuarioServices{
 			estudiante.setSegundoApellido(personaDTO.getSegundoApellido());
 			estudiante.setCelular(personaDTO.getCelular());
 			estudiante.setUsuario(usuario);
-			estudiante.setInstitucion(personaDTO.getInstitucion());
+			estudiante.setInstitucion(institucionServicio.buscarPorId(personaDTO.getInstitucion()));
 			return estudianteRepository.save(estudiante);
 		}
 		return null;
@@ -79,7 +83,7 @@ public class UsuarioServicesImpl implements UsuarioServices{
 	@Override
 	public Docente crearDocente(PersonaDTO personaDTO) {
 		String nombreUsuario = personaDTO.getPrimerNombre().substring(0, 2) + personaDTO.getPrimerApellido() + personaDTO.getSegundoApellido().substring(0, 2) + (obtenerIdMasAlto(usuarioRepository.findAll())+1);
-		Usuario usuario = new Usuario(nombreUsuario, passwordEncoder.encode(personaDTO.getDocumentoIdentidad()),true,personaDTO.getInstitucion(),personaDTO.getSalon(),Arrays.asList(personaDTO.getRol()));
+		Usuario usuario = new Usuario(nombreUsuario, passwordEncoder.encode(personaDTO.getDocumentoIdentidad()),true,institucionServicio.buscarPorId(personaDTO.getInstitucion()),personaDTO.getSalon(),Arrays.asList(rolServicio.encontrarRol(personaDTO.getRol())));
 		if (validarUsername(nombreUsuario)) {
 			usuarioRepository.save(usuario);
 			Docente docente = new Docente();
@@ -91,7 +95,7 @@ public class UsuarioServicesImpl implements UsuarioServices{
 			docente.setSegundoApellido(personaDTO.getSegundoApellido());
 			docente.setCelular(personaDTO.getCelular());
 			docente.setUsuario(usuario);
-			docente.setInstitucion(personaDTO.getInstitucion());
+			docente.setInstitucion(institucionServicio.buscarPorId(personaDTO.getInstitucion()));
 			return docenteRepository.save(docente);
 		}
 		return null;
