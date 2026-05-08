@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import co.edu.local.gestionIcfes.dto.PersonaDTO;
 import co.edu.local.gestionIcfes.dto.UsuarioDTO;
 import co.edu.local.gestionIcfes.enums.TipoIdentificacion;
+import co.edu.local.gestionIcfes.model.Docente;
 import co.edu.local.gestionIcfes.services.InstitucionService;
 import co.edu.local.gestionIcfes.services.RolServices;
 import co.edu.local.gestionIcfes.services.UsuarioServices;
@@ -73,9 +74,9 @@ public class UsuarioController {
 	@PostMapping("/registro")
 	public String registrarUsuario(@ModelAttribute("persona") PersonaDTO personaDTO) {
 		boolean exito;
-		if (personaDTO.getRol().toString() == "ROLE_DOCENTE") {
-			exito =  usuarioServicio.crearDocente(personaDTO) == null ? false : true; 
-		}else if (personaDTO.getRol().toString() == "ROLE_ESTUDIANTE") {
+		if (personaDTO.getRol() == 2) {
+			exito =  (usuarioServicio.crearDocente(personaDTO) == null) ? false : true; 
+		}else if (personaDTO.getRol() == 3) {
 			exito =  usuarioServicio.crearEstudiante(personaDTO) == null ? false : true; 
 		}
 		else {
