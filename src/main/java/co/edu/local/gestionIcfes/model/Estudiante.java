@@ -18,6 +18,15 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "estudiantes")
 public class Estudiante extends Persona{
+	
+	
+
+
+	public Estudiante(Boolean activo, Institucion institucion) {
+		super();
+		this.activo = activo;
+		this.institucion = institucion;
+	}
 
 	private Boolean activo = true;
 	
@@ -29,13 +38,6 @@ public class Estudiante extends Persona{
     @JoinColumn(name = "institucion_id")
     private Institucion institucion;
 
-    /*
-     * MUCHOS ESTUDIANTES -> UN SALON
-     */
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "salon_id")
-    private Salon salon;
 
     /*
      * UN ESTUDIANTE -> MUCHAS ASISTENCIAS

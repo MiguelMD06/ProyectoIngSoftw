@@ -69,10 +69,8 @@
                 class="form-select"
               >
                 <option value="">Seleccione...</option>
-                <option>Tarjeta de Identidad</option>
-                <option>Cedula de Ciudadanía</option>
-                <option>Cedula de Extranjería</option>
-                <option>Pasaporte</option>
+                <option th:each="ti : ${tiposIdentificaciones}" th:value="${ti.name()}" th:text="${ti.descripcion}"
+                      th:field="*{tipoIdentificacion}"></option>
               </select>
 
               <div id="errorTipoId" class="error"></div>
@@ -88,6 +86,7 @@
                 name="numeroIdentificacion"
                 class="form-control"
                 placeholder="Ingrese identificación"
+                th:field = "*{documentoIdentidad}"
               />
 
               <div id="errorNumeroId" class="error"></div>
@@ -149,7 +148,7 @@
                 name="segundoApellido"
                 class="form-control"
                 placeholder="Segundo apellido"
-                th:field="*{SegundoApellido}"
+                th:field="*{segundoApellido}"
               />
             </div>
 
@@ -163,6 +162,7 @@
                 name="celular"
                 class="form-control"
                 placeholder="3001234567"
+                th:field = "*{celular}"
               />
 
               <div id="errorCelular" class="error"></div>
@@ -172,13 +172,11 @@
             <div class="col-md-6 mb-3">
               <label class="form-label">Institución</label>
 
-              <input
-                type="text"
-                id="institucion"
-                name="institucion"
-                class="form-control"
-                placeholder="Institución educativa"
-              />
+              <select id="institucion" name="institucion" class="form-select">
+                <option value="">Seleccione...</option>
+                <option th:each="inst : ${instituciones}" th:value="${inst}" th:text="${inst.nombre}"
+                      th:field="*{institucion}"></option>
+				</select>
 
               <div id="errorInstitucion" class="error"></div>
             </div>
@@ -192,7 +190,7 @@
                 id="salon"
                 name="salon"
                 class="form-control"
-                placeholder="Ej: 11-B"
+                placeholder="1 o 2"
               />
 
               <div id="errorSalon" class="error"></div>
@@ -204,10 +202,9 @@
 
               <select id="rol" name="rol" class="form-select">
                 <option value="">Seleccione...</option>
-                <option value="DOCENTE">Docente</option>
-                <option value="ESTUDIANTE">Estudiante</option>
-              </select>
-
+                <option th:each="rol : ${roles}" th:value="${rol}" th:text="${rol.nombre}"
+                      th:field="*{rol}"></option>
+				</select>
               <div id="errorRol" class="error"></div>
             </div>
           </div>

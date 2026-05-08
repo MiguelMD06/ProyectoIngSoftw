@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import co.edu.local.gestionIcfes.dto.PersonaDTO;
-import co.edu.local.gestionIcfes.dto.UsuarioDTO;
+import co.edu.local.gestionIcfes.enums.TipoIdentificacion;
+import co.edu.local.gestionIcfes.services.InstitucionService;
+import co.edu.local.gestionIcfes.services.RolServices;
 import co.edu.local.gestionIcfes.services.UsuarioServices;
 
 
@@ -19,6 +21,11 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioServices usuarioServicio;
 	
+	@Autowired
+	private InstitucionService institucionService;
+	
+	@Autowired
+	private RolServices rolService;
 	
 	
 	@GetMapping("/login")
@@ -27,23 +34,30 @@ public class UsuarioController {
 	}
 	
 	
-	@ModelAttribute("usuario")
-	public UsuarioDTO NuevoUsuario() {
-		return new UsuarioDTO();
+	@ModelAttribute("persona")
+	public PersonaDTO nuevaPersona() {
+		return new PersonaDTO();
 	}
 	
 	@GetMapping("/registro")
 	public String mostrarRegistro(Model model) {
 		model.addAttribute("persona", new PersonaDTO());
+		model.addAttribute("tiposIdentificaciones", TipoIdentificacion.values());
+		model.addAttribute("instituciones", institucionService.listarInstituciones());
+		model.addAttribute("roles", rolService.listarRoles());
 		return "admin/AdminRegistro";
 	}
 	
 	@PostMapping("/registro")
-	public String registrarUsuario(@ModelAttribute("usuario") UsuarioDTO usuarioDTO) {
-		if (usuarioServicio.validarUsername(usuarioDTO)) {
-			usuarioServicio.crearUsuario(usuarioDTO);
+	public String registrarUsuario(@ModelAttribute("persona") PersonaDTO personaDTO) {
+		if (personaDTO.getRol().toString() == "ROLE_DOCENTE") {
+			usuarioServicio.crearDocente(personaDTO);
 			return "redirect:/registro?exito";
-		}else {
+		}else if (personaDTO.getRol().toString() == "ROLE_ESTUDIANTE") {
+			usuarioServicio.crearEstudiante(personaDTO);
+			return "redirect:/registro?exito";
+		}
+		else {
 			return "redirect:/registro?error";
 		}
 	}
