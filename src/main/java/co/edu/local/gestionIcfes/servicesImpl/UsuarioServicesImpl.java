@@ -55,6 +55,16 @@ public class UsuarioServicesImpl implements UsuarioServices{
 		session.setAttribute("idusuario", usuario.getId());
 		return new User(usuario.getUsername(),usuario.getPassword(), mapearAutoridadRoles(usuario.getRoles()));
 	}
+	@Override
+	public boolean validarUsername(UsuarioDTO usuarioDTO) {
+		Usuario usuario = usuarioRepository.findByUsername(usuarioDTO.getUsername());
+		
+		if (usuario == null)
+			return true;
+		
+		return false;
+	}
+	
 	
 	private Collection<? extends GrantedAuthority> mapearAutoridadRoles(Collection<Rol> roles){
 		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getNombre())).collect(Collectors.toList());

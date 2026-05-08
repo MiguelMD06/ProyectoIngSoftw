@@ -15,11 +15,12 @@ public class UsuarioDTO {
 
 	private Long id;
 	
+	
 	private String username;
 	
 	private String password;
 	
-	private Boolean enabled = true;
+	private Boolean enabled;
 	
 	private Institucion institucion;
 
