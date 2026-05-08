@@ -60,7 +60,7 @@ public class UsuarioServicesImpl implements UsuarioServices{
 
 	@Override
 	public Estudiante crearEstudiante(PersonaDTO personaDTO) {
-		String nombreUsuario = personaDTO.getPrimerNombre().substring(0, 2) + personaDTO.getPrimerApellido() + personaDTO.getSegundoApellido().substring(0, 2) + (obtenerIdMasAlto(usuarioRepository.findAll())+1);
+		String nombreUsuario = personaDTO.getPrimerNombre() + personaDTO.getPrimerApellido().substring(0,3) + personaDTO.getSegundoApellido().substring(0, 2) + (obtenerIdMasAlto(usuarioRepository.findAll())+1);
 		Usuario usuario = new Usuario(nombreUsuario, passwordEncoder.encode(personaDTO.getDocumentoIdentidad()),true,institucionServicio.buscarPorId(personaDTO.getInstitucion()),personaDTO.getSalon(),Arrays.asList(rolServicio.encontrarRol(personaDTO.getRol())));
 		if (validarUsername(nombreUsuario)) {
 			usuarioRepository.save(usuario);
