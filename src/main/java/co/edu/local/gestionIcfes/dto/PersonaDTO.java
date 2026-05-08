@@ -26,9 +26,9 @@ public class PersonaDTO {
 
 	private String celular;
 	
-	private Rol rol;
+	private Long rol;
 	
 	private String salon;
 	
-	private Institucion institucion;
+	private Long institucion;
 }
