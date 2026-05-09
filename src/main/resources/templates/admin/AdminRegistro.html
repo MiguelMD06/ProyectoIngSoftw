@@ -174,7 +174,7 @@
 
               <select id="institucion" name="institucion" class="form-select">
                 <option value="">Seleccione...</option>
-                <option th:each="inst : ${instituciones}" th:value="${inst}" th:text="${inst.nombre}"
+                <option th:each="inst : ${instituciones}" th:value="${inst.id}" th:text="${inst.nombre}"
                       th:field="*{institucion}"></option>
 				</select>
 
@@ -202,8 +202,8 @@
 
               <select id="rol" name="rol" class="form-select">
                 <option value="">Seleccione...</option>
-                <option th:each="rol : ${roles}" th:value="${rol}" th:text="${rol.nombre}"
-                      th:field="*{rol}"></option>
+                <option value="2">Docente</option>
+              	<option value="3">Estudiante</option>
 				</select>
               <div id="errorRol" class="error"></div>
             </div>
