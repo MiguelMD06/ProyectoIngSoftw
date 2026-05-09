@@ -185,6 +185,59 @@
           </table>
         </div>
 
+        <!-- MODALES DE UPLOAD -->
+        <div th:each="est : ${estudiantes}">
+          <div
+            class="modal fade"
+            th:id="'uploadModal-' + ${est.documentoIdentidad}"
+            tabindex="-1"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">
+                    Subir resultado de simulacro -
+                    <span
+                      th:text="${est.primerNombre + ' ' + est.primerApellido}"
+                    ></span>
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  <form
+                    th:action="@{/admin/uploadSimulacro}"
+                    method="post"
+                    enctype="multipart/form-data"
+                  >
+                    <!-- Identificador del estudiante -->
+                    <input
+                      type="hidden"
+                      name="documentoIdentidad"
+                      th:value="${est.documentoIdentidad}"
+                    />
+
+                    <div class="mb-3">
+                      <label class="form-label">Archivo del resultado</label>
+                      <input
+                        type="file"
+                        class="form-control"
+                        name="archivo"
+                        required
+                      />
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Subir</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- MENSAJE SI NO HAY ESTUDIANTES -->
         <div
           th:if="${estudiantes == null or estudiantes.isEmpty()}"
