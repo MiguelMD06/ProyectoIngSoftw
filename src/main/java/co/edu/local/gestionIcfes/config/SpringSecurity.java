@@ -21,6 +21,9 @@ public class SpringSecurity {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	@Autowired
+	private CustomAuthSuccessHandler successHandler;
+	
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider auth = new DaoAuthenticationProvider(usuarioServices);
@@ -34,15 +37,15 @@ public class SpringSecurity {
             .authenticationProvider(authenticationProvider()) 
             .authorizeHttpRequests(auth -> auth
             		.requestMatchers("/estilos/**", "/js/**", "/img/**", "/css/**","/registroAdmin").permitAll()
-            		.requestMatchers("/login").permitAll()
+            		.requestMatchers("/login", "/registroAdmin", "/registro").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/pDocente").hasAnyRole("DOCENTE")
                 .requestMatchers("/pEstudiante").hasAnyRole("ESTUDIANTE")
                 .anyRequest().authenticated()                                  
             )
             .formLogin(form -> form
-                .loginPage("/login")           
-                .defaultSuccessUrl("/", true)
+                .loginPage("/login")
+                .successHandler(successHandler)
                 .permitAll()
             )
             .logout(logout -> logout
