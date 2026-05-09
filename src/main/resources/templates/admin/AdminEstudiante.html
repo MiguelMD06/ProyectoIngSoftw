@@ -1,6 +1,5 @@
 <!doctype html>
-
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,7 +10,6 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-
     <!-- Icons -->
     <link
       rel="stylesheet"
@@ -23,147 +21,116 @@
 
   <body>
     <!-- NAVBAR -->
+    <div th:replace="~{fragments/navbarAdmin :: navbar}"></div>
 
-    <nav class="navbar navbar-expand-lg navbar-custom px-4">
-      <a class="navbar-brand fw-bold" href="#">Gestión Escolar</a>
-
-      <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ms-4">
-          <li class="nav-item"><a class="nav-link" href="#">Estudiantes</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Docentes</a></li>
-        </ul>
-      </div>
-
-      <div class="d-flex align-items-center gap-3">
-        <span class="text-white">Miguel M</span>
-        <button class="btn btn-logout text-white">Cerrar sesión</button>
-      </div>
-    </nav>
-
-    <!-- TITLE -->
-
+    <!-- HEADER -->
     <div class="header container">
       <h2>Bienvenido Administrador,</h2>
       <h3 sec:authentication="principal.username"></h3>
       <p class="text-muted">
-        Realiza los cambios necesarios a todos los estudiantes activos de los cursos PreIcfes.
+        Realiza los cambios necesarios a todos los estudiantes activos de los
+        cursos PreIcfes.
       </p>
-      </div>
+    </div>
+
+    <!-- TITLE -->
     <div class="title-section container">
       <h2>Panel de Estudiantes</h2>
       <a
-        class="btn btn-create text-white mt-3 bi bi-plus" th:href="@{/registro}" 
-      > Crear Estudiante
+        class="btn btn-create text-white mt-3 bi bi-plus"
+        th:href="@{/registro}"
+      >
+        Crear Estudiante
       </a>
     </div>
 
-    <!-- TABLE -->
+    <!-- FILTROS DINÁMICOS -->
+    <div class="container mb-4">
+      <!-- SELECT INSTITUCION -->
+      <div class="mb-3">
+        <label for="institucionSelect" class="form-label">Institución</label>
+        <select
+          id="institucionSelect"
+          class="form-select"
+          th:if="${instituciones != null and !instituciones.isEmpty()}"
+        >
+          <option
+            th:each="inst : ${instituciones}"
+            th:value="${inst.id}"
+            th:text="${inst.nombre}"
+          ></option>
+        </select>
 
+        <!-- MENSAJE SI NO HAY INSTITUCIONES -->
+        <div
+          th:if="${instituciones == null or instituciones.isEmpty()}"
+          class="alert alert-info mt-3"
+        >
+          No hay instituciones registradas.
+          <button
+            class="btn btn-create ms-2"
+            data-bs-toggle="modal"
+            data-bs-target="#modalInstitucion"
+          >
+            Registrar Institución
+          </button>
+        </div>
+      </div>
+
+      <!-- SELECT SALON -->
+      <div class="mb-3">
+        <label for="salonSelect" class="form-label">Salón</label>
+        <select id="salonSelect" class="form-select">
+          <option value="1">Salón 1</option>
+          <option value="2">Salón 2</option>
+        </select>
+      </div>
+
+      <!-- BOTÓN PARA REGISTRAR INSTITUCIÓN -->
+      <button
+        class="btn btn-create"
+        data-bs-toggle="modal"
+        data-bs-target="#modalInstitucion"
+      >
+        Registrar Institución
+      </button>
+    </div>
+
+<!-- ALERTA DE ÉXITO -->
+<div th:if="${exitoInstitucion}" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+  <i class="bi bi-check-circle-fill"></i>
+  <span th:text="${exitoInstitucion}"></span>
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+
+<!-- ALERTA DE ERROR -->
+<div th:if="${errorInstitucion}" class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+  <i class="bi bi-exclamation-triangle-fill"></i>
+  <span th:text="${errorInstitucion}"></span>
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+
+    <!-- TABLA ESTUDIANTES -->
     <div class="container mb-5">
       <div class="table-card">
-        <!-- FILTROS -->
-        <div class="mb-3">
-          <span class="filter-badge"
-            ><i class="bi bi-building"></i> Instituto San José</span
-          >
-          <span class="filter-badge"
-            ><i class="bi bi-people"></i> Grado 10-A</span
-          >
-        </div>
-
-        <!-- TABLA -->
-        <div class="table-responsive">
+        <div
+          class="table-responsive"
+          th:if="${estudiantes != null and !estudiantes.isEmpty()}"
+        >
           <table class="table align-middle">
             <thead>
               <tr>
                 <th>#</th>
-                <th>Nombre</th>
-                <th>Tel. Estudiante</th>
-                <th>Nombre Mamá</th>
-                <th>Tel. Mamá</th>
-                <th>Nombre Papá</th>
-                <th>Tel. Papá</th>
+                <th>Activo</th>
+                <th>Institución</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
-            <tr th:each="usuario : ${usuarios}">
-            <td th:text="${usuario.username}">ID</td>
-            <td th:text="${usuario.nombre}">ID</td>
-            <td th:text="${usuario.apellido}">ID</td>
-            <td th:text="${usuario.email}">ID</td>
-                <td>
-                  <button class="btn btn-edit text-white btn-sm">
-                    <i class="bi bi-pencil"></i> Editar
-                  </button>
-                  <button class="btn btn-delete text-white btn-sm">
-                    <i class="bi bi-trash"></i> Eliminar
-                  </button>
-                </td>
-              </tr>
-
-              <tr>
-                <td>2</td>
-                <td>Luis Pérez</td>
-                <td>301 234 5678</td>
-                <td>Elena Ruiz</td>
-                <td>311 876 5432</td>
-                <td>Jorge Pérez</td>
-                <td>321 222 3344</td>
-                <td>
-                  <button class="btn btn-edit text-white btn-sm">
-                    <i class="bi bi-pencil"></i> Editar
-                  </button>
-                  <button class="btn btn-delete text-white btn-sm">
-                    <i class="bi bi-trash"></i> Eliminar
-                  </button>
-                </td>
-              </tr>
-
-              <tr>
-                <td>3</td>
-                <td>Valentina Ríos</td>
-                <td>302 345 6789</td>
-                <td>Lucía Soto</td>
-                <td>312 765 4321</td>
-                <td>Mario Ríos</td>
-                <td>322 333 4455</td>
-                <td>
-                  <button class="btn btn-edit text-white btn-sm">
-                    <i class="bi bi-pencil"></i> Editar
-                  </button>
-                  <button class="btn btn-delete text-white btn-sm">
-                    <i class="bi bi-trash"></i> Eliminar
-                  </button>
-                </td>
-              </tr>
-
-              <tr>
-                <td>4</td>
-                <td>Santiago Mora</td>
-                <td>303 456 7890</td>
-                <td>Sofía Luna</td>
-                <td>313 654 3210</td>
-                <td>Andrés Mora</td>
-                <td>323 444 5566</td>
-                <td>
-                  <button class="btn btn-edit text-white btn-sm">
-                    <i class="bi bi-pencil"></i> Editar
-                  </button>
-                  <button class="btn btn-delete text-white btn-sm">
-                    <i class="bi bi-trash"></i> Eliminar
-                  </button>
-                </td>
-              </tr>
-
-              <tr>
-                <td>5</td>
-                <td>Isabella Cruz</td>
-                <td>304 567 8901</td>
-                <td>Diana Alba</td>
-                <td>314 543 2109</td>
-                <td>Carlos Cruz</td>
-                <td>324 555 6677</td>
+              <tr th:each="est, iterStat : ${estudiantes}">
+                <td th:text="${iterStat.index + 1}"></td>
+                <td th:text="${est.activo}"></td>
+                <td th:text="${est.institucion.nombre}"></td>
                 <td>
                   <button class="btn btn-edit text-white btn-sm">
                     <i class="bi bi-pencil"></i> Editar
@@ -177,108 +144,82 @@
           </table>
         </div>
 
-        <!-- PAGINACIÓN -->
-        <nav>
-          <ul class="pagination mt-4">
-            <li class="page-item">
-              <a class="page-link" href="#">Anterior</a>
-            </li>
-            <li class="page-item active">
-              <a class="page-link" href="#">1</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#">Siguiente</a>
-            </li>
-          </ul>
-        </nav>
-
-        <p class="text-center text-muted">Mostrando 5 de 15 estudiantes</p>
+        <!-- MENSAJE SI NO HAY ESTUDIANTES -->
+        <div
+          th:if="${estudiantes == null or estudiantes.isEmpty()}"
+          class="alert alert-info mt-3"
+        >
+          No hay estudiantes registrados.
+          <a th:href="@{/registro}" class="btn btn-create ms-2"
+            >Crear su primer Estudiante</a
+          >
+        </div>
       </div>
     </div>
 
-    <!-- MODAL CREAR ESTUDIANTE -->
-    <div class="modal fade" id="modalCrear" tabindex="-1">
+    <!-- MODAL REGISTRAR INSTITUCIÓN -->
+    <div class="modal fade" id="modalInstitucion" tabindex="-1">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Crear Estudiante</h5>
+            <h5 class="modal-title">Registrar Institución</h5>
             <button
               type="button"
               class="btn-close"
               data-bs-dismiss="modal"
             ></button>
           </div>
-
           <div class="modal-body">
-            <form id="formEstudiante">
-              <div class="row g-3">
-                <!-- DATOS ESTUDIANTE -->
-                <h6>Datos del Estudiante</h6>
-
-                <div class="col-md-6">
-                  <label class="form-label">Nombre completo</label>
-                  <input type="text" class="form-control" required />
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">Teléfono</label>
-                  <input type="tel" class="form-control" required />
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">Grado</label>
-                  <select class="form-select" required>
-                    <option>10-A</option>
-                    <option>10-B</option>
-                    <option>11-A</option>
-                  </select>
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">Institución</label>
-                  <input type="text" class="form-control" required />
-                </div>
-
-                <hr />
-
-                <!-- MADRE -->
-                <h6>Datos de la Madre</h6>
-
-                <div class="col-md-6">
-                  <label class="form-label">Nombre</label>
-                  <input type="text" class="form-control" />
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">Teléfono</label>
-                  <input type="tel" class="form-control" />
-                </div>
-
-                <hr />
-
-                <!-- PADRE -->
-                <h6>Datos del Padre</h6>
-
-                <div class="col-md-6">
-                  <label class="form-label">Nombre</label>
-                  <input type="text" class="form-control" />
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">Teléfono</label>
-                  <input type="tel" class="form-control" />
-                </div>
+            <form
+              th:action="@{/admin/crearInstitucion}"
+              method="post"
+              th:object="${institucion}"
+            >
+              <div class="mb-3">
+                <label class="form-label">Nombre</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  th:field="*{nombre}"
+                  required
+                />
               </div>
+              <div class="mb-3">
+                <label class="form-label">Dirección</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  th:field="*{direccion}"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Fecha Inicio</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  th:field="*{fechaInicio}"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Fecha Final</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  th:field="*{fechaFinal}"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Estado</label>
+                <select class="form-select" th:field="*{estado}" required>
+                  <option th:value="ACTIVO">Activo</option>
+                  <option th:value="FINALIZADO">Finalizado</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-success">Guardar</button>
             </form>
-          </div>
-
-          <div class="modal-footer">
-            <button class="btn btn-secondary" data-bs-dismiss="modal">
-              Cancelar
-            </button>
-            <button class="btn btn-success">Guardar</button>
           </div>
         </div>
       </div>
