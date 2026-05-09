@@ -96,19 +96,27 @@
       </button>
     </div>
 
-<!-- ALERTA DE ÉXITO -->
-<div th:if="${exitoInstitucion}" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-  <i class="bi bi-check-circle-fill"></i>
-  <span th:text="${exitoInstitucion}"></span>
-  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
+    <!-- ALERTA DE ÉXITO -->
+    <div
+      th:if="${exitoInstitucion}"
+      class="alert alert-success alert-dismissible fade show mt-3"
+      role="alert"
+    >
+      <i class="bi bi-check-circle-fill"></i>
+      <span th:text="${exitoInstitucion}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
 
-<!-- ALERTA DE ERROR -->
-<div th:if="${errorInstitucion}" class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-  <i class="bi bi-exclamation-triangle-fill"></i>
-  <span th:text="${errorInstitucion}"></span>
-  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
+    <!-- ALERTA DE ERROR -->
+    <div
+      th:if="${errorInstitucion}"
+      class="alert alert-danger alert-dismissible fade show mt-3"
+      role="alert"
+    >
+      <i class="bi bi-exclamation-triangle-fill"></i>
+      <span th:text="${errorInstitucion}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
 
     <!-- TABLA ESTUDIANTES -->
     <div class="container mb-5">
@@ -117,26 +125,59 @@
           class="table-responsive"
           th:if="${estudiantes != null and !estudiantes.isEmpty()}"
         >
-          <table class="table align-middle">
+          <table class="table align-middle table-striped">
             <thead>
               <tr>
                 <th>#</th>
+                <th>Documento</th>
+                <th>Tipo Identificación</th>
+                <th>Primer Nombre</th>
+                <th>Segundo Nombre</th>
+                <th>Primer Apellido</th>
+                <th>Segundo Apellido</th>
+                <th>Celular</th>
+                <th>Email (Usuario)</th>
                 <th>Activo</th>
                 <th>Institución</th>
+                <th>Salón</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
               <tr th:each="est, iterStat : ${estudiantes}">
                 <td th:text="${iterStat.index + 1}"></td>
-                <td th:text="${est.activo}"></td>
-                <td th:text="${est.institucion.nombre}"></td>
+                <td th:text="${est.documentoIdentidad}"></td>
+                <td th:text="${est.tipoIdentificacion}"></td>
+                <td th:text="${est.primerNombre}"></td>
+                <td th:text="${est.segundoNombre}"></td>
+                <td th:text="${est.primerApellido}"></td>
+                <td th:text="${est.segundoApellido}"></td>
+                <td th:text="${est.celular}"></td>
+                <td
+                  th:text="${est.usuario != null ? est.usuario.username : 'Sin usuario'}"
+                ></td>
+                <td>
+                  <span th:text="${est.activo ? 'Sí' : 'No'}"></span>
+                </td>
+                <td
+                  th:text="${est.institucion != null ? est.institucion.nombre : 'Sin institución'}"
+                ></td>
+                <td
+                  th:text="${est.usuario != null ? est.usuario.salon : 'Sin salón'}"
+                ></td>
                 <td>
                   <button class="btn btn-edit text-white btn-sm">
                     <i class="bi bi-pencil"></i> Editar
                   </button>
                   <button class="btn btn-delete text-white btn-sm">
                     <i class="bi bi-trash"></i> Eliminar
+                  </button>
+                  <button
+                    class="btn btn-upload text-white btn-sm"
+                    data-bs-toggle="modal"
+                    th:data-bs-target="'#uploadModal-' + ${est.documentoIdentidad}"
+                  >
+                    <i class="bi bi-upload"></i> Upload
                   </button>
                 </td>
               </tr>
