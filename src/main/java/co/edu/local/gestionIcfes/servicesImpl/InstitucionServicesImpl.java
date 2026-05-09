@@ -19,7 +19,10 @@ public class InstitucionServicesImpl implements InstitucionService{
 	public List<Institucion> listarInstituciones() {
 		return institucionRepository.findAll();
 	}
-	
+	@Override
+    public Institucion guardarInstitucion(Institucion institucion) {
+        return institucionRepository.save(institucion);
+    }
 	@Override
 	public Institucion buscarPorId(Long id) {
 		return institucionRepository.findById(id).get();

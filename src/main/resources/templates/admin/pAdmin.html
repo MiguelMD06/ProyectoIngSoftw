@@ -19,22 +19,7 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-lg navbar-custom px-4">
-      <a class="navbar-brand fw-bold" href="#">Gestión Escolar</a>
-
-      <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ms-4">
-          <li class="nav-item"><a class="nav-link" href="#">Estudiantes</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Docentes</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Documentos</a></li>
-        </ul>
-      </div>
-
-      <div class="d-flex align-items-center gap-3">
-        <span class="text-white">Administrador</span>
-        <button class="btn btn-logout text-white">Cerrar sesión</button>
-      </div>
-    </nav>
+    <div th:replace="~{fragments/navbarAdmin :: navbar}"></div>
 
     <div class="hero container">
       <span class="badge badge-custom">Panel de Control v2.0</span>

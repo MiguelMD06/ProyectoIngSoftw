@@ -128,6 +128,13 @@ public class UsuarioServicesImpl implements UsuarioServices{
 		return false;
 	}
 	
+	 @Override
+	    public List<Estudiante> listarEstudiantes() {
+	        return estudianteRepository.findAll();
+	    }
+	
+	
+	
 	
 	private Collection<? extends GrantedAuthority> mapearAutoridadRoles(Collection<Rol> roles){
 		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getNombre())).collect(Collectors.toList());

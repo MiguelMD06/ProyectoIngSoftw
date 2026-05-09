@@ -17,4 +17,5 @@ public interface UsuarioServices extends UserDetailsService{
 	public Docente crearDocente(PersonaDTO personaDTO);
 	public boolean validarUsername(String username);
 	public Long obtenerIdMasAlto(List<Usuario> usuarios);
+	public List<Estudiante> listarEstudiantes();
 }

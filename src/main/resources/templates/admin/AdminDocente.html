@@ -1,0 +1,258 @@
+<!doctype html>
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AdminEstudiante</title>
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" th:href="@{/estilos/AdminEstudiante.css}" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </head>
+
+  <body>
+    <!-- NAVBAR -->
+    <div th:replace="~{fragments/navbarAdmin :: navbar}"></div>
+
+    <!-- TITLE -->
+
+    <div class="header container">
+      <h2>Bienvenido Administrador,</h2>
+      <h3 sec:authentication="principal.username"></h3>
+      <p class="text-muted">
+        Realiza los cambios necesarios a todos los docentes activos de los
+        cursos PreIcfes.
+      </p>
+    </div>
+    <div class="title-section container">
+      <h2>Panel de Docentes</h2>
+      <a
+        class="btn btn-create text-white mt-3 bi bi-plus"
+        th:href="@{/registro}"
+      >
+        Crear Docentes
+      </a>
+    </div>
+
+    <!-- TABLE -->
+
+    <div class="container mb-5">
+      <div class="table-card">
+        <!-- FILTROS -->
+        <div class="mb-3">
+          <span class="filter-badge"
+            ><i class="bi bi-building"></i> Instituto San José</span
+          >
+          <span class="filter-badge"
+            ><i class="bi bi-people"></i> Grado 10-A</span
+          >
+        </div>
+
+        <!-- TABLA -->
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Tel. Docente</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="usuario : ${usuarios}">
+                <td th:text="${usuario.username}">ID</td>
+                <td th:text="${usuario.nombre}">ID</td>
+                <td th:text="${usuario.apellido}">ID</td>
+                <td th:text="${usuario.email}">ID</td>
+                <td>
+                  <button class="btn btn-edit text-white btn-sm">
+                    <i class="bi bi-pencil"></i> Editar
+                  </button>
+                  <button class="btn btn-delete text-white btn-sm">
+                    <i class="bi bi-trash"></i> Eliminar
+                  </button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>2</td>
+                <td>Luis Pérez</td>
+                <td>301 234 5678</td>
+                <td>
+                  <button class="btn btn-edit text-white btn-sm">
+                    <i class="bi bi-pencil"></i> Editar
+                  </button>
+                  <button class="btn btn-delete text-white btn-sm">
+                    <i class="bi bi-trash"></i> Eliminar
+                  </button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>3</td>
+                <td>Valentina Ríos</td>
+                <td>302 345 6789</td>
+
+                <td>
+                  <button class="btn btn-edit text-white btn-sm">
+                    <i class="bi bi-pencil"></i> Editar
+                  </button>
+                  <button class="btn btn-delete text-white btn-sm">
+                    <i class="bi bi-trash"></i> Eliminar
+                  </button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>4</td>
+                <td>Santiago Mora</td>
+                <td>303 456 7890</td>
+
+                <td>
+                  <button class="btn btn-edit text-white btn-sm">
+                    <i class="bi bi-pencil"></i> Editar
+                  </button>
+                  <button class="btn btn-delete text-white btn-sm">
+                    <i class="bi bi-trash"></i> Eliminar
+                  </button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>5</td>
+                <td>Isabella Cruz</td>
+                <td>304 567 8901</td>
+
+                <td>
+                  <button class="btn btn-edit text-white btn-sm">
+                    <i class="bi bi-pencil"></i> Editar
+                  </button>
+                  <button class="btn btn-delete text-white btn-sm">
+                    <i class="bi bi-trash"></i> Eliminar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- PAGINACIÓN -->
+        <nav>
+          <ul class="pagination mt-4">
+            <li class="page-item">
+              <a class="page-link" href="#">Anterior</a>
+            </li>
+            <li class="page-item active">
+              <a class="page-link" href="#">1</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#">Siguiente</a>
+            </li>
+          </ul>
+        </nav>
+
+        <p class="text-center text-muted">Mostrando 5 de 5 docentes</p>
+      </div>
+    </div>
+
+    <!-- MODAL CREAR ESTUDIANTE -->
+    <div class="modal fade" id="modalCrear" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Crear Estudiante</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <form id="formEstudiante">
+              <div class="row g-3">
+                <!-- DATOS ESTUDIANTE -->
+                <h6>Datos del Estudiante</h6>
+
+                <div class="col-md-6">
+                  <label class="form-label">Nombre completo</label>
+                  <input type="text" class="form-control" required />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Teléfono</label>
+                  <input type="tel" class="form-control" required />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Grado</label>
+                  <select class="form-select" required>
+                    <option>10-A</option>
+                    <option>10-B</option>
+                    <option>11-A</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Institución</label>
+                  <input type="text" class="form-control" required />
+                </div>
+
+                <hr />
+
+                <!-- MADRE -->
+                <h6>Datos de la Madre</h6>
+
+                <div class="col-md-6">
+                  <label class="form-label">Nombre</label>
+                  <input type="text" class="form-control" />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Teléfono</label>
+                  <input type="tel" class="form-control" />
+                </div>
+
+                <hr />
+
+                <!-- PADRE -->
+                <h6>Datos del Padre</h6>
+
+                <div class="col-md-6">
+                  <label class="form-label">Nombre</label>
+                  <input type="text" class="form-control" />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Teléfono</label>
+                  <input type="tel" class="form-control" />
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+              Cancelar
+            </button>
+            <button class="btn btn-success">Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
