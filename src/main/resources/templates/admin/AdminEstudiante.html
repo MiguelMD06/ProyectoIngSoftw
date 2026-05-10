@@ -156,9 +156,7 @@
                 <td
                   th:text="${est.usuario != null ? est.usuario.username : 'Sin usuario'}"
                 ></td>
-                <td>
-                  <span th:text="${est.activo ? 'Sí' : 'No'}"></span>
-                </td>
+                <td><span th:text="${est.activo ? 'Sí' : 'No'}"></span></td>
                 <td
                   th:text="${est.institucion != null ? est.institucion.nombre : 'Sin institución'}"
                 ></td>
@@ -179,6 +177,20 @@
                   >
                     <i class="bi bi-upload"></i> Upload
                   </button>
+                  <div
+                    th:if="${not #lists.isEmpty(est.resultados)}"
+                    th:each="res : ${est.resultados}"
+                  >
+                    <a
+                      th:href="@{/admin/descargarResultado/{id}(id=${res.id})}"
+                      class="btn btn-primary btn-sm mt-1 d-block"
+                    >
+                      <i class="bi bi-download"></i>
+                      <span th:text="${res.simulacro.titulo}"
+                        >Descargar PDF</span
+                      >
+                    </a>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -213,15 +225,22 @@
                     method="post"
                     enctype="multipart/form-data"
                   >
-                    <!-- Identificador del estudiante -->
                     <input
                       type="hidden"
                       name="documentoIdentidad"
                       th:value="${est.documentoIdentidad}"
                     />
 
+                    <select name="simulacroId" class="form-select" required>
+                      <option
+                        th:each="sim : ${simulacros}"
+                        th:value="${sim.id}"
+                        th:text="${sim.titulo}"
+                      ></option>
+                    </select>
+
                     <div class="mb-3">
-                      <label class="form-label">Archivo del resultado</label>
+                      <label class="form-label">Archivo PDF</label>
                       <input
                         type="file"
                         class="form-control"
