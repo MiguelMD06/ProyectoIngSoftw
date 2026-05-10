@@ -28,7 +28,9 @@
 
       <div class="d-flex align-items-center gap-3">
         <span class="text-white">Administrador</span>
-        <button class="btn btn-logout text-white" >Cerrar sesión</button>
+        <form th:action="@{/logout}" method="post">
+        	<button class="btn btn-logout text-white" >Cerrar sesión</button>
+        </form>
       </div>
     </nav>
   </body>
