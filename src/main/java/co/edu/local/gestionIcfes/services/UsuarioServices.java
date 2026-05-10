@@ -8,6 +8,7 @@ import co.edu.local.gestionIcfes.dto.PersonaDTO;
 import co.edu.local.gestionIcfes.dto.UsuarioDTO;
 import co.edu.local.gestionIcfes.model.Docente;
 import co.edu.local.gestionIcfes.model.Estudiante;
+import co.edu.local.gestionIcfes.model.ResultadoSimulacro;
 import co.edu.local.gestionIcfes.model.Usuario;
 
 public interface UsuarioServices extends UserDetailsService{
@@ -18,4 +19,7 @@ public interface UsuarioServices extends UserDetailsService{
 	public boolean validarUsername(String username);
 	public Long obtenerIdMasAlto(List<Usuario> usuarios);
 	public List<Estudiante> listarEstudiantes();
+	public List<Estudiante> listarEstudiantesConResultados();
+	public ResultadoSimulacro obtenerResultadoPorId(Long id);
+	
 }
