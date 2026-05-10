@@ -21,6 +21,9 @@ public class SpringSecurity {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	@Autowired
+	private CustomAuthSuccessHandler successHandler;
+	
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider auth = new DaoAuthenticationProvider(usuarioServices);
@@ -41,13 +44,13 @@ public class SpringSecurity {
                 .anyRequest().authenticated()                                  
             )
             .formLogin(form -> form
-                .loginPage("/login")           
-                .defaultSuccessUrl("/", true)
+                .loginPage("/login")     
+                .successHandler(successHandler)
                 .permitAll()
             )
             .logout(logout -> logout
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
+                .logoutSuccessUrl("/login")
                 .permitAll()
             ).exceptionHandling(exception -> exception.accessDeniedPage("/403"));
 
