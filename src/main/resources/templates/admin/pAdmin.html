@@ -78,30 +78,25 @@
         <div class="col-md-3">
           <div class="summary-card">
             <strong>Estudiantes</strong>
-            <h3>1,284</h3>
+            <h3 th:text="${numeroEstudiantes}"></h3>
           </div>
         </div>
 
         <div class="col-md-3">
           <div class="summary-card">
             <strong>Docentes</strong>
-            <h3>86</h3>
+            <h3 th:text="${numeroDocentes}"></h3>
           </div>
         </div>
 
         <div class="col-md-3">
           <div class="summary-card">
-            <strong>Docs. Pendientes</strong>
-            <h3>24</h3>
+            <strong>Simulacros</strong>
+            <h3 th:text="${numeroSimulacros}"></h3>
           </div>
         </div>
 
-        <div class="col-md-3">
-          <div class="summary-card">
-            <strong>Trámites</strong>
-            <h3>450</h3>
-          </div>
-        </div>
+        
       </div>
 
       <div class="row mt-4 g-4">
@@ -109,13 +104,11 @@
           <div class="activity-card">
             <h5>Actividad Reciente</h5>
             <ul class="list-group list-group-flush mt-3">
-              <li class="list-group-item">Nuevo estudiante matriculado</li>
-              <li class="list-group-item">Boletín generado</li>
-              <li class="list-group-item">Docente asignado</li>
-              <li class="list-group-item text-danger">
-                Intento de acceso fallido
-              </li>
-            </ul>
+			  <li class="list-group-item"
+			      th:each="log : ${logs}"
+			      th:text="${log.descripcionCambio}">
+			  </li>
+			</ul>
           </div>
         </div>
 
