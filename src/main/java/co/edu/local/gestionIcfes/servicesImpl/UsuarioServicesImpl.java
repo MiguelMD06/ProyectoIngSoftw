@@ -180,6 +180,7 @@ public class UsuarioServicesImpl implements UsuarioServices {
 		return usuarioRepository.save(usuario);
 	}
 	
+
 	@Override
 	public Long cantidadDocentes() {
 		return usuarioRepository.countByRoles_Nombre("ROLE_DOCENTE");
@@ -189,4 +190,5 @@ public class UsuarioServicesImpl implements UsuarioServices {
 	public Long cantidadEstudiantes() {
 		return usuarioRepository.countByRoles_Nombre("ROLE_ESTUDIANTE");
 	}
+
 }

@@ -24,6 +24,7 @@
     <div th:replace="~{fragments/navbarAdmin :: navbar}"></div>
 
     <!-- HEADER -->
+    <br />
     <div class="header container">
       <h2>Bienvenido Administrador,</h2>
       <h3 sec:authentication="principal.username"></h3>
@@ -41,6 +42,15 @@
         th:href="@{/registro}"
       >
         Crear Estudiante
+      </a>
+
+      <!-- BOTÓN PARA REGISTRAR INSTITUCIÓN -->
+      <a
+        class="btn btn-create text-white mt-3 bi bi-plus"
+        data-bs-toggle="modal"
+        data-bs-target="#modalInstitucion"
+      >
+        Registrar Institución
       </a>
     </div>
 
@@ -85,15 +95,6 @@
           <option value="2">Salón 2</option>
         </select>
       </div>
-
-      <!-- BOTÓN PARA REGISTRAR INSTITUCIÓN -->
-      <button
-        class="btn btn-create"
-        data-bs-toggle="modal"
-        data-bs-target="#modalInstitucion"
-      >
-        Registrar Institución
-      </button>
     </div>
 
     <!-- ALERTA DE ÉXITO -->

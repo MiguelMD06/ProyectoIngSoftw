@@ -11,7 +11,11 @@ body {
 .navbar-custom .nav-link,
 .navbar-custom .navbar-brand {
   color: #fff;
+  transition: color 0.3s ease; /* Animación al pasar el mouse */
+	animation: aparecer 1s ease-in-out;
 }
+
+
 
 .btn-logout {
   background: #ef4444;
@@ -64,9 +68,27 @@ body {
   padding: 20px;
 }
 
+.titulo-navbar {
+	font-family: 'Poppins', sans-serif; /* Fuente moderna */
+	font-size: 18px; /* Tamaño equilibrado */
+	font-weight: 600; /* Semi-negrita */
+	color: #ffffff; /* Texto blanco */
+	text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4); /* Sombra suave */
+	letter-spacing: 1px; /* Espaciado entre letras */
+	margin: 0 10px; /* Separación entre títulos */
+	transition: color 0.3s ease; /* Animación al pasar el mouse */
+	animation: aparecer 1s ease-in-out;
+}
 /* SOPORTE */
 .support-card {
   background: #eef2ff;
   border-radius: 10px;
   padding: 20px;
+}
+@keyframes aparecer {from { opacity:0;
+	transform: translateY(-5px);
+}
+to {
+	opacity: 1;
+	transform: translateY(0);
 }

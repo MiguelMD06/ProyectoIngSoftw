@@ -35,8 +35,8 @@
             <p class="text-muted">
               Administra inscripciones, registros académicos y seguimiento de
               almunnos matriculados
-            </p>
-            <button class="btn btn-primary">Gestionar</button>
+            </p><a class="btn btn-primary" th:href="@{/admin/AdminEstudiante}"
+              >Gestionar</a>
           </div>
         </div>
 
@@ -46,18 +46,18 @@
             <p class="text-muted">
               Control de personal académico, asignación de materias y
               evaluaciones de desempeño
-            </p>
-            <button class="btn btn-primary">Gestionar</button>
+            </p><a class="btn btn-primary" th:href="@{/admin/AdminDocente}"
+              >Gestionar</a>
           </div>
         </div>
 
         <div class="col-md-3">
           <div class="card card-custom p-3">
-            <h5>Documentos</h5>
+            <h5>Simulacros</h5>
             <p class="text-muted">
-              Descarga los certificados de los simulacros
-            </p>
-            <button class="btn btn-primary">Generar</button>
+            Control de simulacros, asignación de titulos y descripción de los simulacrados aplicados
+            </p><a class="btn btn-primary" th:href="@{/admin/AdminSimulacro}"
+              >Gestionar</a>
           </div>
         </div>
 
