@@ -179,4 +179,14 @@ public class UsuarioServicesImpl implements UsuarioServices {
 		logService.registrarLog("usuario", "Actualización datos usuario");
 		return usuarioRepository.save(usuario);
 	}
+	
+	@Override
+	public Long cantidadDocentes() {
+		return usuarioRepository.countByRoles_Nombre("ROLE_DOCENTE");
+	}
+	
+	@Override
+	public Long cantidadEstudiantes() {
+		return usuarioRepository.countByRoles_Nombre("ROLE_ESTUDIANTE");
+	}
 }

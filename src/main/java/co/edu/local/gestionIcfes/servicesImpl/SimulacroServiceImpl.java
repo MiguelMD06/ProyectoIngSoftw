@@ -84,6 +84,11 @@ public class SimulacroServiceImpl implements SimulacroService {
         return simulacroRepositorio.findById(simulacroId)
                 .orElseThrow(() -> new RuntimeException("Simulacro no encontrado"));
     }
+    
+    @Override
+    public Long cantidadSimulacros() {
+    	return simulacroRepositorio.count();
+    }
 
     
 }
