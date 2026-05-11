@@ -47,7 +47,7 @@
       </div>
 
       <!-- FORM -->
-      <form id="formRegistroAdmin" th:action="@{/admin/AdminEstudiante/modificar}" method="POST" th:object="${persona}">
+      <form id="formRegistroAdmin" th:action="@{/admin/modificar}" method="POST" th:object="${persona}">
         <div class="row">
           <!-- TIPO IDENTIFICACION -->
           <div class="col-md-6 mb-3">
@@ -139,6 +139,8 @@
 
             <div id="errorSalon" class="error"></div>
           </div>
+          
+          <input type="hidden" th:field="*{rol}">
 
           <!-- BOTON -->
           <button type="submit" class="btn btn-main text-white mt-3">

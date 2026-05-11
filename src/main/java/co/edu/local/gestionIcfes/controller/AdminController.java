@@ -54,9 +54,9 @@ public class AdminController {
 	private ResultadoSimulacroRepositorio resultadoSimulacroRepositorio;
 	
 	@Autowired
-
 	private DocenteService docenteService;
 
+	@Autowired
 	private LogService logService;
 
 
@@ -66,7 +66,7 @@ public class AdminController {
 	    	model.addAttribute("numeroEstudiantes", usuarioService.cantidadEstudiantes());
 	    	model.addAttribute("numeroDocentes", usuarioService.cantidadDocentes());
 	    	model.addAttribute("numeroSimulacros", simulacroService.cantidadSimulacros());
-	    	model.addAttribute("logs", logService.listarLogs());
+	    	model.addAttribute("logs", logService.listarLogs().subList(0, 5));
 	        return "admin/pAdmin";
 	    }
 
@@ -162,24 +162,29 @@ public class AdminController {
 			return "admin/AdminActualizar";
 		}
 		
-		@PostMapping("/AdminEstudiante/modificar")
+		@PostMapping("/modificar")
 		public String registrarUsuario(@ModelAttribute("persona") PersonaDTO personaDTO) {
-			boolean exito;
+			boolean exito = false;
 			
-			exito =  (estudianteService.actualizarEstudiante(personaDTO) == null) ? false : true; 
+			if (personaDTO.getRol() == 2) {
+				exito =  (docenteService.actualizarDocente(personaDTO) == null) ? false : true; 
+				return exito ? "redirect:/admin/AdminDocente/modificar/"+personaDTO.getDocumentoIdentidad()+"?exito" : "redirect:/admin/AdminDocente/modificar/"+personaDTO.getDocumentoIdentidad()+"?error";
+			}else if (personaDTO.getRol() == 3) {
+				exito =  estudianteService.actualizarEstudiante(personaDTO) == null ? false : true; 
+				return exito ? "redirect:/admin/AdminEstudiante/modificar/"+personaDTO.getDocumentoIdentidad()+"?exito" : "redirect:/admin/AdminEstudiante/modificar/"+personaDTO.getDocumentoIdentidad()+"?error";
+			}
+			return "";
 			
-			return exito ? "redirect:/registro?exito" : "redirect:/registro?error";
 		}
 		
-		@PostMapping("/AdminDocente/modificar")
-		public String modificarDocente(@ModelAttribute("persona") PersonaDTO personaDTO) {
-		    boolean exito;
-
-		    exito = (docenteService.actualizarDocente(personaDTO) == null) ? false : true;
-
-		    return exito ? "redirect:/registro?exito" : "redirect:/registro?error";
+		@GetMapping("/AdminDocente/modificar/{id}")
+		public String mostrarActualizarDocente(@PathVariable String id,Model model) {
+			model.addAttribute("persona", docenteService.convertirDocentePersona(docenteService.obtenerDocentePorId(id)));
+			model.addAttribute("tiposIdentificaciones", TipoIdentificacion.values());
+			model.addAttribute("instituciones", institucionService.listarInstituciones());
+			return "admin/AdminActualizar";
 		}
-
+		
 	    
 	    
 	    @GetMapping("/AdminDocente")

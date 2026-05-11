@@ -67,6 +67,9 @@ public class EstudianteServiceImpl implements EstudianteService{
 		persona.setSegundoNombre(estudiante.getSegundoNombre());
 		persona.setSalon(estudiante.getUsuario().getSalon());
 		persona.setTipoIdentificacion(estudiante.getTipoIdentificacion());
+		persona.setRol(estudiante.getUsuario().getRoles().stream()
+			    .findFirst()
+			    .orElse(null).getId());
 		return persona;
 	}
 }
