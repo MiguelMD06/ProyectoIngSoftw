@@ -31,4 +31,21 @@ public class PersonaDTO {
 	private String salon;
 	
 	private Long institucion;
+
+	public PersonaDTO(String documentoIdentidad, TipoIdentificacion tipoIdentificacion, String primerNombre,
+			String segundoNombre, String primerApellido, String segundoApellido, String celular, String salon,
+			Long institucion) {
+		super();
+		this.documentoIdentidad = documentoIdentidad;
+		this.tipoIdentificacion = tipoIdentificacion;
+		this.primerNombre = primerNombre;
+		this.segundoNombre = segundoNombre;
+		this.primerApellido = primerApellido;
+		this.segundoApellido = segundoApellido;
+		this.celular = celular;
+		this.salon = salon;
+		this.institucion = institucion;
+	}
+	
+	
 }

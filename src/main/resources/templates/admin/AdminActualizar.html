@@ -23,7 +23,7 @@
       <div class="logo"></div>
       <div>
         <h5 class="m-0">Gestión Escolar</h5>
-        <small>Registro Administrativo</small>
+        <small>Actualizar Administrativo</small>
       </div>
     </div>
 
@@ -35,28 +35,29 @@
       <div th:if="${param.exito}">
         <div class="alert alert-success">
           <i class="bi bi-check-circle-fill"></i>
-          Usuario registrado exitosamente
+          Usuario actualizado exitosamente
         </div>
       </div>
 
       <div th:if="${param.error}">
         <div class="alert alert-danger">
           <i class="bi bi-exclamation-triangle-fill"></i>
-          Error al registrar usuario
+          Error al actualizar usuario
         </div>
       </div>
 
       <!-- FORM -->
-      <form id="formRegistroAdmin" th:action="@{/registro}" method="POST" th:object="${persona}">
+      <form id="formRegistroAdmin" th:action="@{/admin/AdminEstudiante/modificar}" method="POST" th:object="${persona}">
         <div class="row">
           <!-- TIPO IDENTIFICACION -->
           <div class="col-md-6 mb-3">
             <label class="form-label">Tipo de Identificación</label>
 
-            <select id="tipoIdentificacion" name="tipoIdentificacion" class="form-select">
+            <select id="tipoIdentificacion" name="tipoIdentificacion" class="form-select"
+              th:field="*{tipoIdentificacion}" readonly>
               <option value="">Seleccione...</option>
-              <option th:each="ti : ${tiposIdentificaciones}" th:value="${ti.name()}" th:text="${ti.descripcion}"
-                th:field="*{tipoIdentificacion}"></option>
+              <option th:each="ti : ${tiposIdentificaciones}" th:value="${ti.name()}" th:text="${ti.descripcion}">
+              </option>
             </select>
 
             <div id="errorTipoId" class="error"></div>
@@ -67,7 +68,7 @@
             <label class="form-label">Número de Identificación</label>
 
             <input type="text" id="numeroIdentificacion" name="numeroIdentificacion" class="form-control"
-              placeholder="Ingrese identificación" th:field="*{documentoIdentidad}" />
+              placeholder="Ingrese identificación" th:field="*{documentoIdentidad}" readonly />
 
             <div id="errorNumeroId" class="error"></div>
           </div>
@@ -122,10 +123,9 @@
           <div class="col-md-6 mb-3">
             <label class="form-label">Institución</label>
 
-            <select id="institucion" name="institucion" class="form-select">
+            <select id="institucion" name="institucion" class="form-select" th:field="*{institucion}">
               <option value="">Seleccione...</option>
-              <option th:each="inst : ${instituciones}" th:value="${inst.id}" th:text="${inst.nombre}"
-                th:field="*{institucion}"></option>
+              <option th:each="inst : ${instituciones}" th:value="${inst.id}" th:text="${inst.nombre}"></option>
             </select>
 
             <div id="errorInstitucion" class="error"></div>
@@ -135,33 +135,20 @@
           <div class="col-md-6 mb-3">
             <label class="form-label">Salón</label>
 
-            <input type="text" id="salon" name="salon" class="form-control" placeholder="1 o 2" />
+            <input type="text" id="salon" name="salon" class="form-control" placeholder="1 o 2" th:field="*{salon}" />
 
             <div id="errorSalon" class="error"></div>
           </div>
 
-          <!-- ROL -->
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Rol</label>
+          <!-- BOTON -->
+          <button type="submit" class="btn btn-main text-white mt-3">
+            <i class="bi bi-person-plus-fill"></i>
+            Actualizar Usuario
+          </button>
 
-            <select id="rol" name="rol" class="form-select">
-              <option value="">Seleccione...</option>
-              <option value="2">Docente</option>
-              <option value="3">Estudiante</option>
-            </select>
-            <div id="errorRol" class="error"></div>
-          </div>
-        </div>
-
-        <!-- BOTON -->
-        <button type="submit" class="btn btn-main text-white mt-3">
-          <i class="bi bi-person-plus-fill"></i>
-          Registrar Usuario
-        </button>
-
-        <a class="btn btn-create text-black mt-3 bi bi-arrow-left-circle-fill" th:href="@{/admin/pAdmin}">
-          Volver
-        </a>
+          <a class="btn btn-create text-black mt-3 bi bi-arrow-left-circle-fill" th:href="@{/admin/pAdmin}">
+            Volver
+          </a>
       </form>
     </div>
   </div>

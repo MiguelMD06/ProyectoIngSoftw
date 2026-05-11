@@ -16,6 +16,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
@@ -43,6 +44,7 @@ public class Institucion {
 	
 	//Relaciones
 	
+	@ToString.Exclude
 	@OneToMany(mappedBy = "institucion")
 	private List<Usuario> usuarios;
 	
