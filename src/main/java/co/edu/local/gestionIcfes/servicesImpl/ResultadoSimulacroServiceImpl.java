@@ -3,6 +3,7 @@ package co.edu.local.gestionIcfes.servicesImpl;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,6 +13,7 @@ import co.edu.local.gestionIcfes.model.Simulacro;
 import co.edu.local.gestionIcfes.repository.EstudianteRepositorio;
 import co.edu.local.gestionIcfes.repository.ResultadoSimulacroRepositorio;
 import co.edu.local.gestionIcfes.repository.SimulacroRepositorio;
+import co.edu.local.gestionIcfes.services.LogService;
 import co.edu.local.gestionIcfes.services.ResultadoSimulacroService;
 import jakarta.transaction.Transactional;
 
@@ -19,7 +21,10 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class ResultadoSimulacroServiceImpl implements ResultadoSimulacroService {
 
-        private final EstudianteRepositorio estudianteRepo;
+        @Autowired
+        private LogService logService;
+	
+		private final EstudianteRepositorio estudianteRepo;
 	    private final SimulacroRepositorio simulacroRepo;
 	    private final ResultadoSimulacroRepositorio resultadoRepo;
 
@@ -50,7 +55,7 @@ public class ResultadoSimulacroServiceImpl implements ResultadoSimulacroService 
 	            resultado.setDatos(archivo.getBytes());
 	            resultado.setEstudiante(estudiante);
 	            resultado.setSimulacro(simulacro);
-
+	            logService.registrarLog("Resultado Simulacro", "Resultado simulacro subido");
 	            return resultadoRepo.save(resultado);
 	        } catch (IOException e) {
 	            throw new RuntimeException("Error al leer el archivo PDF", e);
