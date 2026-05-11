@@ -1,5 +1,7 @@
 package co.edu.local.gestionIcfes.servicesImpl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,5 +19,10 @@ public class LogServiceImpl implements LogService{
 	public LogCambio registrarLog(String origenCambio, String descripcion) {
 		LogCambio log = new LogCambio(origenCambio, descripcion);
 		return logRepository.save(log);
+	}
+	
+	@Override
+	public List<LogCambio> listarLogs() {
+		return logRepository.findAll();
 	}
 }
