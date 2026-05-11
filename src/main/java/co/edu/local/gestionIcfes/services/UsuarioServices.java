@@ -25,4 +25,5 @@ public interface UsuarioServices extends UserDetailsService{
 	public ResultadoSimulacro obtenerResultadoPorId(Long id);
 	public Usuario editarSalonInstitucion(String salon,Institucion institucion, Long id);
 	
+	
 }
