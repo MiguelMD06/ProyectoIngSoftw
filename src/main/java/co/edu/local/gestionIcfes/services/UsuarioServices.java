@@ -24,5 +24,7 @@ public interface UsuarioServices extends UserDetailsService{
 	public List<Estudiante> listarEstudiantesConResultados();
 	public ResultadoSimulacro obtenerResultadoPorId(Long id);
 	public Usuario editarSalonInstitucion(String salon,Institucion institucion, Long id);
+	public Long cantidadEstudiantes();
+	public Long cantidadDocentes();
 	
 }
