@@ -19,6 +19,7 @@ import co.edu.local.gestionIcfes.dto.PersonaDTO;
 import co.edu.local.gestionIcfes.dto.UsuarioDTO;
 import co.edu.local.gestionIcfes.model.Docente;
 import co.edu.local.gestionIcfes.model.Estudiante;
+import co.edu.local.gestionIcfes.model.Institucion;
 import co.edu.local.gestionIcfes.model.ResultadoSimulacro;
 import co.edu.local.gestionIcfes.model.Rol;
 import co.edu.local.gestionIcfes.model.Usuario;
@@ -88,6 +89,11 @@ public class UsuarioServicesImpl implements UsuarioServices {
 		}
 		return null;
 	}
+	
+	@Override
+	public void eliminarUsuario(Long id) {
+		usuarioRepository.deleteById(id);	
+	}
 
 	@Override
 	public Docente crearDocente(PersonaDTO personaDTO) {
@@ -156,5 +162,13 @@ public class UsuarioServicesImpl implements UsuarioServices {
 
 	private Collection<? extends GrantedAuthority> mapearAutoridadRoles(Collection<Rol> roles) {
 		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getNombre())).collect(Collectors.toList());
+	}
+	
+	@Override
+	public Usuario editarSalonInstitucion(String salon, Institucion institucion, Long id) {
+		Usuario usuario = usuarioRepository.findById(id).get();
+		usuario.setSalon(salon);
+		usuario.setInstitucion(institucion);
+		return usuarioRepository.save(usuario);
 	}
 }
