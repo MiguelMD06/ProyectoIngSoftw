@@ -26,6 +26,7 @@
     <div th:replace="~{fragments/navbarAdmin :: navbar}"></div>
 
     <!-- TITLE -->
+    <br />
 
     <div class="header container">
       <h2>Bienvenido Administrador,</h2>
@@ -85,30 +86,31 @@
                   th:text="${doc.institucion != null ? doc.institucion.nombre : 'Sin institución'}"
                 ></td>
                 <td>
-                  <a
-                    th:href="@{/admin/AdminDocente/modificar/} + ${doc.documentoIdentidad}"
-                  >
-                    <input
-                      type="button"
-                      class="btn btn-edit text-white btn-sm"
-                      value="Editar"
-                    />
-                  </a>
-
-                  <a
-                    th:href="@{/admin/eliminarDocente/{documentoIdentidad}(documentoIdentidad=${doc.documentoIdentidad})}"
-                  >
-                    <input
-                      type="button"
-                      class="btn btn-delete text-white btn-sm"
-                      value="Eliminar"
+                  <!-- Editar -->
+                  <div class="action-buttons">
+                    <a
+                      th:href="@{/admin/AdminDocente/modificar/} + ${doc.documentoIdentidad}"
+                      class="btn btn-action btn-edit"
+                      title="Editar docente"
+                    >
+                      <i class="bi bi-pencil-square"></i>
+                      <span>Editar</span>
+                    </a>
+                    <!-- Eliminar -->
+                    <a
+                      th:href="@{/admin/eliminarDocente/{documentoIdentidad}(documentoIdentidad=${doc.documentoIdentidad})}"
+                      class="btn btn-action btn-delete"
+                      title="Eliminar docente"
                       onclick="
                         return confirm(
                           '¿Estás seguro de eliminar este docente?',
                         );
                       "
-                    />
-                  </a>
+                    >
+                      <i class="bi bi-trash3"></i>
+                      <span>Eliminar</span>
+                    </a>
+                  </div>
                 </td>
               </tr>
             </tbody>

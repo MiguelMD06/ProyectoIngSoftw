@@ -66,7 +66,8 @@ public class AdminController {
 	    	model.addAttribute("numeroEstudiantes", usuarioService.cantidadEstudiantes());
 	    	model.addAttribute("numeroDocentes", usuarioService.cantidadDocentes());
 	    	model.addAttribute("numeroSimulacros", simulacroService.cantidadSimulacros());
-	    	model.addAttribute("logs", logService.listarLogs().subList(0, 5));
+	    	model.addAttribute("logs", logService.listarLogs());  
+	    			
 	        return "admin/pAdmin";
 	    }
 

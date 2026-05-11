@@ -174,34 +174,41 @@
                   th:text="${est.usuario != null ? est.usuario.salon : 'Sin salón'}"
                 ></td>
                 <td>
-                  <a
-                    th:href="@{/admin/AdminEstudiante/modificar/} + ${est.documentoIdentidad}"
-                    ><input
-                      type="button"
-                      class="btn btn-edit text-white btn-sm"
-                      value="Editar"
-                  /></a>
-                  <a
-                    th:href="@{/admin/AdminEstudiante/} + ${est.documentoIdentidad}"
-                    ><input
-                      type="button"
-                      class="btn btn-delete text-white btn-sm"
-                      value="Eliminar"
-                      onclick="
-                        if (
-                          !confirm('¿Estás seguro de eliminar este estudiante?')
-                        )
-                          return false;
-                      "
-                  /></a>
-                  <button
-                    class="btn btn-upload text-white btn-sm"
-                    data-bs-toggle="modal"
-                    th:data-bs-target="'#uploadModal-' + ${est.documentoIdentidad}"
-                  >
-                    <i class="bi bi-upload"></i> Upload
-                  </button>
-                  <div
+  <div class="action-buttons">
+    
+    <!-- Editar -->
+    <a
+      th:href="@{/admin/AdminEstudiante/modificar/} + ${est.documentoIdentidad}"
+      class="btn btn-action btn-edit"
+      title="Editar estudiante"
+    >
+      <i class="bi bi-pencil-square"></i>
+      <span>Editar</span>
+    </a>
+
+    <!-- Eliminar -->
+    <a
+      th:href="@{/admin/AdminEstudiante/} + ${est.documentoIdentidad}"
+      class="btn btn-action btn-delete"
+      title="Eliminar estudiante"
+      onclick="return confirm('¿Estás seguro de eliminar este estudiante?');"
+    >
+      <i class="bi bi-trash3"></i>
+      <span>Eliminar</span>
+    </a>
+
+    <!-- Subir PDF -->
+    <button
+      type="button"
+      class="btn btn-action btn-upload"
+      data-bs-toggle="modal"
+      th:data-bs-target="'#uploadModal-' + ${est.documentoIdentidad}"
+      title="Subir documento"
+    >
+      <i class="bi bi-cloud-upload"></i>
+      <span>PDF</span>
+    </button>
+<div
                     th:if="${not #lists.isEmpty(est.resultados)}"
                     th:each="res : ${est.resultados}"
                   >
@@ -215,7 +222,8 @@
                       >
                     </a>
                   </div>
-                </td>
+  </div>
+</td>
               </tr>
             </tbody>
           </table>

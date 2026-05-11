@@ -104,3 +104,84 @@ to {
 .titulo-navbar:hover {
 	color: #ffc107; /* Cambia a dorado al pasar el mouse */
 }
+
+/* ===== BOTONES DE ACCIONES ===== */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Estilo base */
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: white !important;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+    transition: all 0.25s ease;
+}
+
+/* Íconos */
+.btn-action i {
+    font-size: 0.95rem;
+}
+
+/* Hover general */
+.btn-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+    color: white !important;
+}
+
+/* Editar */
+.btn-edit {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.btn-edit:hover {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+}
+
+/* Eliminar */
+.btn-delete {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.btn-delete:hover {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+}
+
+/* Subir PDF */
+.btn-upload {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.btn-upload:hover {
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+}
+
+/* Responsive: solo íconos en pantallas pequeñas */
+@media (max-width: 768px) {
+    .btn-action span {
+        display: none;
+    }
+
+    .btn-action {
+        padding: 8px 10px;
+        border-radius: 8px;
+    }
+
+    .btn-action i {
+        font-size: 1rem;
+        margin: 0;
+    }
+}
