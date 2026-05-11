@@ -35,8 +35,10 @@
             <p class="text-muted">
               Administra inscripciones, registros académicos y seguimiento de
               almunnos matriculados
-            </p><a class="btn btn-primary" th:href="@{/admin/AdminEstudiante}"
-              >Gestionar</a>
+            </p>
+            <a class="btn btn-primary" th:href="@{/admin/AdminEstudiante}"
+              >Gestionar</a
+            >
           </div>
         </div>
 
@@ -46,8 +48,10 @@
             <p class="text-muted">
               Control de personal académico, asignación de materias y
               evaluaciones de desempeño
-            </p><a class="btn btn-primary" th:href="@{/admin/AdminDocente}"
-              >Gestionar</a>
+            </p>
+            <a class="btn btn-primary" th:href="@{/admin/AdminDocente}"
+              >Gestionar</a
+            >
           </div>
         </div>
 
@@ -55,9 +59,12 @@
           <div class="card card-custom p-3">
             <h5>Simulacros</h5>
             <p class="text-muted">
-            Control de simulacros, asignación de titulos y descripción de los simulacrados aplicados
-            </p><a class="btn btn-primary" th:href="@{/admin/AdminSimulacro}"
-              >Gestionar</a>
+              Control de simulacros, asignación de titulos y descripción de los
+              simulacrados aplicados
+            </p>
+            <a class="btn btn-primary" th:href="@{/admin/AdminSimulacro}"
+              >Gestionar</a
+            >
           </div>
         </div>
 
@@ -95,20 +102,22 @@
             <h3 th:text="${numeroSimulacros}"></h3>
           </div>
         </div>
-
-        
       </div>
 
       <div class="row mt-4 g-4">
         <div class="col-md-8">
           <div class="activity-card">
             <h5>Actividad Reciente</h5>
-            <ul class="list-group list-group-flush mt-3">
-			  <li class="list-group-item"
-			      th:each="log : ${logs}"
-			      th:text="${log.descripcionCambio != null ? log.descripcionCambio : 'Sin Actividades recientes'}">
-			  </li>
-			</ul>
+            <ul
+              class="list-group list-group-flush mt-3"
+              th:if="${logs != null and !logs.isEmpty()}"
+            >
+              <li
+                class="list-group-item"
+                th:each="log : ${logs}"
+                th:text="${log.descripcionCambio != null ? log.descripcionCambio : 'Sin Actividades recientes'}"
+              ></li>
+            </ul>
           </div>
         </div>
 
@@ -118,7 +127,14 @@
             <p class="text-muted">¿Necesitas asistencia?</p>
             <h6>Contacto Directo</h6>
             <p class="text-muted">Lunes a viernes 9:00am - 4:00pm</p>
-            <button class="btn btn-primary w-100">Contactar soporte</button>
+            <a
+              href="https://wa.me/573107740572?text=Hola%20Juan"
+              target="_blank"
+              class="btn btn-whatsapp"
+            >
+              <i class="bi bi-whatsapp"></i>
+              Contactar soporte
+            </a>
           </div>
         </div>
       </div>

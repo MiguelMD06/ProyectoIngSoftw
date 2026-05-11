@@ -1,5 +1,6 @@
 package co.edu.local.gestionIcfes.servicesImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,11 @@ public class LogServiceImpl implements LogService{
 	
 	@Override
 	public List<LogCambio> listarLogs() {
-		return logRepository.findAllByOrderByIdDesc();
+		System.out.println(logRepository.findAllByOrderByIdDesc().isEmpty());
+		if (logRepository.findAllByOrderByIdDesc().isEmpty()) {
+			return new ArrayList<LogCambio>();
+		}else if (logRepository.findAllByOrderByIdDesc().size() < 5)
+			return logRepository.findAllByOrderByIdDesc();
+		return logRepository.findAllByOrderByIdDesc().subList(0, 5);
 	}
 }
