@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro Administrativo</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+
+  <link rel="stylesheet" th:href="@{/estilos/AdminRegistro.css}" />
+  <link rel="stylesheet" href="../../static/estilos/AdminRegistro.css" />
+</head>
+
+<body>
+  <div class="register-card">
+    <!-- HEADER -->
+    <div class="register-header">
+      <div class="logo"></div>
+      <div>
+        <h5 class="m-0">Gestión Escolar</h5>
+        <small>Actualizar Administrativo</small>
+      </div>
+    </div>
+
+    <!-- BODY -->
+    <div class="register-body">
+      <h4 class="mb-4">Crear Usuario</h4>
+
+      <!-- ALERTAS -->
+      <div th:if="${param.exito}">
+        <div class="alert alert-success">
+          <i class="bi bi-check-circle-fill"></i>
+          Usuario actualizado exitosamente
+        </div>
+      </div>
+
+      <div th:if="${param.error}">
+        <div class="alert alert-danger">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+          Error al actualizar usuario
+        </div>
+      </div>
+
+      <!-- FORM -->
+      <form id="formRegistroAdmin" th:action="@{/admin/AdminEstudiante/modificar}" method="POST" th:object="${persona}">
+        <div class="row">
+          <!-- TIPO IDENTIFICACION -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Tipo de Identificación</label>
+
+            <select id="tipoIdentificacion" name="tipoIdentificacion" class="form-select"
+              th:field="*{tipoIdentificacion}" readonly>
+              <option value="">Seleccione...</option>
+              <option th:each="ti : ${tiposIdentificaciones}" th:value="${ti.name()}" th:text="${ti.descripcion}">
+              </option>
+            </select>
+
+            <div id="errorTipoId" class="error"></div>
+          </div>
+
+          <!-- NUMERO IDENTIFICACION -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Número de Identificación</label>
+
+            <input type="text" id="numeroIdentificacion" name="numeroIdentificacion" class="form-control"
+              placeholder="Ingrese identificación" th:field="*{documentoIdentidad}" readonly />
+
+            <div id="errorNumeroId" class="error"></div>
+          </div>
+
+          <!-- PRIMER NOMBRE -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Primer Nombre</label>
+
+            <input type="text" id="primerNombre" name="primerNombre" class="form-control" placeholder="Primer nombre"
+              th:field="*{primerNombre}" />
+
+            <div id="errorPrimerNombre" class="error"></div>
+          </div>
+
+          <!-- SEGUNDO NOMBRE -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Segundo Nombre</label>
+
+            <input type="text" id="segundoNombre" name="segundoNombre" class="form-control" placeholder="Segundo nombre"
+              th:field="*{segundoNombre}" />
+          </div>
+
+          <!-- PRIMER APELLIDO -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Primer Apellido</label>
+
+            <input type="text" id="primerApellido" name="primerApellido" class="form-control"
+              placeholder="Primer apellido" th:field="*{primerApellido}" />
+
+            <div id="errorPrimerApellido" class="error"></div>
+          </div>
+
+          <!-- SEGUNDO APELLIDO -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Segundo Apellido</label>
+
+            <input type="text" id="segundoApellido" name="segundoApellido" class="form-control"
+              placeholder="Segundo apellido" th:field="*{segundoApellido}" />
+          </div>
+
+          <!-- CELULAR -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Celular</label>
+
+            <input type="tel" id="celular" name="celular" class="form-control" placeholder="3001234567"
+              th:field="*{celular}" />
+
+            <div id="errorCelular" class="error"></div>
+          </div>
+
+          <!-- INSTITUCION -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Institución</label>
+
+            <select id="institucion" name="institucion" class="form-select" th:field="*{institucion}">
+              <option value="">Seleccione...</option>
+              <option th:each="inst : ${instituciones}" th:value="${inst.id}" th:text="${inst.nombre}"></option>
+            </select>
+
+            <div id="errorInstitucion" class="error"></div>
+          </div>
+
+          <!-- SALON -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Salón</label>
+
+            <input type="text" id="salon" name="salon" class="form-control" placeholder="1 o 2" th:field="*{salon}" />
+
+            <div id="errorSalon" class="error"></div>
+          </div>
+
+          <!-- BOTON -->
+          <button type="submit" class="btn btn-main text-white mt-3">
+            <i class="bi bi-person-plus-fill"></i>
+            Actualizar Usuario
+          </button>
+
+          <a class="btn btn-create text-black mt-3 bi bi-arrow-left-circle-fill" th:href="@{/admin/pAdmin}">
+            Volver
+          </a>
+      </form>
+    </div>
+  </div>
+
+  <!-- <script src="../static/js/validacionesRegistro.js"></script> -->
+</body>
+
+</html>
