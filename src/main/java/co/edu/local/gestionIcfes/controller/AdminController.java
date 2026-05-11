@@ -17,12 +17,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.edu.local.gestionIcfes.dto.PersonaDTO;
-import co.edu.local.gestionIcfes.dto.UsuarioDTO;
 import co.edu.local.gestionIcfes.enums.TipoIdentificacion;
+import co.edu.local.gestionIcfes.model.Docente;
 import co.edu.local.gestionIcfes.model.Institucion;
 import co.edu.local.gestionIcfes.model.ResultadoSimulacro;
 import co.edu.local.gestionIcfes.model.Simulacro;
 import co.edu.local.gestionIcfes.repository.ResultadoSimulacroRepositorio;
+import co.edu.local.gestionIcfes.services.DocenteService;
 import co.edu.local.gestionIcfes.services.EstudianteService;
 import co.edu.local.gestionIcfes.services.InstitucionService;
 import co.edu.local.gestionIcfes.services.ResultadoSimulacroService;
@@ -50,6 +51,9 @@ public class AdminController {
 	
 	@Autowired
 	private ResultadoSimulacroRepositorio resultadoSimulacroRepositorio;
+	
+	@Autowired
+	private DocenteService docenteService;
 
 
 	    @GetMapping("/pAdmin")
@@ -79,6 +83,8 @@ public class AdminController {
 			
 			return "redirect:/admin/AdminEstudiante";
 		}
+	    
+
 	    
 	    @PostMapping("/crearInstitucion")
 	    public String crearInstitucion(@ModelAttribute Institucion institucion, RedirectAttributes redirectAttributes) {
@@ -155,13 +161,38 @@ public class AdminController {
 			
 			return exito ? "redirect:/registro?exito" : "redirect:/registro?error";
 		}
+		
+		@PostMapping("/AdminDocente/modificar")
+		public String modificarDocente(@ModelAttribute("persona") PersonaDTO personaDTO) {
+		    boolean exito;
+
+		    exito = (docenteService.actualizarDocente(personaDTO) == null) ? false : true;
+
+		    return exito ? "redirect:/registro?exito" : "redirect:/registro?error";
+		}
 
 	    
 	    
 	    @GetMapping("/AdminDocente")
-	    public String mostrarDocentes() {
+	    public String mostrarDocentes(Model model) {
+	        model.addAttribute("docentes", docenteService.listarDocentes());
+	        model.addAttribute("docente", new Docente());
+	        model.addAttribute("instituciones", institucionService.listarInstituciones());
 	        return "admin/AdminDocente";
 	    }
+	    
+	    @GetMapping("/eliminarDocente/{id}")
+	    public String eliminarDocente(@PathVariable String id) {
+	        docenteService.eliminarDocente(id);
+	        return "redirect:/admin/AdminDocente";
+	    }
+	    
+	    @PostMapping("/guardarDocente")
+	    public String guardarDocente(@ModelAttribute Docente docente) {
+	        docenteService.guardarDocente(docente);
+	        return "redirect:/admin/AdminDocente?exito";
+	    }
+	
 
 	
 	}
