@@ -16,10 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import co.edu.local.gestionIcfes.dto.PersonaDTO;
+import co.edu.local.gestionIcfes.dto.UsuarioDTO;
+import co.edu.local.gestionIcfes.enums.TipoIdentificacion;
 import co.edu.local.gestionIcfes.model.Institucion;
 import co.edu.local.gestionIcfes.model.ResultadoSimulacro;
 import co.edu.local.gestionIcfes.model.Simulacro;
 import co.edu.local.gestionIcfes.repository.ResultadoSimulacroRepositorio;
+import co.edu.local.gestionIcfes.services.EstudianteService;
 import co.edu.local.gestionIcfes.services.InstitucionService;
 import co.edu.local.gestionIcfes.services.ResultadoSimulacroService;
 import co.edu.local.gestionIcfes.services.SimulacroService;
@@ -31,6 +35,9 @@ public class AdminController {
 	
 	@Autowired
 	private UsuarioServices usuarioService;
+	
+	@Autowired
+	private EstudianteService estudianteService;
 	
 	@Autowired 
 	private InstitucionService institucionService;
@@ -60,6 +67,18 @@ public class AdminController {
 	        model.addAttribute("institucion", new Institucion());
 	        return "admin/AdminEstudiante";
 	    }
+	    
+	    @GetMapping("/AdminEstudiante/{id}")
+		public String eliminarUsuario(@PathVariable String id, RedirectAttributes redirectAttributes) {
+	    	try {
+	    		estudianteService.eliminarEstudiante(id);
+    	        redirectAttributes.addFlashAttribute("exitoEliminar", "Estudiante eliminado exitosamente");
+    	    } catch (Exception e) {
+    	        redirectAttributes.addFlashAttribute("errorEliminar", "Error al eliminar estudiante. Intente nuevamente.");
+    	    }
+			
+			return "redirect:/admin/AdminEstudiante";
+		}
 	    
 	    @PostMapping("/crearInstitucion")
 	    public String crearInstitucion(@ModelAttribute Institucion institucion, RedirectAttributes redirectAttributes) {
@@ -119,6 +138,23 @@ public class AdminController {
 	                .contentLength(archivo.length)
 	                .body(archivo);
 	    }
+	    
+	    @GetMapping("/AdminEstudiante/modificar/{id}")
+		public String mostrarActualizar(@PathVariable String id,Model model) {
+			model.addAttribute("persona", estudianteService.convertirEstudiantePersona(estudianteService.buscarEstudiante(id)));
+			model.addAttribute("tiposIdentificaciones", TipoIdentificacion.values());
+			model.addAttribute("instituciones", institucionService.listarInstituciones());
+			return "admin/AdminActualizar";
+		}
+		
+		@PostMapping("/AdminEstudiante/modificar")
+		public String registrarUsuario(@ModelAttribute("persona") PersonaDTO personaDTO) {
+			boolean exito;
+			
+			exito =  (estudianteService.actualizarEstudiante(personaDTO) == null) ? false : true; 
+			
+			return exito ? "redirect:/registro?exito" : "redirect:/registro?error";
+		}
 
 	    
 	    
