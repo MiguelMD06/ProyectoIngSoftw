@@ -23,6 +23,6 @@ public class LogServiceImpl implements LogService{
 	
 	@Override
 	public List<LogCambio> listarLogs() {
-		return logRepository.findAll();
+		return logRepository.findAllByOrderByIdDesc();
 	}
 }
