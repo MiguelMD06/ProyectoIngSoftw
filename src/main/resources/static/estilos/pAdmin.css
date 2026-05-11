@@ -15,6 +15,23 @@ body {
 	animation: aparecer 1s ease-in-out;
 }
 
+.btn-whatsapp {
+    background: #25D366;
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 8px 16px;
+    transition: all 0.3s ease;
+}
+
+.btn-whatsapp:hover {
+    background: #1ebe5d;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+    color: white;
+}
+
 
 
 .btn-logout {
