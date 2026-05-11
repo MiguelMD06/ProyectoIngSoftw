@@ -8,6 +8,7 @@ import co.edu.local.gestionIcfes.model.Estudiante;
 import co.edu.local.gestionIcfes.repository.EstudianteRepositorio;
 import co.edu.local.gestionIcfes.services.EstudianteService;
 import co.edu.local.gestionIcfes.services.InstitucionService;
+import co.edu.local.gestionIcfes.services.LogService;
 import co.edu.local.gestionIcfes.services.UsuarioServices;
 
 @Service
@@ -22,6 +23,9 @@ public class EstudianteServiceImpl implements EstudianteService{
 	@Autowired
 	private InstitucionService institucionService;
 	
+	@Autowired
+	private LogService logService;
+	
 	@Override
 	public Estudiante buscarEstudiante(String documentoIdentidad) {
 		return estudianteRepository.findById(documentoIdentidad).get();
@@ -32,6 +36,7 @@ public class EstudianteServiceImpl implements EstudianteService{
 		Estudiante est = buscarEstudiante(documentoIdentidad);
 		estudianteRepository.deleteById(documentoIdentidad);
 		usuarioService.eliminarUsuario(est.getUsuario().getId());
+		logService.registrarLog("estudiante", "Estudiante " + est.getPrimerNombre() + " eliminado");
 	}
 	
 	@Override
@@ -46,6 +51,7 @@ public class EstudianteServiceImpl implements EstudianteService{
 		estudiante.setCelular(personaDTO.getCelular());
 		estudiante.setInstitucion(institucionService.buscarPorId(personaDTO.getInstitucion()));
 		usuarioService.editarSalonInstitucion(personaDTO.getSalon(), institucionService.buscarPorId(personaDTO.getInstitucion()), estudiante.getUsuario().getId());
+		logService.registrarLog("estudiante", "Datos de estudiante " + estudiante.getPrimerNombre() + " actualizados");
 		return estudianteRepository.save(estudiante);
 	}
 	

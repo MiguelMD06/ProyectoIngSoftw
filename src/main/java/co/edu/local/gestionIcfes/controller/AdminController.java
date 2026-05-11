@@ -26,6 +26,7 @@ import co.edu.local.gestionIcfes.repository.ResultadoSimulacroRepositorio;
 import co.edu.local.gestionIcfes.services.DocenteService;
 import co.edu.local.gestionIcfes.services.EstudianteService;
 import co.edu.local.gestionIcfes.services.InstitucionService;
+import co.edu.local.gestionIcfes.services.LogService;
 import co.edu.local.gestionIcfes.services.ResultadoSimulacroService;
 import co.edu.local.gestionIcfes.services.SimulacroService;
 import co.edu.local.gestionIcfes.services.UsuarioServices;
@@ -53,11 +54,19 @@ public class AdminController {
 	private ResultadoSimulacroRepositorio resultadoSimulacroRepositorio;
 	
 	@Autowired
+
 	private DocenteService docenteService;
+
+	private LogService logService;
+
 
 
 	    @GetMapping("/pAdmin")
-	    public String mostrarPanelAdmin() {
+	    public String mostrarPanelAdmin(Model model) {
+	    	model.addAttribute("numeroEstudiantes", usuarioService.cantidadEstudiantes());
+	    	model.addAttribute("numeroDocentes", usuarioService.cantidadDocentes());
+	    	model.addAttribute("numeroSimulacros", simulacroService.cantidadSimulacros());
+	    	model.addAttribute("logs", logService.listarLogs());
 	        return "admin/pAdmin";
 	    }
 

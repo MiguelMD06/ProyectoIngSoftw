@@ -28,6 +28,7 @@ import co.edu.local.gestionIcfes.repository.EstudianteRepositorio;
 import co.edu.local.gestionIcfes.repository.ResultadoSimulacroRepositorio;
 import co.edu.local.gestionIcfes.repository.UsuarioRepositorio;
 import co.edu.local.gestionIcfes.services.InstitucionService;
+import co.edu.local.gestionIcfes.services.LogService;
 import co.edu.local.gestionIcfes.services.RolServices;
 import co.edu.local.gestionIcfes.services.UsuarioServices;
 import jakarta.servlet.http.HttpSession;
@@ -52,6 +53,9 @@ public class UsuarioServicesImpl implements UsuarioServices {
 
 	@Autowired
 	private RolServices rolServicio;
+	
+	@Autowired
+	private LogService logService;
 
 	@Autowired
 	private InstitucionService institucionServicio;
@@ -85,6 +89,7 @@ public class UsuarioServicesImpl implements UsuarioServices {
 			estudiante.setCelular(personaDTO.getCelular());
 			estudiante.setUsuario(usuario);
 			estudiante.setInstitucion(institucionServicio.buscarPorId(personaDTO.getInstitucion()));
+			logService.registrarLog("estudiante", "Registro nuevo estudiante " + personaDTO.getPrimerNombre());
 			return estudianteRepository.save(estudiante);
 		}
 		return null;
@@ -93,6 +98,7 @@ public class UsuarioServicesImpl implements UsuarioServices {
 	@Override
 	public void eliminarUsuario(Long id) {
 		usuarioRepository.deleteById(id);	
+		logService.registrarLog("usuario", "Usuario eliminado");
 	}
 
 	@Override
@@ -114,6 +120,7 @@ public class UsuarioServicesImpl implements UsuarioServices {
 			docente.setCelular(personaDTO.getCelular());
 			docente.setUsuario(usuario);
 			docente.setInstitucion(institucionServicio.buscarPorId(personaDTO.getInstitucion()));
+			logService.registrarLog("docente", "Registro nuevo docente " + personaDTO.getPrimerNombre());
 			return docenteRepository.save(docente);
 		}
 		return null;
@@ -169,7 +176,19 @@ public class UsuarioServicesImpl implements UsuarioServices {
 		Usuario usuario = usuarioRepository.findById(id).get();
 		usuario.setSalon(salon);
 		usuario.setInstitucion(institucion);
+		logService.registrarLog("usuario", "Actualización datos usuario");
 		return usuarioRepository.save(usuario);
 	}
 	
+
+	@Override
+	public Long cantidadDocentes() {
+		return usuarioRepository.countByRoles_Nombre("ROLE_DOCENTE");
+	}
+	
+	@Override
+	public Long cantidadEstudiantes() {
+		return usuarioRepository.countByRoles_Nombre("ROLE_ESTUDIANTE");
+	}
+
 }

@@ -7,4 +7,5 @@ import co.edu.local.gestionIcfes.model.Usuario;
 public interface UsuarioRepositorio extends JpaRepository<Usuario, Long> {
 
 	public Usuario findByUsername(String nombre);
+	public Long countByRoles_Nombre(String nombre);
 }
