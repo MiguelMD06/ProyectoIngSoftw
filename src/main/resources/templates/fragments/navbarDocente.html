@@ -1,6 +1,5 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
   </head>
@@ -9,41 +8,26 @@
       <div class="container-fluid px-4">
 
         <!-- BRAND -->
-        <a class="nav-admin-brand navbar-brand" th:href="@{/admin/pAdmin}">
+        <a class="nav-admin-brand navbar-brand" th:href="@{/docente/pDocente}">
           <div class="nav-admin-brand-icon">GE</div>
           <span class="nav-admin-brand-name">Gestión Escolar</span>
         </a>
 
         <!-- TOGGLER MOBILE -->
         <button class="nav-admin-toggler navbar-toggler" type="button"
-                data-bs-toggle="collapse" data-bs-target="#navAdminCollapse"
-                aria-controls="navAdminCollapse" aria-expanded="false">
+                data-bs-toggle="collapse" data-bs-target="#navDocCollapse"
+                aria-controls="navDocCollapse" aria-expanded="false">
           <i class="bi bi-list text-white fs-4"></i>
         </button>
 
         <!-- LINKS + USUARIO -->
-        <div class="collapse navbar-collapse" id="navAdminCollapse">
+        <div class="collapse navbar-collapse" id="navDocCollapse">
 
           <!-- LINKS -->
           <ul class="navbar-nav nav-admin-links me-auto ms-3">
             <li class="nav-item">
-              <a class="nav-admin-link" th:href="@{/admin/AdminEstudiante}">
-                <i class="bi bi-people"></i>Estudiantes
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-admin-link" th:href="@{/admin/AdminDocente}">
-                <i class="bi bi-person-badge"></i>Docentes
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-admin-link" th:href="@{/admin/AdminAsistencia}">
-                <i class="bi bi-calendar-check"></i>Asistencia
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-admin-link" th:href="@{/admin/AdminSimulacro}">
-                <i class="bi bi-file-earmark-text"></i>Simulacros
+              <a class="nav-admin-link" th:href="@{/docente/pDocente}">
+                <i class="bi bi-house"></i>Inicio
               </a>
             </li>
           </ul>
@@ -55,7 +39,7 @@
                 <i class="bi bi-person-fill"></i>
               </div>
               <span class="nav-admin-username"
-                    sec:authentication="principal.username"></span>
+                    th:text="${docente.primerNombre + ' ' + docente.primerApellido}"></span>
             </div>
             <form th:action="@{/logout}" method="post" class="m-0">
               <button type="submit" class="nav-admin-logout">

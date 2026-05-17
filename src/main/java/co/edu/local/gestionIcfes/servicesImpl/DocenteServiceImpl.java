@@ -65,6 +65,12 @@ public class DocenteServiceImpl implements DocenteService{
 	    }
 	    
 	    @Override
+	    public Docente buscarPorUsername(String username) {
+	        return docenteRepository.findByUsuarioUsername(username)
+	                .orElseThrow(() -> new RuntimeException("Docente no encontrado"));
+	    }
+
+	    @Override
 		public PersonaDTO convertirDocentePersona(Docente docente) {
 			PersonaDTO persona = new PersonaDTO();
 			persona.setDocumentoIdentidad(docente.getDocumentoIdentidad());

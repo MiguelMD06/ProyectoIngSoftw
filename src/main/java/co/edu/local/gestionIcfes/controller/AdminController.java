@@ -1,9 +1,17 @@
 package co.edu.local.gestionIcfes.controller;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -17,12 +25,19 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.edu.local.gestionIcfes.dto.PersonaDTO;
+import co.edu.local.gestionIcfes.enums.EstadoAsistencia;
 import co.edu.local.gestionIcfes.enums.TipoIdentificacion;
+import co.edu.local.gestionIcfes.model.Asistencia;
 import co.edu.local.gestionIcfes.model.Docente;
+import co.edu.local.gestionIcfes.model.Estudiante;
 import co.edu.local.gestionIcfes.model.Institucion;
 import co.edu.local.gestionIcfes.model.ResultadoSimulacro;
 import co.edu.local.gestionIcfes.model.Simulacro;
+import co.edu.local.gestionIcfes.model.Usuario;
+import co.edu.local.gestionIcfes.repository.EstudianteRepositorio;
 import co.edu.local.gestionIcfes.repository.ResultadoSimulacroRepositorio;
+import co.edu.local.gestionIcfes.repository.UsuarioRepositorio;
+import co.edu.local.gestionIcfes.services.AsistenciaService;
 import co.edu.local.gestionIcfes.services.DocenteService;
 import co.edu.local.gestionIcfes.services.EstudianteService;
 import co.edu.local.gestionIcfes.services.InstitucionService;
@@ -58,6 +73,15 @@ public class AdminController {
 
 	@Autowired
 	private LogService logService;
+
+	@Autowired
+	private AsistenciaService asistenciaService;
+
+	@Autowired
+	private UsuarioRepositorio usuarioRepositorio;
+
+	@Autowired
+	private EstudianteRepositorio estudianteRepositorio;
 
 
 
@@ -188,6 +212,51 @@ public class AdminController {
 		
 	    
 	    
+	    @GetMapping("/AdminAsistencia")
+	    public String mostrarAsistencia(
+	            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
+	            Model model, Authentication authentication) {
+
+	        final LocalDate fechaBusqueda = (fecha != null) ? fecha : LocalDate.now();
+
+	        Usuario admin = usuarioRepositorio.findByUsername(authentication.getName());
+	        List<Estudiante> estudiantes = new ArrayList<>();
+	        if (admin != null && admin.getInstitucion() != null) {
+	            estudiantes = estudianteRepositorio.findByInstitucionId(admin.getInstitucion().getId());
+	        }
+
+	        Map<String, EstadoAsistencia> estadosPorDoc = new HashMap<>();
+	        for (Estudiante est : estudiantes) {
+	            asistenciaService.listarPorEstudiante(est.getDocumentoIdentidad()).stream()
+	                    .filter(a -> a.getFecha().equals(fechaBusqueda))
+	                    .findFirst()
+	                    .ifPresent(a -> estadosPorDoc.put(est.getDocumentoIdentidad(), a.getEstado()));
+	        }
+
+	        model.addAttribute("fecha", fechaBusqueda);
+	        model.addAttribute("estudiantes", estudiantes);
+	        model.addAttribute("estadosPorDoc", estadosPorDoc);
+	        model.addAttribute("estadosDisponibles", EstadoAsistencia.values());
+	        return "admin/AdminAsistencia";
+	    }
+
+	    @PostMapping("/registrarAsistencias")
+	    public String registrarAsistencias(
+	            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
+	            @RequestParam(required = false) List<String> documentos,
+	            @RequestParam(required = false) List<String> estados,
+	            RedirectAttributes redirectAttributes) {
+
+	        if (documentos != null && estados != null) {
+	            List<EstadoAsistencia> estadosEnum = estados.stream()
+	                    .map(EstadoAsistencia::valueOf)
+	                    .toList();
+	            asistenciaService.registrarOActualizar(fecha, documentos, estadosEnum);
+	        }
+	        redirectAttributes.addFlashAttribute("exitoAsistencia", "Asistencias registradas correctamente.");
+	        return "redirect:/admin/AdminAsistencia?fecha=" + fecha;
+	    }
+
 	    @GetMapping("/AdminDocente")
 	    public String mostrarDocentes(Model model) {
 	        model.addAttribute("docentes", docenteService.listarDocentes());

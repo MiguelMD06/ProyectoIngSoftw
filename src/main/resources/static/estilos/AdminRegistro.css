@@ -9,7 +9,7 @@ body {
 }
 
 .register-card {
-  width: 500px;
+  width: min(780px, 96%);
   border-radius: 15px;
   overflow: hidden;
   background: #fff;

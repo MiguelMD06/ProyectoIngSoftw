@@ -1,6 +1,7 @@
 package co.edu.local.gestionIcfes.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,4 +16,7 @@ public interface EstudianteRepositorio extends JpaRepository<Estudiante, String>
 		    LEFT JOIN FETCH e.resultados
 		""")
 		List<Estudiante> listarEstudiantesConResultados();
+
+	Optional<Estudiante> findByUsuarioUsername(String username);
+	List<Estudiante> findByInstitucionId(Long institucionId);
 }

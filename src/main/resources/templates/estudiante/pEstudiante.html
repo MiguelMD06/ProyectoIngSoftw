@@ -1,18 +1,15 @@
 <!doctype html>
 
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Panel Estudiante</title>
 
-    <!-- Bootstrap -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-
-    <!-- Icons -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
@@ -21,124 +18,126 @@
   </head>
 
   <body>
-    <!-- NAVBAR -->
+    <div th:replace="~{fragments/navbarEstudiante :: navbar}"></div>
 
-    <nav class="navbar navbar-expand-lg navbar-custom px-4">
-      <a class="navbar-brand fw-bold" href="#">Gestión Escolar</a>
-
-      <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ms-4">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Mis Simulacros</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Mis Materias</a>
-          </li>
-        </ul>
-      </div>
-
-      <div class="d-flex align-items-center gap-3">
-        <span class="text-white">Laura G</span>
-        <button class="btn btn-logout text-white">Cerrar sesión</button>
-      </div>
-    </nav>
-
-    <!-- HEADER -->
-
-    <div class="header container">
-      <h2>Bienvenida, Laura González</h2>
-      <p class="text-muted">
-        Consulta tu progreso académico, simulacros y asistencia.
-      </p>
-
-      <div class="info-bar mt-3">
-        <span>📘 Salón: 11-B</span>
-        <span>👨‍🏫 Director: Prof. Ramírez</span>
-        <span>⏰ Jornada: Mañana</span>
-        <span>📍 Sede: Principal</span>
+    <!-- HERO -->
+    <div class="hero-section">
+      <div class="container">
+        <div class="d-flex align-items-center gap-3 mb-2">
+          <div class="avatar-circle">
+            <i class="bi bi-person-fill fs-3 text-white"></i>
+          </div>
+          <div>
+            <h2 class="mb-0 fw-bold"
+                th:text="${estudiante.primerNombre + ' ' + estudiante.primerApellido}">
+              Estudiante
+            </h2>
+            <span class="text-blue-light">Estudiante activo</span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- CONTENIDO -->
-
-    <div class="container">
+    <!-- INFO CARDS -->
+    <div class="container mt-4">
       <div class="row g-4">
-        <!-- ASISTENCIA -->
-        <div class="col-md-6">
-          <div class="card-custom">
-            <h5>Mi Asistencia</h5>
-            <p class="text-muted">Resumen del periodo</p>
 
-            <div class="attendance-good mb-2">Asistencias: 42</div>
-            <div class="attendance-bad mb-2">Faltas: 3</div>
-            <div class="attendance-warning mb-3">Tardanzas: 2</div>
-
-            <button class="btn btn-main text-white w-100">
-              Ver asistencia completa
-            </button>
+        <!-- INSTITUCIÓN -->
+        <div class="col-md-4">
+          <div class="info-card">
+            <div class="info-icon bg-primary-light">
+              <i class="bi bi-building text-primary fs-4"></i>
+            </div>
+            <div class="info-body">
+              <span class="info-label">Institución</span>
+              <span class="info-value" th:text="${institucionNombre}">—</span>
+            </div>
           </div>
         </div>
 
-        <!-- SIMULACROS -->
-        <div class="col-md-6">
-          <div class="card-custom">
-            <h5>Simulacros Disponibles</h5>
-
-            <ul class="list-group list-group-flush mt-3">
-              <li class="list-group-item">Simulacro #1 - Marzo 2026</li>
-              <li class="list-group-item">Simulacro #2 - Febrero 2026</li>
-              <li class="list-group-item">Simulacro #3 - Enero 2026</li>
-            </ul>
-
-            <button class="btn btn-outline-main mt-3 w-100">Ver todos</button>
+        <!-- SALÓN -->
+        <div class="col-md-4">
+          <div class="info-card">
+            <div class="info-icon bg-success-light">
+              <i class="bi bi-door-open text-success fs-4"></i>
+            </div>
+            <div class="info-body">
+              <span class="info-label">Salón</span>
+              <span class="info-value" th:text="${salon}">—</span>
+            </div>
           </div>
         </div>
 
-        <!-- PROXIMO -->
-        <div class="col-md-6">
-          <div class="card-custom">
-            <h5>Próximo Simulacro</h5>
-            <h4 class="mt-2">15 de Mayo, 2026</h4>
-            <p class="text-muted">Simulacro General ICFES #4</p>
-
-            <div class="progress mb-2">
-              <div class="progress-bar" style="width: 65%"></div>
+        <!-- ADMIN -->
+        <div class="col-md-4">
+          <div class="info-card">
+            <div class="info-icon bg-warning-light">
+              <i class="bi bi-person-badge text-warning fs-4"></i>
             </div>
-            <small>Progreso del curso: 65%</small>
-
-            <button class="btn btn-main text-white mt-3 w-100">
-              Ver temario
-            </button>
+            <div class="info-body">
+              <span class="info-label">Administrador</span>
+              <span class="info-value" th:text="${adminNombre}">—</span>
+            </div>
           </div>
         </div>
 
-        <!-- PROMEDIOS -->
-        <div class="col-md-6">
-          <div class="card-custom">
-            <h5>Promedios por Materia</h5>
+      </div>
 
-            <p>Matemáticas</p>
-            <div class="progress mb-2">
-              <div class="progress-bar" style="width: 80%"></div>
+      <!-- PROGRESO DEL CURSO -->
+      <div class="row g-4 mt-2">
+        <div class="col-12">
+          <div class="info-card flex-column align-items-start gap-2">
+            <div class="d-flex justify-content-between w-100 align-items-center">
+              <span class="info-label">Progreso del curso</span>
+              <span class="info-value" th:text="${progresoCurso} + '%'">0%</span>
             </div>
-
-            <p>Lectura</p>
-            <div class="progress mb-2">
-              <div class="progress-bar" style="width: 90%"></div>
+            <div class="progress w-100" style="height: 12px; border-radius: 8px;">
+              <div class="progress-bar bg-primary"
+                   role="progressbar"
+                   th:style="'width: ' + ${progresoCurso} + '%'"
+                   th:attr="aria-valuenow=${progresoCurso}"
+                   aria-valuemin="0" aria-valuemax="100">
+              </div>
             </div>
-
-            <p>Ciencias</p>
-            <div class="progress mb-2">
-              <div class="progress-bar" style="width: 75%"></div>
-            </div>
-
-            <p>Inglés</p>
-            <div class="progress">
-              <div class="progress-bar" style="width: 85%"></div>
-            </div>
+            <small class="text-muted"
+                   th:text="${diasRestantes == 0 ? 'Curso finalizado' : diasRestantes + ' días restantes para finalizar el curso'}">
+            </small>
           </div>
         </div>
       </div>
+
+      <!-- ACCESOS RÁPIDOS -->
+      <div class="row g-4 mt-2 mb-4">
+        <div class="col-md-6">
+          <div class="quick-card d-flex align-items-center gap-3">
+            <div class="info-icon bg-primary-light">
+              <i class="bi bi-file-earmark-text text-primary fs-4"></i>
+            </div>
+            <div class="flex-grow-1">
+              <span class="info-label">Simulacros</span>
+              <p class="mb-0 info-value">Ver mis resultados</p>
+            </div>
+            <a th:href="@{/estudiante/simulacrosEstudiante}" class="btn btn-main text-white">
+              Ver
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="quick-card d-flex align-items-center gap-3">
+            <div class="info-icon bg-success-light">
+              <i class="bi bi-calendar-check text-success fs-4"></i>
+            </div>
+            <div class="flex-grow-1">
+              <span class="info-label">Asistencia</span>
+              <p class="mb-0 info-value">Ver mi registro</p>
+            </div>
+            <a th:href="@{/estudiante/asistenciasEstudiante}" class="btn btn-main text-white">
+              Ver
+            </a>
+          </div>
+        </div>
+      </div>
+
     </div>
   </body>
 </html>

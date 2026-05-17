@@ -56,44 +56,50 @@
 
     <!-- FILTROS DINÁMICOS -->
     <div class="container mb-4">
-      <!-- SELECT INSTITUCION -->
-      <div class="mb-3">
-        <label for="institucionSelect" class="form-label">Institución</label>
-        <select
-          id="institucionSelect"
-          class="form-select"
-          th:if="${instituciones != null and !instituciones.isEmpty()}"
-        >
+
+      <!-- PASO 1: INSTITUCIÓN -->
+      <div class="mb-3" th:if="${instituciones != null and !instituciones.isEmpty()}">
+        <label for="institucionSelect" class="form-label fw-semibold">
+          <i class="bi bi-building me-1 text-primary"></i>Institución
+        </label>
+        <select id="institucionSelect" class="form-select">
+          <option value="">— Seleccione una institución —</option>
           <option
             th:each="inst : ${instituciones}"
             th:value="${inst.id}"
             th:text="${inst.nombre}"
           ></option>
         </select>
-
-        <!-- MENSAJE SI NO HAY INSTITUCIONES -->
-        <div
-          th:if="${instituciones == null or instituciones.isEmpty()}"
-          class="alert alert-info mt-3"
-        >
-          No hay instituciones registradas.
-          <button
-            class="btn btn-create ms-2"
-            data-bs-toggle="modal"
-            data-bs-target="#modalInstitucion"
-          >
-            Registrar Institución
-          </button>
-        </div>
       </div>
 
-      <!-- SELECT SALON -->
-      <div class="mb-3">
-        <label for="salonSelect" class="form-label">Salón</label>
+      <!-- SIN INSTITUCIONES -->
+      <div th:if="${instituciones == null or instituciones.isEmpty()}"
+           class="alert alert-info mt-3">
+        No hay instituciones registradas.
+        <button class="btn btn-create ms-2"
+                data-bs-toggle="modal" data-bs-target="#modalInstitucion">
+          Registrar Institución
+        </button>
+      </div>
+
+      <!-- PASO 2: SALÓN (oculto hasta elegir institución) -->
+      <div class="mb-3 d-none" id="filtroSalon">
+        <label for="salonSelect" class="form-label fw-semibold">
+          <i class="bi bi-door-open me-1 text-success"></i>Salón
+        </label>
         <select id="salonSelect" class="form-select">
+          <option value="">— Seleccione un salón —</option>
           <option value="1">Salón 1</option>
           <option value="2">Salón 2</option>
         </select>
+      </div>
+    </div>
+
+    <!-- MENSAJE GUÍA (visible hasta completar los dos selects) -->
+    <div class="container mb-4" id="filtroHint">
+      <div class="table-card text-center py-5 text-muted">
+        <i class="bi bi-funnel fs-1"></i>
+        <p class="mt-3 mb-0" id="filtroHintMsg">Selecciona una institución para ver los estudiantes.</p>
       </div>
     </div>
 
@@ -129,7 +135,7 @@
     </div>
 
     <!-- TABLA ESTUDIANTES -->
-    <div class="container mb-5">
+    <div class="container mb-5" id="tablaContainer" style="display:none">
       <div class="table-card">
         <div
           class="table-responsive"
@@ -154,7 +160,9 @@
               </tr>
             </thead>
             <tbody>
-              <tr th:each="est, iterStat : ${estudiantes}">
+              <tr th:each="est, iterStat : ${estudiantes}"
+                  th:attr="data-institucion=${est.institucion != null ? est.institucion.id : ''},
+                           data-salon=${est.usuario != null ? est.usuario.salon : ''}">
                 <td th:text="${iterStat.index + 1}"></td>
                 <td th:text="${est.documentoIdentidad}"></td>
                 <td th:text="${est.tipoIdentificacion}"></td>
@@ -174,56 +182,66 @@
                   th:text="${est.usuario != null ? est.usuario.salon : 'Sin salón'}"
                 ></td>
                 <td>
-  <div class="action-buttons">
-    
-    <!-- Editar -->
-    <a
-      th:href="@{/admin/AdminEstudiante/modificar/} + ${est.documentoIdentidad}"
-      class="btn btn-action btn-edit"
-      title="Editar estudiante"
-    >
-      <i class="bi bi-pencil-square"></i>
-      <span>Editar</span>
-    </a>
-
-    <!-- Eliminar -->
-    <a
-      th:href="@{/admin/AdminEstudiante/} + ${est.documentoIdentidad}"
-      class="btn btn-action btn-delete"
-      title="Eliminar estudiante"
-      onclick="return confirm('¿Estás seguro de eliminar este estudiante?');"
-    >
-      <i class="bi bi-trash3"></i>
-      <span>Eliminar</span>
-    </a>
-
-    <!-- Subir PDF -->
-    <button
-      type="button"
-      class="btn btn-action btn-upload"
-      data-bs-toggle="modal"
-      th:data-bs-target="'#uploadModal-' + ${est.documentoIdentidad}"
-      title="Subir documento"
-    >
-      <i class="bi bi-cloud-upload"></i>
-      <span>PDF</span>
-    </button>
-<div
-                    th:if="${not #lists.isEmpty(est.resultados)}"
-                    th:each="res : ${est.resultados}"
-                  >
-                    <a
-                      th:href="@{/admin/descargarResultado/{id}(id=${res.id})}"
-                      class="btn btn-primary btn-sm mt-1 d-block"
+                  <div class="dropdown">
+                    <button
+                      class="btn btn-action btn-acciones dropdown-toggle"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
                     >
-                      <i class="bi bi-download"></i>
-                      <span th:text="${res.simulacro.titulo}"
-                        >Descargar PDF</span
-                      >
-                    </a>
+                      <i class="bi bi-grid-3x3-gap-fill"></i>
+                      <span>Acciones</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow">
+
+                      <!-- Editar -->
+                      <li>
+                        <a class="dropdown-item"
+                           th:href="@{/admin/AdminEstudiante/modificar/} + ${est.documentoIdentidad}">
+                          <i class="bi bi-pencil-square text-primary me-2"></i>Editar
+                        </a>
+                      </li>
+
+                      <!-- Subir PDF -->
+                      <li>
+                        <button class="dropdown-item"
+                                type="button"
+                                data-bs-toggle="modal"
+                                th:data-bs-target="'#uploadModal-' + ${est.documentoIdentidad}">
+                          <i class="bi bi-cloud-upload text-purple me-2"></i>Subir PDF
+                        </button>
+                      </li>
+
+                      <!-- Descargas (si existen) -->
+                      <li th:if="${not #lists.isEmpty(est.resultados)}">
+                        <hr class="dropdown-divider" />
+                      </li>
+                      <li th:each="res : ${est.resultados}">
+                        <a class="dropdown-item"
+                           th:href="@{/admin/descargarResultado/{id}(id=${res.id})}">
+                          <i class="bi bi-download text-success me-2"></i>
+                          <span th:text="${res.simulacro.titulo}">Descargar</span>
+                        </a>
+                      </li>
+
+                      <!-- Eliminar -->
+                      <li><hr class="dropdown-divider" /></li>
+                      <li>
+                        <a class="dropdown-item text-danger"
+                           th:href="@{/admin/AdminEstudiante/} + ${est.documentoIdentidad}"
+                           onclick="return confirm('¿Estás seguro de eliminar este estudiante?');">
+                          <i class="bi bi-trash3 me-2"></i>Eliminar
+                        </a>
+                      </li>
+
+                    </ul>
                   </div>
-  </div>
-</td>
+                </td>
+              </tr>
+              <tr id="sinResultadosRow" style="display:none">
+                <td colspan="13" class="text-center text-muted py-4">
+                  <i class="bi bi-search me-2"></i>No hay estudiantes en este salón.
+                </td>
               </tr>
             </tbody>
           </table>
@@ -370,5 +388,56 @@
         </div>
       </div>
     </div>
+  <script>
+    const instSelect   = document.getElementById('institucionSelect');
+    const filtroSalon  = document.getElementById('filtroSalon');
+    const salonSelect  = document.getElementById('salonSelect');
+    const tablaContainer = document.getElementById('tablaContainer');
+    const hint         = document.getElementById('filtroHint');
+    const hintMsg      = document.getElementById('filtroHintMsg');
+    const sinResultados = document.getElementById('sinResultadosRow');
+    const filas        = document.querySelectorAll('#tablaContainer tbody tr:not(#sinResultadosRow)');
+
+    if (instSelect) {
+      instSelect.addEventListener('change', function () {
+        const instId = this.value;
+
+        // Resetear salón
+        salonSelect.value = '';
+        filtroSalon.classList.toggle('d-none', !instId);
+        tablaContainer.style.display = 'none';
+
+        if (instId) {
+          hint.style.display  = 'block';
+          hintMsg.textContent = 'Ahora selecciona el salón.';
+        } else {
+          hint.style.display  = 'block';
+          hintMsg.textContent = 'Selecciona una institución para ver los estudiantes.';
+        }
+      });
+
+      salonSelect.addEventListener('change', function () {
+        const instId = instSelect.value;
+        const salon  = this.value;
+
+        if (!instId || !salon) return;
+
+        // Mostrar tabla, ocultar hint
+        tablaContainer.style.display = 'block';
+        hint.style.display = 'none';
+
+        // Filtrar filas
+        let visibles = 0;
+        filas.forEach(function (fila) {
+          const coincide = fila.dataset.institucion === instId
+                        && fila.dataset.salon === salon;
+          fila.style.display = coincide ? '' : 'none';
+          if (coincide) visibles++;
+        });
+
+        sinResultados.style.display = visibles === 0 ? '' : 'none';
+      });
+    }
+  </script>
   </body>
 </html>

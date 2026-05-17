@@ -65,15 +65,18 @@ public class UsuarioServicesImpl implements UsuarioServices {
 
 	@Override
 	public Usuario crearAdmin(UsuarioDTO usuarioDTO) {
+		Institucion institucion = usuarioDTO.getInstitucionId() != null
+				? institucionServicio.buscarPorId(usuarioDTO.getInstitucionId())
+				: null;
 		Usuario usuario = new Usuario(usuarioDTO.getUsername(), passwordEncoder.encode(usuarioDTO.getPassword()), true,
-				Arrays.asList(rolServicio.encontrarRol("ROLE_ADMIN")));
+				institucion, null, Arrays.asList(rolServicio.encontrarRol("ROLE_ADMIN")));
 		return usuarioRepository.save(usuario);
 	}
 
 	@Override
 	public Estudiante crearEstudiante(PersonaDTO personaDTO) {
 		String nombreUsuario = personaDTO.getPrimerNombre() + personaDTO.getPrimerApellido().substring(0, 3)
-				+ personaDTO.getSegundoApellido().substring(0, 2) + (obtenerIdMasAlto(usuarioRepository.findAll()) + 1);
+				+ (obtenerIdMasAlto(usuarioRepository.findAll()) + 1);
 		Usuario usuario = new Usuario(nombreUsuario, passwordEncoder.encode(personaDTO.getDocumentoIdentidad()), true,
 				institucionServicio.buscarPorId(personaDTO.getInstitucion()), personaDTO.getSalon(),
 				Arrays.asList(rolServicio.encontrarRol(personaDTO.getRol())));
@@ -104,7 +107,7 @@ public class UsuarioServicesImpl implements UsuarioServices {
 	@Override
 	public Docente crearDocente(PersonaDTO personaDTO) {
 		String nombreUsuario = personaDTO.getPrimerNombre() + personaDTO.getPrimerApellido().substring(0, 3)
-				+ personaDTO.getSegundoApellido().substring(0, 2) + (obtenerIdMasAlto(usuarioRepository.findAll()) + 1);
+				+ (obtenerIdMasAlto(usuarioRepository.findAll()) + 1);
 		Usuario usuario = new Usuario(nombreUsuario, passwordEncoder.encode(personaDTO.getDocumentoIdentidad()), true,
 				institucionServicio.buscarPorId(personaDTO.getInstitucion()), personaDTO.getSalon(),
 				Arrays.asList(rolServicio.encontrarRol(personaDTO.getRol())));
