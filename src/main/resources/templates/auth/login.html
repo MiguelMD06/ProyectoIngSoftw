@@ -30,6 +30,14 @@
         <p>Ingrese sus credenciales para acceder</p>
 
 	<form th:action="@{/login}" method="post">
+
+        <div th:if="${param.error}"
+             class="alert alert-danger d-flex align-items-center gap-2 py-2 mb-3"
+             role="alert">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+          <span>Usuario o contraseña incorrectos. Inténtalo de nuevo.</span>
+        </div>
+
         <div class="mb-3 input-group">
           <span class="input-group-text"><i class="bi bi-person"></i></span>
           <input type="text" class="form-control" name="username" id="username" placeholder="John Doe" />
