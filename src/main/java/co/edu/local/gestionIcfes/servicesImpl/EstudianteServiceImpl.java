@@ -30,6 +30,12 @@ public class EstudianteServiceImpl implements EstudianteService{
 	public Estudiante buscarEstudiante(String documentoIdentidad) {
 		return estudianteRepository.findById(documentoIdentidad).get();
 	}
+
+	@Override
+	public Estudiante buscarPorUsername(String username) {
+		return estudianteRepository.findByUsuarioUsername(username)
+				.orElseThrow(() -> new RuntimeException("Estudiante no encontrado para el usuario: " + username));
+	}
 	
 	@Override
 	public void eliminarEstudiante(String documentoIdentidad) {

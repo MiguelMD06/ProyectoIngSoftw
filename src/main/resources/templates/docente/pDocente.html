@@ -1,6 +1,5 @@
 <!doctype html>
-
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,170 +10,194 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-
     <!-- Icons -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
     />
     <link rel="stylesheet" th:href="@{/estilos/pDocente.css}" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   </head>
 
   <body>
     <!-- NAVBAR -->
+    <div th:replace="~{fragments/navbarDocente :: navbar}"></div>
 
-    <nav class="navbar navbar-expand-lg navbar-custom px-4">
-      <a class="navbar-brand fw-bold" href="#">Gestión Escolar</a>
-
-      <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ms-4">
-          <li class="nav-item"><a class="nav-link" href="#">Mis Cursos</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Asistencia</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Simulacros</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Reportes</a></li>
-        </ul>
-      </div>
-
-      <div class="d-flex align-items-center gap-3">
-        <span class="text-white">Prof. Santi</span>
-        <button class="btn btn-logout text-white">Cerrar sesión</button>
-      </div>
-    </nav>
-
-    <!-- HEADER -->
-
-    <div class="header container">
-      <h2>Bienvenido, Prof. SantiPrompt</h2>
-      <p class="text-muted">
-        Gestiona tu curso, registra asistencia y sube resultados.
-      </p>
-
-      <div class="info-bar mt-3">
-        <span>🏫 Colegio Caguan</span>
-        <span>📘 Curso: 11-B</span>
-        <span>👥 32 estudiantes</span>
-        <span>⏰ Jornada: Mañana</span>
-        <span>📍 Sede: Principal</span>
-      </div>
-    </div>
-
-    <!-- CONTENIDO -->
-
-    <div class="container">
-      <div class="row g-4">
-        <!-- ASISTENCIA -->
-        <div class="col-md-4">
-          <div class="card-custom">
-            <h5>Registrar Asistencia</h5>
-            <p class="text-muted">Hoy: Miércoles 30 Abr 2026</p>
-
-            <div class="badge-green mb-2">Presentes: 28</div>
-            <div class="badge-red mb-2">Ausentes: 3</div>
-            <div class="badge-yellow mb-3">Tardanzas: 1</div>
-
-            <button class="btn btn-main text-white w-100 mb-2">
-              Registrar Asistencia de Hoy
-            </button>
-
-            <button class="btn btn-outline-main w-100">Ver Historial</button>
+    <!-- HERO -->
+    <div class="hero-section">
+      <div class="container">
+        <div class="d-flex align-items-center gap-3">
+          <div class="avatar-circle">
+            <i class="bi bi-person-workspace fs-3 text-white"></i>
           </div>
-        </div>
-
-        <!-- PROMEDIOS -->
-        <div class="col-md-8">
-          <div class="card-custom">
-            <h5>Promedios por Materia</h5>
-
-            <p>Matemáticas</p>
-            <div class="progress mb-2">
-              <div class="progress-bar bg-success" style="width: 75%"></div>
-            </div>
-
-            <p>Lectura Crítica</p>
-            <div class="progress mb-2">
-              <div class="progress-bar bg-success" style="width: 85%"></div>
-            </div>
-
-            <p>Ciencias</p>
-            <div class="progress mb-2">
-              <div class="progress-bar bg-success" style="width: 78%"></div>
-            </div>
-
-            <p>Sociales</p>
-            <div class="progress mb-2">
-              <div class="progress-bar bg-success" style="width: 82%"></div>
-            </div>
-
-            <p>Inglés</p>
-            <div class="progress">
-              <div class="progress-bar bg-success" style="width: 90%"></div>
-            </div>
-
-            <button class="btn btn-outline-main w-100 mt-3">
-              Ver Reporte Completo
-            </button>
-          </div>
-        </div>
-
-        <!-- DESEMPEÑO -->
-        <div class="col-md-8">
-          <div class="card-custom">
-            <h5>Desempeño General del Curso</h5>
-
-            <div class="row text-center mt-3">
-              <div class="col">
-                <div class="p-2 bg-light rounded">
-                  <strong>72%</strong><br />
-                  Promedio General
-                </div>
-              </div>
-              <div class="col">
-                <div class="p-2 bg-success-subtle rounded">
-                  <strong>8</strong><br />
-                  Destacados
-                </div>
-              </div>
-              <div class="col">
-                <div class="p-2 bg-warning-subtle rounded">
-                  <strong>5</strong><br />
-                  En riesgo
-                </div>
-              </div>
-            </div>
-
-            <div class="mt-4">
-              <small>Progreso hacia meta (80%)</small>
-              <div class="progress">
-                <div class="progress-bar" style="width: 72%"></div>
-              </div>
-            </div>
-
-            <button class="btn btn-main text-white mt-3">
-              Ver informe detallado
-            </button>
-          </div>
-        </div>
-
-        <!-- SIMULACRO -->
-        <div class="col-md-4">
-          <div class="card-custom">
-            <h5>Próximo Simulacro</h5>
-
-            <h4 class="mt-2">15 Mayo 2026</h4>
-            <p class="text-muted">Simulacro General ICFES #4</p>
-
-            <div class="progress mb-2">
-              <div class="progress-bar" style="width: 65%"></div>
-            </div>
-
-            <button class="btn btn-main text-white w-100 mb-2">
-              Ver Temario
-            </button>
-
-            <button class="btn btn-outline-main w-100">Subir Resultados</button>
+          <div>
+            <h4 class="mb-0 fw-bold"
+                th:text="'Bienvenido, ' + ${docente.primerNombre} + ' ' + ${docente.primerApellido}"></h4>
+            <span class="text-blue-light"
+                  th:text="${docente.especialidad != null and !#strings.isEmpty(docente.especialidad) ? docente.especialidad : 'Docente'}"></span>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- INFO CARDS -->
+    <div class="container mt-4">
+      <div class="row g-3">
+
+        <!-- Institución -->
+        <div class="col-md-4">
+          <div class="info-card">
+            <div class="info-icon bg-primary-light">
+              <i class="bi bi-building fs-4 text-primary"></i>
+            </div>
+            <div class="info-body">
+              <span class="info-label">Institución</span>
+              <span class="info-value" th:text="${institucionNombre}"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Salón -->
+        <div class="col-md-4">
+          <div class="info-card">
+            <div class="info-icon bg-success-light">
+              <i class="bi bi-door-open fs-4 text-success"></i>
+            </div>
+            <div class="info-body">
+              <span class="info-label">Mi Salón</span>
+              <span class="info-value" th:text="${salon}"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estudiantes -->
+        <div class="col-md-4">
+          <div class="info-card">
+            <div class="info-icon bg-warning-light">
+              <i class="bi bi-people fs-4 text-warning"></i>
+            </div>
+            <div class="info-body">
+              <span class="info-label">Estudiantes en mi salón</span>
+              <span class="info-value" th:text="${totalEstudiantes}"></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PROGRESO + ASISTENCIA HOY -->
+    <div class="container mt-4">
+      <div class="row g-3">
+
+        <!-- Progreso del curso -->
+        <div class="col-md-8">
+          <div class="quick-card">
+            <h6 class="fw-semibold mb-3">
+              <i class="bi bi-bar-chart-line me-2 text-primary"></i>Progreso del Curso
+            </h6>
+            <div class="progress mb-2" style="height: 14px; border-radius: 8px;">
+              <div class="progress-bar bg-primary"
+                   role="progressbar"
+                   th:style="'width: ' + ${progresoCurso} + '%'"
+                   th:attr="aria-valuenow=${progresoCurso}"
+                   aria-valuemin="0"
+                   aria-valuemax="100"
+                   style="border-radius: 8px;"></div>
+            </div>
+            <div class="d-flex justify-content-between">
+              <small class="text-muted" th:text="${progresoCurso} + '% completado'"></small>
+              <small class="text-muted" th:text="${diasRestantes} + ' días restantes'"></small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Asistencia hoy -->
+        <div class="col-md-4">
+          <div class="quick-card h-100">
+            <h6 class="fw-semibold mb-3">
+              <i class="bi bi-calendar-check me-2 text-success"></i>Asistencia Hoy
+            </h6>
+            <div class="d-flex flex-column gap-2">
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill">Presentes</span>
+                <strong th:text="${presentesHoy}"></strong>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="badge bg-danger-subtle text-danger px-3 py-2 rounded-pill">Ausentes</span>
+                <strong th:text="${ausentesHoy}"></strong>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="badge bg-warning-subtle text-warning px-3 py-2 rounded-pill">Tardanzas</span>
+                <strong th:text="${tardesHoy}"></strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ACCESO RÁPIDO -->
+    <div class="container mt-4 mb-5">
+      <div class="row g-3">
+
+        <!-- Especialidad -->
+        <div class="col-md-6">
+          <div class="simulacro-card">
+            <div class="simulacro-icon">
+              <i class="bi bi-person-badge fs-1 text-primary"></i>
+            </div>
+            <div class="simulacro-info">
+              <h6 class="fw-bold">Mi Perfil</h6>
+              <p class="text-muted small mb-1">
+                <span class="fw-semibold">Documento:</span>
+                <span th:text="${docente.documentoIdentidad}"></span>
+              </p>
+              <p class="text-muted small mb-1">
+                <span class="fw-semibold">Celular:</span>
+                <span th:text="${docente.celular}"></span>
+              </p>
+              <p class="text-muted small mb-3">
+                <span class="fw-semibold">Especialidad:</span>
+                <span th:text="${docente.especialidad != null and !#strings.isEmpty(docente.especialidad) ? docente.especialidad : 'No registrada'}"></span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resumen asistencia -->
+        <div class="col-md-6">
+          <div class="simulacro-card">
+            <div class="simulacro-icon">
+              <i class="bi bi-clipboard-data fs-1 text-success"></i>
+            </div>
+            <div class="simulacro-info">
+              <h6 class="fw-bold">Resumen de hoy</h6>
+              <p class="text-muted small mb-3">
+                De <strong th:text="${totalEstudiantes}"></strong> estudiantes en tu salón,
+                <strong th:text="${presentesHoy}"></strong> están presentes hoy.
+              </p>
+            </div>
+            <div class="d-flex gap-2 w-100">
+              <span class="flex-fill text-center py-2 rounded-3 bg-success-subtle">
+                <div class="fw-bold text-success fs-5" th:text="${presentesHoy}"></div>
+                <small class="text-success">Presentes</small>
+              </span>
+              <span class="flex-fill text-center py-2 rounded-3 bg-danger-subtle">
+                <div class="fw-bold text-danger fs-5" th:text="${ausentesHoy}"></div>
+                <small class="text-danger">Ausentes</small>
+              </span>
+              <span class="flex-fill text-center py-2 rounded-3 bg-warning-subtle">
+                <div class="fw-bold text-warning fs-5" th:text="${tardesHoy}"></div>
+                <small class="text-warning">Tardanzas</small>
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </body>
 </html>

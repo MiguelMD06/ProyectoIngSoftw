@@ -13,4 +13,5 @@ public interface DocenteService {
 	    public Docente actualizarDocente(PersonaDTO personaDTO);
 	    public void eliminarDocente(String documentoIdentidad);
 	    public PersonaDTO convertirDocentePersona(Docente docente);
+	    public Docente buscarPorUsername(String username);
 }

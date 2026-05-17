@@ -47,6 +47,16 @@
             <label for="password" class="form-label">Contraseña</label>
             <input type="password" id="password" class="form-control" required th:field="*{password}">
           </div>
+          <div class="row mb-3">
+            <label for="institucionId" class="form-label">Institución</label>
+            <select id="institucionId" class="form-select" th:field="*{institucionId}" required>
+              <option value="" disabled selected>Seleccione una institución</option>
+              <option th:each="inst : ${instituciones}"
+                      th:value="${inst.id}"
+                      th:text="${inst.nombre}">
+              </option>
+            </select>
+          </div>
           <div class="row  mb-3">
             <button type="submit" class="btn btn-warning">REGISTRARTE</button>
           </div>

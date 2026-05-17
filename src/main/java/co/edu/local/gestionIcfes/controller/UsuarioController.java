@@ -49,6 +49,7 @@ public class UsuarioController {
 	@GetMapping("/registroAdmin")
 	public String mostrarRegistroAdmin(Model model) {
 		model.addAttribute("usuario", new UsuarioDTO());
+		model.addAttribute("instituciones", institucionService.listarInstituciones());
 		return "auth/registro";
 	}
 	
