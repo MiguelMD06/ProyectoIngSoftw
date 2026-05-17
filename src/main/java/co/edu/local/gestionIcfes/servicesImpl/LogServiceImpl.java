@@ -24,11 +24,8 @@ public class LogServiceImpl implements LogService{
 	
 	@Override
 	public List<LogCambio> listarLogs() {
-		System.out.println(logRepository.findAllByOrderByIdDesc().isEmpty());
-		if (logRepository.findAllByOrderByIdDesc().isEmpty()) {
-			return new ArrayList<LogCambio>();
-		}else if (logRepository.findAllByOrderByIdDesc().size() < 5)
-			return logRepository.findAllByOrderByIdDesc();
-		return logRepository.findAllByOrderByIdDesc().subList(0, 5);
+		List<LogCambio> todos = logRepository.findAllByOrderByIdDesc();
+		if (todos.isEmpty()) return new ArrayList<>();
+		return todos.subList(0, Math.min(5, todos.size()));
 	}
 }

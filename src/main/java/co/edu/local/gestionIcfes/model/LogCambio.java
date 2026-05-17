@@ -1,5 +1,7 @@
 package co.edu.local.gestionIcfes.model;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,10 +29,14 @@ public class LogCambio {
 	@Column(name = "descripcion")
 	private String descripcionCambio;
 
+	@Column(name = "fecha_hora")
+	private LocalDateTime fechaHora;
+
 	public LogCambio(String origenCambio, String descripcionCambio) {
 		super();
 		this.origenCambio = origenCambio;
 		this.descripcionCambio = descripcionCambio;
+		this.fechaHora = LocalDateTime.now();
 	}
 	
 	

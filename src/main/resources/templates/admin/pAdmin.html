@@ -1,6 +1,6 @@
 <!doctype html>
 
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -107,17 +107,45 @@
       <div class="row mt-4 g-4">
         <div class="col-md-8">
           <div class="activity-card">
-            <h5>Actividad Reciente</h5>
-            <ul
-              class="list-group list-group-flush mt-3"
-              th:if="${logs != null and !logs.isEmpty()}"
-            >
-              <li
-                class="list-group-item"
-                th:each="log : ${logs}"
-                th:text="${log.descripcionCambio != null ? log.descripcionCambio : 'Sin Actividades recientes'}"
-              ></li>
-            </ul>
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <h5 class="mb-0 fw-bold">
+                <i class="bi bi-clock-history me-2 text-primary"></i>Actividad Reciente
+              </h5>
+              <span class="badge bg-primary-subtle text-primary rounded-pill"
+                    th:text="${logs != null ? logs.size() + ' registros' : '0 registros'}"></span>
+            </div>
+
+            <div th:if="${logs == null or logs.isEmpty()}" class="log-empty">
+              <i class="bi bi-inbox fs-2 text-muted"></i>
+              <p class="text-muted mt-2 mb-0">Sin actividades recientes</p>
+            </div>
+
+            <div class="log-list" th:if="${logs != null and !logs.isEmpty()}">
+              <div class="log-item" th:each="log : ${logs}">
+
+                <!-- Icono según origen -->
+                <div th:class="${'log-icon log-icon--' + (log.origenCambio != null ? log.origenCambio : 'default')}">
+                  <i th:class="${log.origenCambio == 'estudiante' ? 'bi bi-person-fill' :
+                                 log.origenCambio == 'docente'    ? 'bi bi-person-workspace' :
+                                 log.origenCambio == 'simulacro'  ? 'bi bi-file-earmark-text' :
+                                 'bi bi-gear-fill'}"></i>
+                </div>
+
+                <div class="log-content">
+                  <p class="log-desc mb-1"
+                     th:text="${log.descripcionCambio != null ? log.descripcionCambio : '—'}"></p>
+                  <div class="d-flex align-items-center gap-2">
+                    <span th:class="${'badge log-badge log-badge--' + (log.origenCambio != null ? log.origenCambio : 'default')}"
+                          th:text="${log.origenCambio != null ? log.origenCambio : 'sistema'}"></span>
+                    <span class="log-time"
+                          th:if="${log.fechaHora != null}"
+                          th:text="${#temporals.format(log.fechaHora, 'dd/MM/yyyy HH:mm')}"></span>
+                    <span class="log-time" th:if="${log.fechaHora == null}">#log.id</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
           </div>
         </div>
 
