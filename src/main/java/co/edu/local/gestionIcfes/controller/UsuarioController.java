@@ -34,6 +34,11 @@ public class UsuarioController {
 	public String mostrarLogin() {
 		return "auth/login";
 	}
+
+	@GetMapping("/403")
+	public String mostrarAccesoDenegado() {
+		return "auth/403";
+	}
 	
 	
 	@ModelAttribute("persona")
