@@ -14,6 +14,7 @@ import co.edu.local.gestionIcfes.model.Estudiante;
 import co.edu.local.gestionIcfes.repository.AsistenciaRepositorio;
 import co.edu.local.gestionIcfes.repository.EstudianteRepositorio;
 import co.edu.local.gestionIcfes.services.AsistenciaService;
+import co.edu.local.gestionIcfes.services.LogService;
 
 @Service
 @Transactional
@@ -24,6 +25,9 @@ public class AsistenciaServiceImpl implements AsistenciaService {
 
     @Autowired
     private EstudianteRepositorio estudianteRepositorio;
+
+    @Autowired
+    private LogService logService;
 
     @Override
     public void registrarOActualizar(LocalDate fecha, List<String> documentos, List<EstadoAsistencia> estados) {
@@ -47,6 +51,8 @@ public class AsistenciaServiceImpl implements AsistenciaService {
                 asistenciaRepositorio.save(nueva);
             }
         }
+        logService.registrarLog("asistencia",
+                "Asistencias registradas para " + documentos.size() + " estudiante(s) — fecha: " + fecha);
     }
 
     @Override
