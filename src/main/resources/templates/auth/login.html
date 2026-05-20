@@ -38,14 +38,21 @@
           <span>Usuario o contraseña incorrectos. Inténtalo de nuevo.</span>
         </div>
 
+        <div th:if="${param.disabled}"
+             class="alert alert-warning d-flex align-items-center gap-2 py-2 mb-3"
+             role="alert">
+          <i class="bi bi-slash-circle-fill"></i>
+          <span>Tu cuenta ya no se encuentra activa en el curso PreICFES. Contacta al administrador.</span>
+        </div>
+
         <div class="mb-3 input-group">
           <span class="input-group-text"><i class="bi bi-person"></i></span>
-          <input type="text" class="form-control" name="username" id="username" placeholder="John Doe" />
+          <input type="text" class="form-control" name="username" id="username" placeholder="John Doe" autocomplete="username" />
         </div>
 
         <div class="mb-3 input-group">
           <span class="input-group-text"><i class="bi bi-lock"></i></span>
-          <input type="password" class="form-control" placeholder="********" name="password" id="password"/>
+          <input type="password" class="form-control" placeholder="********" name="password" id="password" autocomplete="current-password"/>
         </div>
 
         <button class="btn btn-login text-white">
@@ -53,7 +60,16 @@
         </button>
 
         <div class="footer-link">
-          <a href="#">¿Olvidaste tu contraseña?</a>
+          <div class="password-hint">
+            <i class="bi bi-key-fill me-1"></i>
+            Tu contraseña es tu <strong>número de documento</strong> de identidad.
+          </div>
+          <p class="hint-contact">¿No es así? Contacta a tu coordinador PreICFES:</p>
+          <a href="https://wa.me/573107740572?text=Coordinador%20porfavor%20me%20puede%20restablecer%20la%20contrase%C3%B1a%3F"
+             target="_blank"
+             class="btn-whatsapp">
+            <i class="bi bi-whatsapp"></i> Coordinador PreICFES
+          </a>
         </div>
       </form>
       </div>

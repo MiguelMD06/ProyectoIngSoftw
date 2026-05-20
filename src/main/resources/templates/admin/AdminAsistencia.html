@@ -28,11 +28,11 @@
       <h2>Registro de Asistencia</h2>
       <h3 sec:authentication="principal.username"></h3>
       <p class="text-muted">
-        Selecciona una fecha y registra el estado de cada estudiante.
+        Selecciona una fecha y un salón para registrar la asistencia.
       </p>
     </div>
 
-    <!-- SELECTOR DE FECHA -->
+    <!-- FILTROS -->
     <div class="title-section container">
       <form
         method="get"
@@ -50,6 +50,26 @@
             required
           />
         </div>
+        <div>
+          <label for="institucionId" class="form-label fw-semibold">Institución</label>
+          <select id="institucionId" name="institucionId" class="form-select" required>
+            <option value="" th:selected="${institucionId == null}">— Selecciona —</option>
+            <option
+              th:each="inst : ${instituciones}"
+              th:value="${inst.id}"
+              th:text="${inst.nombre}"
+              th:selected="${inst.id == institucionId}"
+            ></option>
+          </select>
+        </div>
+        <div>
+          <label for="salon" class="form-label fw-semibold">Salón</label>
+          <select id="salon" name="salon" class="form-select" required>
+            <option value="" th:selected="${salon == null or salon == ''}">— Selecciona —</option>
+            <option value="1" th:selected="${salon == '1'}">Salón 1</option>
+            <option value="2" th:selected="${salon == '2'}">Salón 2</option>
+          </select>
+        </div>
         <button type="submit" class="btn btn-primary">
           <i class="bi bi-search me-1"></i>Cargar estudiantes
         </button>
@@ -61,26 +81,48 @@
 
     <!-- MENSAJE DE ÉXITO -->
     <div class="container mb-3" th:if="${exitoAsistencia}">
-      <div class="alert alert-success">
+      <div class="alert alert-success alert-dismissible fade show">
         <i class="bi bi-check-circle-fill me-2"></i>
         <span th:text="${exitoAsistencia}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    </div>
+
+    <!-- MENSAJE GUÍA -->
+    <div class="container mt-4"
+         th:if="${institucionId == null or salon == null or salon == ''}">
+      <div class="table-card text-center py-5 text-muted">
+        <i class="bi bi-funnel fs-1"></i>
+        <p class="mt-3 mb-0">Selecciona una fecha, institución y salón para ver los estudiantes.</p>
       </div>
     </div>
 
     <!-- TABLA DE ESTUDIANTES -->
-    <div class="container">
+    <div class="container" th:if="${institucionId != null and salon != null and salon != ''}">
       <div class="table-card p-4">
-        <!-- SIN ESTUDIANTES -->
+
+        <!-- SIN ESTUDIANTES EN ESTE SALÓN -->
         <div
           th:if="${estudiantes == null or estudiantes.isEmpty()}"
           class="text-center py-5 text-muted"
         >
           <i class="bi bi-people display-4"></i>
-          <p class="mt-3">No hay estudiantes asociados a tu institución.</p>
+          <p class="mt-3">No hay estudiantes en el
+            <span th:text="'Salón ' + ${salon}"></span>
+            de tu institución.
+          </p>
         </div>
 
         <!-- FORMULARIO DE ASISTENCIA -->
         <div th:if="${estudiantes != null and !estudiantes.isEmpty()}">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="fw-semibold text-muted">
+              <i class="bi bi-door-open me-1 text-success"></i>
+              Salón <span th:text="${salon}"></span>
+              &nbsp;·&nbsp;
+              <span th:text="${estudiantes.size()}"></span> estudiantes
+            </span>
+          </div>
           <form th:action="@{/admin/registrarAsistencias}" method="post">
             <input type="hidden" name="fecha" th:value="${fecha}" />
 
@@ -96,31 +138,19 @@
               <tbody>
                 <tr th:each="est, iter : ${estudiantes}">
                   <td th:text="${iter.count}"></td>
-                  <td
-                    th:text="${est.primerNombre + ' ' + est.primerApellido}"
-                  ></td>
+                  <td th:text="${est.primerNombre + ' ' + est.primerApellido}"></td>
                   <td>
-                    <span
-                      class="text-muted small"
-                      th:text="${est.documentoIdentidad}"
-                    ></span>
-                    <input
-                      type="hidden"
-                      name="documentos"
-                      th:value="${est.documentoIdentidad}"
-                    />
+                    <span class="text-muted small" th:text="${est.documentoIdentidad}"></span>
+                    <input type="hidden" name="documentos" th:value="${est.documentoIdentidad}" />
                   </td>
                   <td>
-                    <select
-                      name="estados"
-                      class="form-select form-select-sm w-auto"
-                    >
+                    <select name="estados" class="form-select form-select-sm w-auto">
                       <option
                         th:each="e : ${estadosDisponibles}"
                         th:value="${e}"
                         th:text="${e.name() == 'PRESENTE' ? 'Presente' : (e.name() == 'AUSENTE' ? 'Ausente' : 'Tarde')}"
                         th:selected="${estadosPorDoc[est.documentoIdentidad] == e
-                                             or (estadosPorDoc[est.documentoIdentidad] == null and e.name() == 'PRESENTE')}"
+                                       or (estadosPorDoc[est.documentoIdentidad] == null and e.name() == 'PRESENTE')}"
                       ></option>
                     </select>
                   </td>
@@ -135,6 +165,7 @@
             </div>
           </form>
         </div>
+
       </div>
     </div>
   </body>

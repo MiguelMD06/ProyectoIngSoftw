@@ -23,6 +23,9 @@ public class SpringSecurity {
 	
 	@Autowired
 	private CustomAuthSuccessHandler successHandler;
+
+	@Autowired
+	private CustomAuthFailureHandler failureHandler;
 	
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {
@@ -44,8 +47,9 @@ public class SpringSecurity {
                 .anyRequest().authenticated()                                  
             )
             .formLogin(form -> form
-                .loginPage("/login")     
+                .loginPage("/login")
                 .successHandler(successHandler)
+                .failureHandler(failureHandler)
                 .permitAll()
             )
             .logout(logout -> logout

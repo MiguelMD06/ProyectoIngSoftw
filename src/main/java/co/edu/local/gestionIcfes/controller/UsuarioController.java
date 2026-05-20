@@ -37,7 +37,7 @@ public class UsuarioController {
 
 	@GetMapping("/403")
 	public String mostrarAccesoDenegado() {
-		return "auth/403";
+		return "error/403";
 	}
 	
 	

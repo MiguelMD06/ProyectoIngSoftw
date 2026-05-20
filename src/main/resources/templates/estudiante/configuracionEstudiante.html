@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Configuración - Estudiante</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+    <link rel="stylesheet" th:href="@{/estilos/pEstudiante.css}" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </head>
+
+  <body>
+    <div th:replace="~{fragments/navbarEstudiante :: navbar}"></div>
+
+    <!-- HERO -->
+    <div class="hero-section">
+      <div class="container">
+        <div class="d-flex align-items-center gap-3 mb-2">
+          <div class="avatar-circle">
+            <i class="bi bi-gear-fill fs-3 text-white"></i>
+          </div>
+          <div>
+            <h2 class="mb-0 fw-bold">Configuración</h2>
+            <span class="text-blue-light">Administra tu cuenta</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mt-4 mb-5">
+      <div class="row g-4">
+
+        <!-- CAMBIAR USUARIO -->
+        <div class="col-md-6">
+          <div class="info-card flex-column align-items-start gap-3 p-4">
+            <div class="d-flex align-items-center gap-2 mb-1">
+              <i class="bi bi-person-fill-gear text-primary fs-4"></i>
+              <h5 class="mb-0 fw-bold">Cambiar usuario</h5>
+            </div>
+            <p class="text-muted small mb-2">
+              Usuario actual: <strong th:text="${estudiante.usuario.username}"></strong>
+            </p>
+
+            <div th:if="${exitoUsername}" class="alert alert-success py-2 w-100">
+              <i class="bi bi-check-circle me-1"></i>
+              <span th:text="${exitoUsername}"></span>
+            </div>
+            <div th:if="${errorUsername}" class="alert alert-danger py-2 w-100">
+              <i class="bi bi-exclamation-triangle me-1"></i>
+              <span th:text="${errorUsername}"></span>
+            </div>
+
+            <form th:action="@{/estudiante/configuracion/cambiarUsername}" method="post" class="w-100">
+              <input type="hidden" name="id" th:value="${estudiante.usuario.id}" />
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Nuevo usuario</label>
+                <input type="text" name="nuevoUsername" class="form-control"
+                       placeholder="Ingresa el nuevo nombre de usuario" required minlength="4" />
+                <div class="form-text">Al guardar, deberás iniciar sesión de nuevo con el nuevo usuario.</div>
+              </div>
+              <button type="submit" class="btn btn-main text-white w-100">
+                <i class="bi bi-person-check me-1"></i>Guardar usuario
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- CAMBIAR CONTRASEÑA -->
+        <div class="col-md-6">
+          <div class="info-card flex-column align-items-start gap-3 p-4">
+            <div class="d-flex align-items-center gap-2 mb-1">
+              <i class="bi bi-shield-lock-fill text-primary fs-4"></i>
+              <h5 class="mb-0 fw-bold">Cambiar contraseña</h5>
+            </div>
+
+            <div th:if="${exitoPassword}" class="alert alert-success py-2 w-100">
+              <i class="bi bi-check-circle me-1"></i>
+              <span th:text="${exitoPassword}"></span>
+            </div>
+            <div th:if="${errorPassword}" class="alert alert-danger py-2 w-100">
+              <i class="bi bi-exclamation-triangle me-1"></i>
+              <span th:text="${errorPassword}"></span>
+            </div>
+
+            <form th:action="@{/estudiante/configuracion/cambiarPassword}" method="post"
+                  class="w-100" id="formPassword">
+              <input type="hidden" name="id" th:value="${estudiante.usuario.id}" />
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Contraseña actual</label>
+                <div class="input-group">
+                  <input type="password" name="passwordActual" id="passwordActual"
+                         class="form-control" required />
+                  <button class="btn btn-outline-secondary" type="button"
+                          onclick="toggleVer('passwordActual', this)">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Nueva contraseña</label>
+                <div class="input-group">
+                  <input type="password" name="passwordNueva" id="passwordNueva"
+                         class="form-control" required minlength="6" />
+                  <button class="btn btn-outline-secondary" type="button"
+                          onclick="toggleVer('passwordNueva', this)">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label fw-semibold">Confirmar contraseña</label>
+                <div class="input-group">
+                  <input type="password" name="confirmarPassword" id="confirmarPassword"
+                         class="form-control" required minlength="6" />
+                  <button class="btn btn-outline-secondary" type="button"
+                          onclick="toggleVer('confirmarPassword', this)">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </div>
+                <div id="msgConfirmar" class="form-text text-danger d-none">
+                  Las contraseñas no coinciden.
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-main text-white w-100">
+                <i class="bi bi-shield-check me-1"></i>Actualizar contraseña
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script>
+      function toggleVer(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const icon  = btn.querySelector('i');
+        if (input.type === 'password') {
+          input.type = 'text';
+          icon.className = 'bi bi-eye-slash';
+        } else {
+          input.type = 'password';
+          icon.className = 'bi bi-eye';
+        }
+      }
+
+      const nueva     = document.getElementById('passwordNueva');
+      const confirmar = document.getElementById('confirmarPassword');
+      const msgError  = document.getElementById('msgConfirmar');
+      const form      = document.getElementById('formPassword');
+
+      function validar() {
+        if (confirmar.value && nueva.value !== confirmar.value) {
+          msgError.classList.remove('d-none');
+          confirmar.classList.add('is-invalid');
+        } else {
+          msgError.classList.add('d-none');
+          confirmar.classList.remove('is-invalid');
+        }
+      }
+
+      nueva.addEventListener('input', validar);
+      confirmar.addEventListener('input', validar);
+      form.addEventListener('submit', function (e) {
+        if (nueva.value !== confirmar.value) {
+          e.preventDefault();
+          validar();
+        }
+      });
+    </script>
+  </body>
+</html>

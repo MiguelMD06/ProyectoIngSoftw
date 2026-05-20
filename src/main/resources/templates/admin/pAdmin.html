@@ -75,7 +75,7 @@
               Ajustes del sistema, gestión de usuarios, roles y parámetros
               institucionales
             </p>
-            <button class="btn btn-primary">Configurar</button>
+            <a class="btn btn-primary" th:href="@{/admin/configuracion}">Configurar</a>
           </div>
         </div>
       </div>
@@ -86,6 +86,7 @@
           <div class="summary-card">
             <strong>Estudiantes</strong>
             <h3 th:text="${numeroEstudiantes}"></h3>
+            <small class="text-muted">Activos</small>
           </div>
         </div>
 
@@ -93,6 +94,7 @@
           <div class="summary-card">
             <strong>Docentes</strong>
             <h3 th:text="${numeroDocentes}"></h3>
+            <small class="text-muted">Activos</small>
           </div>
         </div>
 
@@ -100,6 +102,14 @@
           <div class="summary-card">
             <strong>Simulacros</strong>
             <h3 th:text="${numeroSimulacros}"></h3>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="summary-card">
+            <strong>Instituciones</strong>
+            <h3 th:text="${numeroInstituciones}"></h3>
+            <small class="text-muted">Activas</small>
           </div>
         </div>
       </div>

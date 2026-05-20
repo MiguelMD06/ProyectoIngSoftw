@@ -138,6 +138,239 @@
         </div>
       </div>
 
+      <!-- RESULTADOS DE SIMULACROS -->
+      <div class="row mb-5">
+        <div class="col-12">
+          <h5 class="fw-bold mb-3">
+            <i class="bi bi-bar-chart-fill me-2 text-primary"></i>Mis resultados de simulacros
+          </h5>
+
+          <!-- Sin resultados -->
+          <div th:if="${resultados == null or resultados.isEmpty()}"
+               class="alert alert-info d-flex align-items-center gap-2">
+            <i class="bi bi-info-circle-fill"></i>
+            Aún no tienes resultados de simulacros.
+          </div>
+
+          <!-- Con resultados -->
+          <div th:unless="${resultados == null or resultados.isEmpty()}">
+
+            <!-- Selector de simulacro -->
+            <form th:action="@{/estudiante/pEstudiante}" method="get" class="mb-4">
+              <div class="d-flex align-items-center gap-2 flex-wrap">
+                <label class="form-label mb-0 fw-semibold">Simulacro:</label>
+                <select name="simulacroSeleccionadoId" class="form-select"
+                        style="max-width:320px;" onchange="this.form.submit()">
+                  <option value="" th:selected="${simulacroSeleccionadoId == null}">
+                    Ver promedio de todos los simulacros
+                  </option>
+                  <option th:each="r : ${resultados}"
+                          th:value="${r.simulacro.id}"
+                          th:text="${r.simulacro.titulo}"
+                          th:selected="${simulacroSeleccionadoId != null and simulacroSeleccionadoId == r.simulacro.id}">
+                  </option>
+                </select>
+              </div>
+            </form>
+
+            <!-- Puesto en el salón -->
+            <div th:if="${resultadoSeleccionado != null and resultadoSeleccionado.puestoSalon != null}"
+                 class="mb-3">
+              <span class="badge bg-primary fs-6 px-3 py-2">
+                <i class="bi bi-trophy-fill me-1"></i>
+                Puesto en el salón: <span th:text="${resultadoSeleccionado.puestoSalon}"></span>
+              </span>
+            </div>
+
+            <!-- Tarjetas de puntaje -->
+            <div class="row g-3 mb-4">
+
+              <div class="col-md-2 col-6">
+                <div class="score-card">
+                  <i class="bi bi-globe2 score-icon text-primary"></i>
+                  <small class="score-label">Sociales</small>
+                  <span class="score-value"
+                    th:text="${resultadoSeleccionado != null ? resultadoSeleccionado.puntajeSociales : promedioSociales}">
+                  </span>
+                  <div class="progress score-bar">
+                    <div class="progress-bar bg-primary" role="progressbar"
+                         th:style="'width:' + (${resultadoSeleccionado != null ? resultadoSeleccionado.puntajeSociales : promedioSociales}) + '%'"
+                         aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <small class="text-muted">/ 100</small>
+                </div>
+              </div>
+
+              <div class="col-md-2 col-6">
+                <div class="score-card">
+                  <i class="bi bi-tree score-icon text-success"></i>
+                  <small class="score-label">Naturales</small>
+                  <span class="score-value"
+                    th:text="${resultadoSeleccionado != null ? resultadoSeleccionado.puntajeNaturales : promedioNaturales}">
+                  </span>
+                  <div class="progress score-bar">
+                    <div class="progress-bar bg-success" role="progressbar"
+                         th:style="'width:' + (${resultadoSeleccionado != null ? resultadoSeleccionado.puntajeNaturales : promedioNaturales}) + '%'"
+                         aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <small class="text-muted">/ 100</small>
+                </div>
+              </div>
+
+              <div class="col-md-2 col-6">
+                <div class="score-card">
+                  <i class="bi bi-calculator score-icon text-warning"></i>
+                  <small class="score-label">Matemáticas</small>
+                  <span class="score-value"
+                    th:text="${resultadoSeleccionado != null ? resultadoSeleccionado.puntajeMatematicas : promedioMatematicas}">
+                  </span>
+                  <div class="progress score-bar">
+                    <div class="progress-bar bg-warning" role="progressbar"
+                         th:style="'width:' + (${resultadoSeleccionado != null ? resultadoSeleccionado.puntajeMatematicas : promedioMatematicas}) + '%'"
+                         aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <small class="text-muted">/ 100</small>
+                </div>
+              </div>
+
+              <div class="col-md-2 col-6">
+                <div class="score-card">
+                  <i class="bi bi-book score-icon text-danger"></i>
+                  <small class="score-label">Lectura Crítica</small>
+                  <span class="score-value"
+                    th:text="${resultadoSeleccionado != null ? resultadoSeleccionado.puntajelecturaCritica : promedioLecturaCritica}">
+                  </span>
+                  <div class="progress score-bar">
+                    <div class="progress-bar bg-danger" role="progressbar"
+                         th:style="'width:' + (${resultadoSeleccionado != null ? resultadoSeleccionado.puntajelecturaCritica : promedioLecturaCritica}) + '%'"
+                         aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <small class="text-muted">/ 100</small>
+                </div>
+              </div>
+
+              <div class="col-md-2 col-6">
+                <div class="score-card">
+                  <i class="bi bi-translate score-icon text-info"></i>
+                  <small class="score-label">Inglés</small>
+                  <span class="score-value"
+                    th:text="${resultadoSeleccionado != null ? resultadoSeleccionado.puntajeIngles : promedioIngles}">
+                  </span>
+                  <div class="progress score-bar">
+                    <div class="progress-bar bg-info" role="progressbar"
+                         th:style="'width:' + (${resultadoSeleccionado != null ? resultadoSeleccionado.puntajeIngles : promedioIngles}) + '%'"
+                         aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <small class="text-muted">/ 100</small>
+                </div>
+              </div>
+
+              <div class="col-md-2 col-6">
+                <div class="score-card score-card-global">
+                  <i class="bi bi-star-fill score-icon text-warning"></i>
+                  <small class="score-label">Global</small>
+                  <span class="score-value"
+                    th:text="${resultadoSeleccionado != null ? resultadoSeleccionado.puntajeGlobal : promedioGlobal}">
+                  </span>
+                  <div class="progress score-bar">
+                    <div class="progress-bar bg-warning" role="progressbar"
+                         th:style="'width:' + (${(resultadoSeleccionado != null ? resultadoSeleccionado.puntajeGlobal : promedioGlobal) / 5.0}) + '%'"
+                         aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <small class="text-muted">/ 500</small>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Gráfica de barras -->
+            <div class="card border-0 shadow-sm p-3 mb-4">
+              <canvas id="graficaSimulacro"
+                th:attr="
+                  data-sociales=${resultadoSeleccionado != null ? resultadoSeleccionado.puntajeSociales : promedioSociales},
+                  data-naturales=${resultadoSeleccionado != null ? resultadoSeleccionado.puntajeNaturales : promedioNaturales},
+                  data-matematicas=${resultadoSeleccionado != null ? resultadoSeleccionado.puntajeMatematicas : promedioMatematicas},
+                  data-lectura=${resultadoSeleccionado != null ? resultadoSeleccionado.puntajelecturaCritica : promedioLecturaCritica},
+                  data-ingles=${resultadoSeleccionado != null ? resultadoSeleccionado.puntajeIngles : promedioIngles},
+                  data-titulo=${resultadoSeleccionado != null ? 'Resultados: ' + resultadoSeleccionado.simulacro.titulo : 'Promedio de todos los simulacros'}"
+                style="max-height:300px;">
+              </canvas>
+            </div>
+
+          </div><!-- /con resultados -->
+        </div>
+      </div>
+
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <script>
+      (function() {
+        var canvas = document.getElementById('graficaSimulacro');
+        if (!canvas) return;
+        var ds = canvas.dataset;
+        new Chart(canvas, {
+          type: 'bar',
+          data: {
+            labels: ['Sociales', 'Naturales', 'Matemáticas', 'Lectura Crítica', 'Inglés'],
+            datasets: [
+              {
+                label: 'Puntaje',
+                data: [
+                  parseFloat(ds.sociales) || 0,
+                  parseFloat(ds.naturales) || 0,
+                  parseFloat(ds.matematicas) || 0,
+                  parseFloat(ds.lectura) || 0,
+                  parseFloat(ds.ingles) || 0
+                ],
+                backgroundColor: ['#4e79a7','#59a14f','#f28e2b','#e15759','#76b7b2'],
+                borderRadius: 6,
+                borderSkipped: false
+              },
+              {
+                label: 'Máximo (100)',
+                data: [100, 100, 100, 100, 100],
+                type: 'line',
+                borderColor: '#adb5bd',
+                backgroundColor: 'transparent',
+                borderDash: [6, 4],
+                pointRadius: 0,
+                borderWidth: 2
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              title: { display: true, text: ds.titulo || 'Resultados', font: { size: 14 } },
+              legend: { display: false }
+            },
+            scales: {
+              y: { min: 0, max: 100, ticks: { stepSize: 20 } }
+            }
+          }
+        });
+      })();
+    </script>
+
+    <style>
+      .score-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        padding: 1rem .75rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: .25rem;
+        text-align: center;
+        height: 100%;
+      }
+      .score-card-global { border: 2px solid #ffc107; }
+      .score-icon { font-size: 1.4rem; }
+      .score-label { font-size: .72rem; color: #6c757d; font-weight: 600; text-transform: uppercase; letter-spacing: .03em; }
+      .score-value { font-size: 1.6rem; font-weight: 700; line-height: 1.1; }
+      .score-bar { width: 100%; height: 6px; border-radius: 4px; }
+    </style>
   </body>
 </html>

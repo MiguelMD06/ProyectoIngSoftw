@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.edu.local.gestionIcfes.enums.EstadoInstitucion;
 import co.edu.local.gestionIcfes.model.Institucion;
 import co.edu.local.gestionIcfes.repository.InstitucionRepositorio;
 import co.edu.local.gestionIcfes.services.InstitucionService;
@@ -31,5 +32,22 @@ public class InstitucionServicesImpl implements InstitucionService{
 	@Override
 	public Institucion buscarPorId(Long id) {
 		return institucionRepository.findById(id).get();
+	}
+
+	@Override
+	public Institucion actualizarInstitucion(Institucion institucion) {
+		logService.registrarLog("institucion", "Institución actualizada: " + institucion.getNombre());
+		return institucionRepository.save(institucion);
+	}
+
+	@Override
+	public void eliminarInstitucion(Long id) {
+		logService.registrarLog("institucion", "Institución eliminada (id=" + id + ")");
+		institucionRepository.deleteById(id);
+	}
+
+	@Override
+	public Long cantidadInstitucionesActivas() {
+		return institucionRepository.countByEstado(EstadoInstitucion.ACTIVO);
 	}
 }

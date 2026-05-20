@@ -141,7 +141,10 @@ public class UsuarioServicesImpl implements UsuarioServices {
 			throw new UsernameNotFoundException("Usuario o Password Inválidos");
 		}
 		session.setAttribute("idusuario", usuario.getId());
-		return new User(usuario.getUsername(), usuario.getPassword(), mapearAutoridadRoles(usuario.getRoles()));
+		boolean enabled = Boolean.TRUE.equals(usuario.getEnabled());
+		return new User(usuario.getUsername(), usuario.getPassword(),
+				enabled, true, true, true,
+				mapearAutoridadRoles(usuario.getRoles()));
 	}
 
 	@Override
@@ -188,10 +191,87 @@ public class UsuarioServicesImpl implements UsuarioServices {
 	public Long cantidadDocentes() {
 		return usuarioRepository.countByRoles_Nombre("ROLE_DOCENTE");
 	}
-	
+
 	@Override
 	public Long cantidadEstudiantes() {
 		return usuarioRepository.countByRoles_Nombre("ROLE_ESTUDIANTE");
+	}
+
+	@Override
+	public Long cantidadEstudiantesActivos() {
+		return usuarioRepository.countByRoles_NombreAndEnabled("ROLE_ESTUDIANTE", true);
+	}
+
+	@Override
+	public Long cantidadDocentesActivos() {
+		return usuarioRepository.countByRoles_NombreAndEnabled("ROLE_DOCENTE", true);
+	}
+
+	@Override
+	public List<Usuario> listarTodosUsuarios() {
+		return usuarioRepository.findAll();
+	}
+
+	@Override
+	public boolean cambiarPassword(Long id, String passwordActual, String passwordNueva) {
+		Usuario usuario = usuarioRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+		if (!passwordEncoder.matches(passwordActual, usuario.getPassword())) {
+			return false;
+		}
+		usuario.setPassword(passwordEncoder.encode(passwordNueva));
+		usuarioRepository.save(usuario);
+		logService.registrarLog("usuario", "Contraseña actualizada: " + usuario.getUsername());
+		return true;
+	}
+
+	@Override
+	public void cambiarPasswordAdmin(Long id, String passwordNueva) {
+		Usuario usuario = usuarioRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+		usuario.setPassword(passwordEncoder.encode(passwordNueva));
+		usuarioRepository.save(usuario);
+		logService.registrarLog("usuario", "Contraseña cambiada por admin: " + usuario.getUsername());
+	}
+
+	@Override
+	public void toggleActivo(Long id) {
+		Usuario usuario = usuarioRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+		boolean actual = Boolean.TRUE.equals(usuario.getEnabled());
+		usuario.setEnabled(!actual);
+		usuarioRepository.save(usuario);
+		logService.registrarLog("usuario",
+				"Estado cambiado a " + (!actual ? "activo" : "inactivo") + ": " + usuario.getUsername());
+	}
+
+	@Override
+	public boolean cambiarUsername(Long id, String nuevoUsername) {
+		if (!validarUsername(nuevoUsername)) return false;
+		Usuario usuario = usuarioRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+		usuario.setUsername(nuevoUsername);
+		usuarioRepository.save(usuario);
+		logService.registrarLog("usuario", "Username cambiado a: " + nuevoUsername);
+		return true;
+	}
+
+	@Override
+	public boolean restablecerPassword(Long id) {
+		Usuario usuario = usuarioRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+		String nuevaPassword = null;
+		Estudiante est = estudianteRepository.findByUsuarioUsername(usuario.getUsername()).orElse(null);
+		if (est != null) nuevaPassword = est.getDocumentoIdentidad();
+		if (nuevaPassword == null) {
+			Docente doc = docenteRepository.findByUsuarioUsername(usuario.getUsername()).orElse(null);
+			if (doc != null) nuevaPassword = doc.getDocumentoIdentidad();
+		}
+		if (nuevaPassword == null) return false;
+		usuario.setPassword(passwordEncoder.encode(nuevaPassword));
+		usuarioRepository.save(usuario);
+		logService.registrarLog("usuario", "Contraseña restablecida: " + usuario.getUsername());
+		return true;
 	}
 
 }
