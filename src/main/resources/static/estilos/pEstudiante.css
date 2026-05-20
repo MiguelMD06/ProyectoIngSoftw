@@ -279,3 +279,21 @@ body {
   border: 1px solid #2b3ea8;
   color: #2b3ea8;
 }
+
+   .score-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        padding: 1rem .75rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: .25rem;
+        text-align: center;
+        height: 100%;
+      }
+      .score-card-global { border: 2px solid #ffc107; }
+      .score-icon { font-size: 1.4rem; }
+      .score-label { font-size: .72rem; color: #6c757d; font-weight: 600; text-transform: uppercase; letter-spacing: .03em; }
+      .score-value { font-size: 1.6rem; font-weight: 700; line-height: 1.1; }
+      .score-bar { width: 100%; height: 6px; border-radius: 4px; }
