@@ -4,158 +4,139 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Registro Administrativo</title>
+  <title>Registro de Estudiante</title>
   <link rel="icon" th:href="@{/assets/gestion-icon.png}" type="image/png">
-  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-  <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
-
   <link rel="stylesheet" th:href="@{/estilos/AdminRegistro.css}" />
-  <link rel="stylesheet" href="../../static/estilos/AdminRegistro.css" />
 </head>
 
 <body>
   <div class="register-card">
     <!-- HEADER -->
     <div class="register-header">
-      <div class="logo"></div>
+      <div class="nav-admin-brand-icon">GE</div>
       <div>
         <h5 class="m-0">Gestión Escolar</h5>
-        <small>Actualizar Administrativo</small>
+        <small>Registro Administrativo</small>
       </div>
     </div>
 
     <!-- BODY -->
     <div class="register-body">
-      <h4 class="mb-4">Crear Usuario</h4>
+      <h4 class="mb-4">Crear Estudiante</h4>
 
-      <!-- ALERTAS -->
       <div th:if="${param.exito}">
         <div class="alert alert-success">
           <i class="bi bi-check-circle-fill"></i>
-          Usuario actualizado exitosamente
+          Estudiante registrado exitosamente
         </div>
       </div>
-
       <div th:if="${param.error}">
         <div class="alert alert-danger">
           <i class="bi bi-exclamation-triangle-fill"></i>
-          Error al actualizar usuario
+          Error al registrar estudiante
         </div>
       </div>
 
-      <!-- FORM -->
-      <form id="formRegistroAdmin" th:action="@{/admin/modificar}" method="POST" th:object="${persona}">
+      <form id="formRegistroAdmin" th:action="@{/registro}" method="POST" th:object="${persona}">
+        <input type="hidden" id="rol" name="rol" value="3" />
+
         <div class="row">
           <!-- TIPO IDENTIFICACION -->
           <div class="col-md-6 mb-3">
             <label class="form-label">Tipo de Identificación</label>
-
-            <select id="tipoIdentificacion" name="tipoIdentificacion" class="form-select"
-              th:field="*{tipoIdentificacion}" readonly>
+            <select id="tipoIdentificacion" name="tipoIdentificacion" class="form-select">
               <option value="">Seleccione...</option>
-              <option th:each="ti : ${tiposIdentificaciones}" th:value="${ti.name()}" th:text="${ti.descripcion}">
-              </option>
+              <option th:each="ti : ${tiposIdentificaciones}" th:value="${ti.name()}" th:text="${ti.descripcion}"
+                th:field="*{tipoIdentificacion}"></option>
             </select>
-
             <div id="errorTipoId" class="error"></div>
           </div>
 
           <!-- NUMERO IDENTIFICACION -->
           <div class="col-md-6 mb-3">
             <label class="form-label">Número de Identificación</label>
-
             <input type="text" id="numeroIdentificacion" name="numeroIdentificacion" class="form-control"
-              placeholder="Ingrese identificación" th:field="*{documentoIdentidad}" readonly />
-
+              placeholder="Ingrese identificación" th:field="*{documentoIdentidad}" />
             <div id="errorNumeroId" class="error"></div>
           </div>
 
           <!-- PRIMER NOMBRE -->
           <div class="col-md-6 mb-3">
             <label class="form-label">Primer Nombre</label>
-
             <input type="text" id="primerNombre" name="primerNombre" class="form-control" placeholder="Primer nombre"
               th:field="*{primerNombre}" />
-
             <div id="errorPrimerNombre" class="error"></div>
           </div>
 
           <!-- SEGUNDO NOMBRE -->
           <div class="col-md-6 mb-3">
             <label class="form-label">Segundo Nombre</label>
-
             <input type="text" id="segundoNombre" name="segundoNombre" class="form-control" placeholder="Segundo nombre"
               th:field="*{segundoNombre}" />
+            <div id="errorSegundoNombre" class="error"></div>
           </div>
 
           <!-- PRIMER APELLIDO -->
           <div class="col-md-6 mb-3">
             <label class="form-label">Primer Apellido</label>
-
             <input type="text" id="primerApellido" name="primerApellido" class="form-control"
               placeholder="Primer apellido" th:field="*{primerApellido}" />
-
             <div id="errorPrimerApellido" class="error"></div>
           </div>
 
           <!-- SEGUNDO APELLIDO -->
           <div class="col-md-6 mb-3">
             <label class="form-label">Segundo Apellido</label>
-
             <input type="text" id="segundoApellido" name="segundoApellido" class="form-control"
               placeholder="Segundo apellido" th:field="*{segundoApellido}" />
+            <div id="errorSegundoApellido" class="error"></div>
           </div>
 
           <!-- CELULAR -->
           <div class="col-md-6 mb-3">
             <label class="form-label">Celular</label>
-
             <input type="tel" id="celular" name="celular" class="form-control" placeholder="3001234567"
               th:field="*{celular}" />
-
             <div id="errorCelular" class="error"></div>
           </div>
 
           <!-- INSTITUCION -->
           <div class="col-md-6 mb-3">
             <label class="form-label">Institución</label>
-
-            <select id="institucion" name="institucion" class="form-select" th:field="*{institucion}">
+            <select id="institucion" name="institucion" class="form-select">
               <option value="">Seleccione...</option>
-              <option th:each="inst : ${instituciones}" th:value="${inst.id}" th:text="${inst.nombre}"></option>
+              <option th:each="inst : ${instituciones}" th:value="${inst.id}" th:text="${inst.nombre}"
+                th:field="*{institucion}"></option>
             </select>
-
             <div id="errorInstitucion" class="error"></div>
           </div>
 
           <!-- SALON -->
           <div class="col-md-6 mb-3">
             <label class="form-label">Salón</label>
-
-            <input type="text" id="salon" name="salon" class="form-control" placeholder="1 o 2" th:field="*{salon}" />
-
+            <input type="text" id="salon" name="salon" class="form-control" placeholder="1 o 2" maxlength="1" />
             <div id="errorSalon" class="error"></div>
           </div>
-          
-          <input type="hidden" th:field="*{rol}">
 
-          <!-- BOTON -->
-          <button type="submit" class="btn btn-main text-white mt-3">
-            <i class="bi bi-person-plus-fill"></i>
-            Actualizar Usuario
-          </button>
+          <!-- errorRol oculto (requerido por validacionesRegistro.js) -->
+          <div id="errorRol" style="display:none"></div>
+        </div>
 
-          <a class="btn btn-outline-secondary mt-3" th:href="@{/admin/pAdmin}">
-            <i class="bi bi-arrow-left-circle me-1"></i>Volver
-          </a>
+        <button type="submit" class="btn btn-main text-white mt-3">
+          <i class="bi bi-person-plus-fill"></i>
+          Registrar Estudiante
+        </button>
+
+        <a class="btn btn-outline-secondary mt-3" th:href="@{/admin/AdminEstudiante}">
+          <i class="bi bi-arrow-left-circle me-1"></i>Volver
+        </a>
       </form>
     </div>
   </div>
 
-  <!-- <script src="../static/js/validacionesRegistro.js"></script> -->
+  <script th:src="@{/js/validacionesRegistro.js}"></script>
 </body>
 
 </html>

@@ -2,92 +2,166 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registrar Simulacro</title>
+    <title>Simulacros</title>
     <link rel="icon" th:href="@{/assets/gestion-icon.png}" type="image/png">
-    <!-- Bootstrap -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-
-    <!-- Bootstrap Icons -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
-    />
-
-    <link rel="stylesheet" th:href="@{/estilos/AdminRegistro.css}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+    <link rel="stylesheet" th:href="@{/estilos/AdminEstudiante.css}" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   </head>
 
   <body>
-    <div class="register-card">
-      <!-- HEADER -->
-      <div class="register-header">
-        <div class="logo"></div>
-        <div>
-          <h5 class="m-0">Gestión Escolar</h5>
-          <small>Registro Administrativo</small>
-        </div>
-      </div>
+    <div th:replace="~{fragments/navbarAdmin :: navbar}"></div>
 
-      <!-- BODY -->
-      <div class="register-body">
-        <h4 class="mb-4">Crear Simulacro</h4>
+    <br />
+    <div class="header container">
+      <h2>Panel de Simulacros</h2>
+      <p class="text-muted">Gestiona los simulacros registrados en el sistema.</p>
+    </div>
 
-        <!-- Mensajes -->
-        <div th:if="${exitoSimulacro}" class="alert alert-success">
+    <div class="title-section container">
+      <h2>Simulacros</h2>
+      <button class="btn btn-create text-white mt-3" data-bs-toggle="modal" data-bs-target="#modalSimulacro"
+              onclick="abrirModalCrear()">
+        <i class="bi bi-plus"></i> Nuevo Simulacro
+      </button>
+    </div>
+
+    <div class="container mb-5">
+      <div class="table-card">
+
+        <!-- Alertas -->
+        <div th:if="${exitoSimulacro}" class="alert alert-success alert-dismissible fade show py-2" role="alert">
+          <i class="bi bi-check-circle me-1"></i>
           <span th:text="${exitoSimulacro}"></span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <div th:if="${errorSimulacro}" class="alert alert-danger alert-dismissible fade show py-2" role="alert">
+          <i class="bi bi-exclamation-triangle me-1"></i>
+          <span th:text="${errorSimulacro}"></span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
 
-        <!-- FORM -->
-        <!-- Formulario -->
-        <form
-          th:action="@{/admin/crearSimulacro}"
-          method="post"
-          th:object="${simulacro}"
-        >
-          <div class="mb-3">
-            <label class="form-label">Título</label>
-            <input
-              type="text"
-              class="form-control"
-              th:field="*{titulo}"
-              required
-            />
-          </div>
+        <!-- Tabla -->
+        <div class="table-responsive" th:if="${simulacros != null and !simulacros.isEmpty()}">
+          <table class="table align-middle table-striped mb-0">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Fecha de Aplicación</th>
+                <th class="text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="sim, iterStat : ${simulacros}">
+                <td th:text="${iterStat.index + 1}"></td>
+                <td th:text="${sim.titulo}"></td>
+                <td th:text="${sim.descripcion}"></td>
+                <td th:text="${sim.fechaAplicacion}"></td>
+                <td class="text-center">
+                  <div class="dropdown">
+                    <button class="btn btn-action btn-acciones dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown">
+                      <i class="bi bi-grid-3x3-gap-fill"></i>
+                      <span>Acciones</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow">
+                      <li>
+                        <button class="dropdown-item" type="button"
+                                data-bs-toggle="modal" data-bs-target="#modalSimulacro"
+                                th:data-id="${sim.id}"
+                                th:data-titulo="${sim.titulo}"
+                                th:data-descripcion="${sim.descripcion}"
+                                th:data-fecha="${sim.fechaAplicacion}"
+                                onclick="abrirModalEditar(this)">
+                          <i class="bi bi-pencil-square text-primary me-2"></i>Editar
+                        </button>
+                      </li>
+                      <li><hr class="dropdown-divider" /></li>
+                      <li>
+                        <a class="dropdown-item text-danger"
+                           th:href="@{/admin/eliminarSimulacro/{id}(id=${sim.id})}"
+                           onclick="return confirm('¿Eliminar este simulacro y todos sus resultados?');">
+                          <i class="bi bi-trash3 me-2"></i>Eliminar
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-          <div class="mb-3">
-            <label class="form-label">Descripción</label>
-            <textarea
-              class="form-control"
-              th:field="*{descripcion}"
-              required
-            ></textarea>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Fecha de Aplicación</label>
-            <input
-              type="date"
-              class="form-control"
-              th:field="*{fechaAplicacion}"
-              required
-            />
-          </div>
-
-          <button type="submit" class="btn btn-success">Guardar</button>
-
-          <a
-            class="btn btn-create text-black mt-3 bi bi-arrow-left-circle-fill"
-            th:href="@{/admin/pAdmin}"
-          >
-            Volver
-          </a>
-        </form>
+        <div class="alert alert-info mb-0" th:if="${simulacros == null or simulacros.isEmpty()}">
+          No hay simulacros registrados.
+        </div>
       </div>
     </div>
 
-    <!-- <script src="../static/js/validacionesRegistro.js"></script> -->
+    <!-- MODAL CREAR / EDITAR -->
+    <div class="modal fade" id="modalSimulacro" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalTitulo">
+              <i class="bi bi-file-earmark-text me-2"></i>Nuevo Simulacro
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <form th:action="@{/admin/crearSimulacro}" method="post">
+            <div class="modal-body">
+              <input type="hidden" id="modalId" name="id" />
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Título</label>
+                <input type="text" id="modalTituloInput" name="titulo" class="form-control" required />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Descripción</label>
+                <textarea id="modalDescripcion" name="descripcion" class="form-control" rows="3" required></textarea>
+              </div>
+
+              <div class="mb-2">
+                <label class="form-label fw-semibold">Fecha de Aplicación</label>
+                <input type="date" id="modalFecha" name="fechaAplicacion" class="form-control" required />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                <i class="bi bi-x-circle me-1"></i>Cancelar
+              </button>
+              <button type="submit" class="btn btn-success">
+                <i class="bi bi-save me-1"></i><span id="modalBotonTexto">Guardar</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function abrirModalCrear() {
+        document.getElementById('modalTitulo').innerHTML = '<i class="bi bi-file-earmark-plus me-2"></i>Nuevo Simulacro';
+        document.getElementById('modalBotonTexto').textContent = 'Guardar';
+        document.getElementById('modalId').value = '';
+        document.getElementById('modalTituloInput').value = '';
+        document.getElementById('modalDescripcion').value = '';
+        document.getElementById('modalFecha').value = '';
+      }
+
+      function abrirModalEditar(btn) {
+        document.getElementById('modalTitulo').innerHTML = '<i class="bi bi-pencil-square me-2"></i>Editar Simulacro';
+        document.getElementById('modalBotonTexto').textContent = 'Actualizar';
+        document.getElementById('modalId').value = btn.dataset.id;
+        document.getElementById('modalTituloInput').value = btn.dataset.titulo;
+        document.getElementById('modalDescripcion').value = btn.dataset.descripcion;
+        document.getElementById('modalFecha').value = btn.dataset.fecha;
+      }
+    </script>
   </body>
 </html>

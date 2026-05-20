@@ -295,6 +295,10 @@ body {
 .log-icon--estudiante  { background: #dbeafe; color: #1d4ed8; }
 .log-icon--docente     { background: #dcfce7; color: #15803d; }
 .log-icon--simulacro   { background: #ffedd5; color: #c2410c; }
+.log-icon--asistencia  { background: #ccfbf1; color: #0f766e; }
+.log-icon--usuario     { background: #f3e8ff; color: #7c3aed; }
+.log-icon--institucion { background: #fce7f3; color: #be185d; }
+.log-icon--material    { background: #fef9c3; color: #a16207; }
 .log-icon--default     { background: #f1f5f9; color: #64748b; }
 
 .log-content {
@@ -319,10 +323,14 @@ body {
   text-transform: capitalize;
 }
 
-.log-badge--estudiante { background: #dbeafe; color: #1d4ed8; }
-.log-badge--docente    { background: #dcfce7; color: #15803d; }
-.log-badge--simulacro  { background: #ffedd5; color: #c2410c; }
-.log-badge--default    { background: #f1f5f9; color: #64748b; }
+.log-badge--estudiante  { background: #dbeafe; color: #1d4ed8; }
+.log-badge--docente     { background: #dcfce7; color: #15803d; }
+.log-badge--simulacro   { background: #ffedd5; color: #c2410c; }
+.log-badge--asistencia  { background: #ccfbf1; color: #0f766e; }
+.log-badge--usuario     { background: #f3e8ff; color: #7c3aed; }
+.log-badge--institucion { background: #fce7f3; color: #be185d; }
+.log-badge--material    { background: #fef9c3; color: #a16207; }
+.log-badge--default     { background: #f1f5f9; color: #64748b; }
 
 .log-time {
   font-size: 0.75rem;

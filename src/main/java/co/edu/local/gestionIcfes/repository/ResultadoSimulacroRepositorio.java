@@ -13,4 +13,10 @@ public interface ResultadoSimulacroRepositorio extends JpaRepository<ResultadoSi
 
     Optional<ResultadoSimulacro> findByEstudianteDocumentoIdentidadAndSimulacroId(
             String documentoIdentidad, Long simulacroId);
+
+    void deleteByEstudianteInstitucionId(Long institucionId);
+
+    void deleteBySimulacroInstitucionId(Long institucionId);
+
+    void deleteBySimulacroId(Long simulacroId);
 }

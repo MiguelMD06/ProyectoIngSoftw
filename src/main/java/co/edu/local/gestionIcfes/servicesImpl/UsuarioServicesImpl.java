@@ -121,6 +121,7 @@ public class UsuarioServicesImpl implements UsuarioServices {
 			docente.setPrimerApellido(personaDTO.getPrimerApellido());
 			docente.setSegundoApellido(personaDTO.getSegundoApellido());
 			docente.setCelular(personaDTO.getCelular());
+			docente.setEspecialidad(personaDTO.getEspecialidad());
 			docente.setUsuario(usuario);
 			docente.setInstitucion(institucionServicio.buscarPorId(personaDTO.getInstitucion()));
 			logService.registrarLog("docente", "Registro nuevo docente " + personaDTO.getPrimerNombre());

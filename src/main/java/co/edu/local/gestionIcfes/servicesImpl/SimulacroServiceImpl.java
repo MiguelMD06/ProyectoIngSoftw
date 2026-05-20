@@ -67,7 +67,7 @@ public class SimulacroServiceImpl implements SimulacroService {
             resultado.setDatos(archivo.getBytes()); // ahora dentro del try
             resultado.setEstudiante(estudiante);
             resultado.setSimulacro(simulacro);
-            logService.registrarLog("Simulacro", "Nuevo simulacro subido");
+            logService.registrarLog("simulacro", "Nuevo simulacro subido");
             return resultadoRepo.save(resultado);
         } catch (IOException e) {
             throw new RuntimeException("Error al leer el archivo PDF", e);
@@ -85,6 +85,20 @@ public class SimulacroServiceImpl implements SimulacroService {
                 .orElseThrow(() -> new RuntimeException("Simulacro no encontrado"));
     }
     
+    @Override
+    public Simulacro actualizarSimulacro(Simulacro simulacro) {
+        logService.registrarLog("simulacro", "Simulacro actualizado: " + simulacro.getTitulo());
+        return simulacroRepositorio.save(simulacro);
+    }
+
+    @Override
+    public void eliminarSimulacro(Long id) {
+        Simulacro simulacro = obtenerSimulacroPorId(id);
+        resultadoRepo.deleteBySimulacroId(id);
+        simulacroRepositorio.deleteById(id);
+        logService.registrarLog("simulacro", "Simulacro eliminado: " + simulacro.getTitulo());
+    }
+
     @Override
     public Long cantidadSimulacros() {
     	return simulacroRepositorio.count();

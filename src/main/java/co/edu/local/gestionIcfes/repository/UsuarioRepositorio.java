@@ -1,5 +1,6 @@
 package co.edu.local.gestionIcfes.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,6 @@ public interface UsuarioRepositorio extends JpaRepository<Usuario, Long> {
 	public Long countByRoles_Nombre(String nombre);
 	public Long countByRoles_NombreAndEnabled(String rolNombre, Boolean enabled);
 	public Optional<Usuario> findFirstByInstitucionIdAndRoles_Nombre(Long institucionId, String rolNombre);
+
+	public List<Usuario> findByInstitucionId(Long institucionId);
 }

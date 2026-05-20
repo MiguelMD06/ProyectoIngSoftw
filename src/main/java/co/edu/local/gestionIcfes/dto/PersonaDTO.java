@@ -27,10 +27,12 @@ public class PersonaDTO {
 	private String celular;
 	
 	private Long rol;
-	
+
 	private String salon;
-	
+
 	private Long institucion;
+
+	private String especialidad;
 
 	public PersonaDTO(String documentoIdentidad, TipoIdentificacion tipoIdentificacion, String primerNombre,
 			String segundoNombre, String primerApellido, String segundoApellido, String celular, String salon,

@@ -13,5 +13,7 @@ public interface SimulacroService {
     ResultadoSimulacro subirResultado(String documentoIdentidad, Long simulacroId, MultipartFile archivo);
     List<Simulacro> listarSimulacros();
     Simulacro obtenerSimulacroPorId(Long simulacroId);
+    Simulacro actualizarSimulacro(Simulacro simulacro);
+    void eliminarSimulacro(Long id);
     public Long cantidadSimulacros();
 }
