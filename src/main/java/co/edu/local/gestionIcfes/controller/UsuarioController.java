@@ -76,6 +76,22 @@ public class UsuarioController {
 		model.addAttribute("roles", rolService.listarRoles());
 		return "admin/AdminRegistro";
 	}
+
+	@GetMapping("/registroEstudiante")
+	public String mostrarRegistroEstudiante(Model model) {
+		model.addAttribute("persona", new PersonaDTO());
+		model.addAttribute("tiposIdentificaciones", TipoIdentificacion.values());
+		model.addAttribute("instituciones", institucionService.listarInstituciones());
+		return "admin/AdminRegistroEstudiante";
+	}
+
+	@GetMapping("/registroDocente")
+	public String mostrarRegistroDocente(Model model) {
+		model.addAttribute("persona", new PersonaDTO());
+		model.addAttribute("tiposIdentificaciones", TipoIdentificacion.values());
+		model.addAttribute("instituciones", institucionService.listarInstituciones());
+		return "admin/AdminRegistroDocente";
+	}
 	
 	@PostMapping("/registro")
 	public String registrarUsuario(@ModelAttribute("persona") PersonaDTO personaDTO) {
