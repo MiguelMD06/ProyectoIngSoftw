@@ -49,7 +49,7 @@
           </div>
           <div class="row mb-3">
             <label for="institucionId" class="form-label">Institución</label>
-            <select id="institucionId" class="form-select" th:field="*{institucionId}" required>
+            <select id="institucionId" class="form-select" th:field="*{institucionId}">
               <option value="" disabled selected>Seleccione una institución</option>
               <option th:each="inst : ${instituciones}"
                       th:value="${inst.id}"
