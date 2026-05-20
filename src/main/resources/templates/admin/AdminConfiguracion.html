@@ -17,8 +17,8 @@
 
     <br />
     <div class="header container">
-      <h2>Configuración del Sistema</h2>
-      <p class="text-muted">Administra tu perfil y las cuentas de usuarios registrados.</p>
+      <h2 th:text="#{config.admin.title}">Configuración del Sistema</h2>
+      <p class="text-muted" th:text="#{config.admin.subtitle}">Administra tu perfil y las cuentas de usuarios registrados.</p>
     </div>
 
     <div class="container mb-5">
@@ -32,7 +32,7 @@
                 <i class="bi bi-person-fill fs-4 text-white"></i>
               </div>
               <div>
-                <h5 class="mb-0 fw-bold">Mi Perfil</h5>
+                <h5 class="mb-0 fw-bold" th:text="#{config.profile.title}">Mi Perfil</h5>
                 <small class="text-muted" sec:authentication="principal.username"></small>
               </div>
             </div>
@@ -55,7 +55,7 @@
               <input type="hidden" name="id" th:value="${adminActual.id}" />
 
               <div class="mb-3">
-                <label class="form-label fw-semibold">Contraseña actual</label>
+                <label class="form-label fw-semibold" th:text="#{form.password.current}">Contraseña actual</label>
                 <div class="input-group">
                   <input type="password" name="passwordActual" id="passwordActual"
                          class="form-control" required />
@@ -67,7 +67,7 @@
               </div>
 
               <div class="mb-3">
-                <label class="form-label fw-semibold">Nueva contraseña</label>
+                <label class="form-label fw-semibold" th:text="#{form.password.new}">Nueva contraseña</label>
                 <div class="input-group">
                   <input type="password" name="passwordNueva" id="passwordNueva"
                          class="form-control" required minlength="6" />
@@ -79,7 +79,7 @@
               </div>
 
               <div class="mb-4">
-                <label class="form-label fw-semibold">Confirmar contraseña</label>
+                <label class="form-label fw-semibold" th:text="#{form.password.confirm}">Confirmar contraseña</label>
                 <div class="input-group">
                   <input type="password" name="confirmarPassword" id="confirmarPassword"
                          class="form-control" required minlength="6" />
@@ -88,13 +88,14 @@
                     <i class="bi bi-eye"></i>
                   </button>
                 </div>
-                <div id="msgConfirmar" class="form-text text-danger d-none">
+                <div id="msgConfirmar" class="form-text text-danger d-none"
+                     th:text="#{form.password.mismatch}">
                   Las contraseñas no coinciden.
                 </div>
               </div>
 
               <button type="submit" class="btn btn-edit text-white w-100">
-                <i class="bi bi-shield-lock me-1"></i>Actualizar contraseña
+                <i class="bi bi-shield-lock me-1"></i><span th:text="#{btn.update.password}">Actualizar contraseña</span>
               </button>
             </form>
           </div>
@@ -105,10 +106,11 @@
           <div class="table-card">
             <div class="d-flex align-items-center justify-content-between mb-3">
               <h5 class="mb-0 fw-bold">
-                <i class="bi bi-people-fill me-2 text-primary"></i>Gestión de Usuarios
+                <i class="bi bi-people-fill me-2 text-primary"></i><span th:text="#{config.users.title}">Gestión de Usuarios</span>
               </h5>
               <span class="badge bg-primary-subtle text-primary rounded-pill"
-                    th:text="${usuarios != null ? usuarios.size() + ' cuentas' : '0 cuentas'}"></span>
+                    th:text="${usuarios != null} ? |${usuarios.size()} #{config.users.accounts}| : |0 #{config.users.accounts}|">
+              </span>
             </div>
 
             <!-- Alertas usuarios -->
@@ -129,26 +131,26 @@
             <div class="row g-2 mb-3">
               <div class="col-sm-6">
                 <label class="form-label fw-semibold small text-muted mb-1">
-                  <i class="bi bi-shield me-1"></i>Filtrar por rol
+                  <i class="bi bi-shield me-1"></i><span th:text="#{config.filter.role}">Filtrar por rol</span>
                 </label>
                 <select id="filtroRol" class="form-select form-select-sm">
-                  <option value="">— Todos los roles —</option>
-                  <option value="ADMIN">Admin</option>
-                  <option value="DOCENTE">Docente</option>
-                  <option value="ESTUDIANTE">Estudiante</option>
+                  <option value="" th:text="#{config.filter.all.roles}">— Todos los roles —</option>
+                  <option value="ADMIN" th:text="#{role.admin}">Admin</option>
+                  <option value="DOCENTE" th:text="#{role.teacher}">Docente</option>
+                  <option value="ESTUDIANTE" th:text="#{role.student}">Estudiante</option>
                 </select>
               </div>
               <div class="col-sm-6">
                 <label class="form-label fw-semibold small text-muted mb-1">
-                  <i class="bi bi-building me-1"></i>Filtrar por institución
+                  <i class="bi bi-building me-1"></i><span th:text="#{config.filter.institution}">Filtrar por institución</span>
                 </label>
                 <select id="filtroInstitucion" class="form-select form-select-sm">
-                  <option value="">— Todas las instituciones —</option>
+                  <option value="" th:text="#{config.filter.all.institutions}">— Todas las instituciones —</option>
                   <option th:each="inst : ${instituciones}"
                           th:value="${inst.id}"
                           th:text="${inst.nombre}">
                   </option>
-                  <option value="sin">Sin institución</option>
+                  <option value="sin" th:text="#{config.filter.no.institution}">Sin institución</option>
                 </select>
               </div>
             </div>
@@ -157,11 +159,11 @@
               <table class="table align-middle table-striped mb-0" id="tablaUsuarios">
                 <thead>
                   <tr>
-                    <th>Usuario</th>
-                    <th>Rol</th>
-                    <th>Institución</th>
-                    <th class="text-center">Estado</th>
-                    <th class="text-center">Acciones</th>
+                    <th th:text="#{config.col.user}">Usuario</th>
+                    <th th:text="#{config.col.role}">Rol</th>
+                    <th th:text="#{nav.institutions}">Institución</th>
+                    <th class="text-center" th:text="#{config.col.state}">Estado</th>
+                    <th class="text-center" th:text="#{students.col.actions}">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -188,11 +190,11 @@
                     <td class="text-center">
                       <span th:if="${usr.enabled}"
                             class="badge bg-success-subtle text-success border border-success-subtle">
-                        <i class="bi bi-circle-fill me-1" style="font-size:0.5rem"></i>Activo
+                        <i class="bi bi-circle-fill me-1" style="font-size:0.5rem"></i><span th:text="#{config.state.active}">Activo</span>
                       </span>
                       <span th:if="${!usr.enabled}"
                             class="badge bg-danger-subtle text-danger border border-danger-subtle">
-                        <i class="bi bi-circle-fill me-1" style="font-size:0.5rem"></i>Inactivo
+                        <i class="bi bi-circle-fill me-1" style="font-size:0.5rem"></i><span th:text="#{config.state.inactive}">Inactivo</span>
                       </span>
                     </td>
                     <td class="text-center">
@@ -200,7 +202,7 @@
                         <button class="btn btn-action btn-acciones dropdown-toggle"
                                 type="button" data-bs-toggle="dropdown">
                           <i class="bi bi-grid-3x3-gap-fill"></i>
-                          <span>Acciones</span>
+                          <span th:text="#{btn.actions}">Acciones</span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end shadow">
 
@@ -210,12 +212,12 @@
                                th:href="@{/admin/configuracion/toggleActivo/{id}(id=${usr.id})}">
                               <i th:if="${usr.enabled}" class="bi bi-toggle-on text-warning me-2"></i>
                               <i th:if="${!usr.enabled}" class="bi bi-toggle-off text-secondary me-2"></i>
-                              <span th:text="${usr.enabled ? 'Desactivar' : 'Activar'}"></span>
+                              <span th:text="${usr.enabled} ? #{config.action.deactivate} : #{config.action.activate}"></span>
                             </a>
                           </li>
                           <li th:if="${usr.id == adminActual.id}">
                             <span class="dropdown-item text-muted disabled">
-                              <i class="bi bi-lock me-2"></i>Tu cuenta
+                              <i class="bi bi-lock me-2"></i><span th:text="#{config.action.my.account}">Tu cuenta</span>
                             </span>
                           </li>
 
@@ -229,7 +231,7 @@
                                     data-bs-target="#modalCambiarPassword"
                                     th:data-id="${usr.id}"
                                     th:data-username="${usr.username}">
-                              <i class="bi bi-pencil-square text-primary me-2"></i>Cambiar contraseña
+                              <i class="bi bi-pencil-square text-primary me-2"></i><span th:text="#{config.action.change.password}">Cambiar contraseña</span>
                             </button>
                           </li>
 
@@ -237,8 +239,9 @@
                           <li>
                             <a class="dropdown-item"
                                th:href="@{/admin/configuracion/restablecerPassword/{id}(id=${usr.id})}"
-                               onclick="return confirm('¿Restablecer la contraseña de este usuario a su número de documento?');">
-                              <i class="bi bi-key text-warning me-2"></i>Restablecer a documento
+                               th:data-confirm="#{config.reset.confirm}"
+                               onclick="return confirm(this.getAttribute('data-confirm'))">
+                              <i class="bi bi-key text-warning me-2"></i><span th:text="#{config.action.reset.password}">Restablecer a documento</span>
                             </a>
                           </li>
 
@@ -248,7 +251,7 @@
                   </tr>
                   <tr id="sinResultados" style="display:none">
                     <td colspan="5" class="text-center text-muted py-4">
-                      <i class="bi bi-search me-2"></i>No hay usuarios con ese filtro.
+                      <i class="bi bi-search me-2"></i><span th:text="#{config.no.filter.results}">No hay usuarios con ese filtro.</span>
                     </td>
                   </tr>
                 </tbody>
@@ -257,8 +260,7 @@
 
             <p class="text-muted small mt-3 mb-0">
               <i class="bi bi-info-circle me-1"></i>
-              "Restablecer a documento" pone la contraseña al número de documento del usuario.
-              Los admins no tienen documento y no pueden restablecerse.
+              <span th:text="#{config.reset.info}"></span>
             </p>
           </div>
         </div>
@@ -272,23 +274,24 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">
-              <i class="bi bi-shield-lock me-2"></i>Cambiar contraseña
+              <i class="bi bi-shield-lock me-2"></i><span th:text="#{config.action.change.password}">Cambiar contraseña</span>
             </h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <form th:action="@{/admin/configuracion/cambiarPasswordUsuario}" method="post" id="formCambioAdmin">
             <div class="modal-body">
               <p class="text-muted small mb-3">
-                Cambiando contraseña de: <strong id="modalUsername"></strong>
+                <span th:text="#{config.modal.changing.for}">Cambiando contraseña de:</span>
+                <strong id="modalUsername"></strong>
               </p>
               <input type="hidden" name="id" id="modalUserId" />
 
               <div class="mb-3">
-                <label class="form-label fw-semibold">Nueva contraseña</label>
+                <label class="form-label fw-semibold" th:text="#{form.password.new}">Nueva contraseña</label>
                 <div class="input-group">
                   <input type="password" name="passwordNueva" id="modalNueva"
                          class="form-control" required minlength="6"
-                         placeholder="Mínimo 6 caracteres" />
+                         th:placeholder="#{form.password.min}" />
                   <button class="btn btn-outline-secondary" type="button"
                           onclick="toggleVer('modalNueva', this)">
                     <i class="bi bi-eye"></i>
@@ -297,25 +300,26 @@
               </div>
 
               <div class="mb-2">
-                <label class="form-label fw-semibold">Confirmar contraseña</label>
+                <label class="form-label fw-semibold" th:text="#{form.password.confirm}">Confirmar contraseña</label>
                 <div class="input-group">
                   <input type="password" name="confirmarPassword" id="modalConfirmar"
                          class="form-control" required minlength="6"
-                         placeholder="Repite la contraseña" />
+                         th:placeholder="#{form.password.repeat}" />
                   <button class="btn btn-outline-secondary" type="button"
                           onclick="toggleVer('modalConfirmar', this)">
                     <i class="bi bi-eye"></i>
                   </button>
                 </div>
-                <div id="msgModalConfirmar" class="form-text text-danger d-none">
+                <div id="msgModalConfirmar" class="form-text text-danger d-none"
+                     th:text="#{form.password.mismatch}">
                   Las contraseñas no coinciden.
                 </div>
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{btn.cancel}">Cancelar</button>
               <button type="submit" class="btn btn-edit text-white">
-                <i class="bi bi-save me-1"></i>Guardar
+                <i class="bi bi-save me-1"></i><span th:text="#{btn.save}">Guardar</span>
               </button>
             </div>
           </form>

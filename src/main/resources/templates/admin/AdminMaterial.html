@@ -20,11 +20,11 @@
       <div class="title-section px-0 mb-4">
         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
           <div>
-            <h2 class="mb-0">Material de Estudio</h2>
-            <p class="text-muted mb-0">Gestiona el material semanal por institución</p>
+            <h2 class="mb-0" th:text="#{material.page.title}">Material de Estudio</h2>
+            <p class="text-muted mb-0" th:text="#{material.subtitle}">Gestiona el material semanal por institución</p>
           </div>
           <button class="btn btn-create text-white" data-bs-toggle="modal" data-bs-target="#modalSubirMaterial">
-            <i class="bi bi-upload me-1"></i> Subir Material
+            <i class="bi bi-upload me-1"></i> <span th:text="#{material.upload.btn}">Subir Material</span>
           </button>
         </div>
       </div>
@@ -44,10 +44,10 @@
       <!-- FILTRO POR INSTITUCIÓN -->
       <div class="table-card mb-4">
         <form th:action="@{/admin/AdminMaterial}" method="get" class="d-flex align-items-center gap-3 flex-wrap">
-          <label class="fw-semibold text-muted mb-0">Institución:</label>
+          <label class="fw-semibold text-muted mb-0" th:text="#{form.institution}">Institución:</label>
           <select name="institucionId" class="form-select" style="max-width: 300px;"
                   onchange="this.form.submit()">
-            <option value="">-- Selecciona una institución --</option>
+            <option value="" th:text="#{material.filter.select}">-- Selecciona una institución --</option>
             <option th:each="inst : ${instituciones}"
                     th:value="${inst.id}"
                     th:text="${inst.nombre}"
@@ -62,8 +62,8 @@
         <div th:if="${materiales == null or materiales.isEmpty()}" class="text-center py-5 text-muted">
           <i class="bi bi-folder2-open display-4"></i>
           <p class="mt-3">
-            <span th:if="${institucionSeleccionada == null}">Selecciona una institución para ver los materiales.</span>
-            <span th:if="${institucionSeleccionada != null}">No hay materiales subidos para esta institución.</span>
+            <span th:if="${institucionSeleccionada == null}" th:text="#{material.empty.select}">Selecciona una institución para ver los materiales.</span>
+            <span th:if="${institucionSeleccionada != null}" th:text="#{material.empty.none}">No hay materiales subidos para esta institución.</span>
           </p>
         </div>
 
@@ -71,18 +71,18 @@
           <table class="table table-hover align-middle mb-0">
             <thead>
               <tr>
-                <th>Semana</th>
-                <th>Título</th>
-                <th>Descripción</th>
-                <th>Fecha de subida</th>
-                <th>Archivo</th>
-                <th class="text-center">Acción</th>
+                <th th:text="#{material.col.week}">Semana</th>
+                <th th:text="#{material.col.title}">Título</th>
+                <th th:text="#{material.col.desc}">Descripción</th>
+                <th th:text="#{material.col.date}">Fecha de subida</th>
+                <th th:text="#{material.col.file}">Archivo</th>
+                <th class="text-center" th:text="#{material.col.action}">Acción</th>
               </tr>
             </thead>
             <tbody>
               <tr th:each="mat : ${materiales}">
                 <td>
-                  <span class="badge bg-primary">Semana <span th:text="${mat.semana}"></span></span>
+                  <span class="badge bg-primary"><span th:text="#{material.week.prefix}">Semana</span> <span th:text="${mat.semana}"></span></span>
                 </td>
                 <td class="fw-semibold" th:text="${mat.titulo}"></td>
                 <td class="text-muted" style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
@@ -99,13 +99,14 @@
                     <a th:href="@{/admin/descargarMaterial/{id}(id=${mat.id})}"
                        class="btn-action btn-edit">
                       <i class="bi bi-download"></i>
-                      <span>Descargar</span>
+                      <span th:text="#{btn.download}">Descargar</span>
                     </a>
                     <a th:href="@{/admin/eliminarMaterial/{id}(id=${mat.id}, institucionId=${institucionSeleccionada})}"
                        class="btn-action btn-delete"
-                       onclick="return confirm('¿Eliminar este material? Esta acción no se puede deshacer.')">
+                       th:data-confirm="#{material.confirm.delete}"
+                       onclick="return confirm(this.getAttribute('data-confirm'))">
                       <i class="bi bi-trash"></i>
-                      <span>Eliminar</span>
+                      <span th:text="#{btn.delete}">Eliminar</span>
                     </a>
                   </div>
                 </td>
@@ -123,16 +124,16 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="modalSubirLabel">
-              <i class="bi bi-upload me-2"></i>Subir Material de Estudio
+              <i class="bi bi-upload me-2"></i><span th:text="#{material.modal.title}">Subir Material de Estudio</span>
             </h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <form th:action="@{/admin/subirMaterial}" method="post" enctype="multipart/form-data">
             <div class="modal-body">
               <div class="mb-3">
-                <label class="form-label fw-semibold">Institución</label>
+                <label class="form-label fw-semibold" th:text="#{form.institution}">Institución</label>
                 <select name="institucionId" class="form-select" required>
-                  <option value="">-- Selecciona --</option>
+                  <option value="" th:text="#{material.modal.select}">-- Selecciona --</option>
                   <option th:each="inst : ${instituciones}"
                           th:value="${inst.id}"
                           th:text="${inst.nombre}"
@@ -142,29 +143,29 @@
               </div>
               <div class="row g-3">
                 <div class="col-md-8">
-                  <label class="form-label fw-semibold">Título</label>
-                  <input type="text" name="titulo" class="form-control" placeholder="Ej. Guía de matemáticas" required />
+                  <label class="form-label fw-semibold" th:text="#{material.modal.title.label}">Título</label>
+                  <input type="text" name="titulo" class="form-control" th:placeholder="#{material.modal.title.placeholder}" required />
                 </div>
                 <div class="col-md-4">
-                  <label class="form-label fw-semibold">Semana</label>
-                  <input type="number" name="semana" class="form-control" min="1" placeholder="Ej. 3" required />
+                  <label class="form-label fw-semibold" th:text="#{form.week}">Semana</label>
+                  <input type="number" name="semana" class="form-control" min="1" th:placeholder="#{material.modal.week.placeholder}" required />
                 </div>
               </div>
               <div class="mb-3 mt-3">
-                <label class="form-label fw-semibold">Descripción</label>
+                <label class="form-label fw-semibold" th:text="#{form.description}">Descripción</label>
                 <textarea name="descripcion" class="form-control" rows="3"
-                          placeholder="Describe brevemente el contenido..." required></textarea>
+                          th:placeholder="#{material.modal.desc.placeholder}" required></textarea>
               </div>
               <div class="mb-3">
                 <label class="form-label fw-semibold">Archivo</label>
                 <input type="file" name="archivo" class="form-control" required />
-                <div class="form-text">PDF, Word, imágenes u otros formatos de estudio.</div>
+                <div class="form-text" th:text="#{material.modal.file.hint}">PDF, Word, imágenes u otros formatos de estudio.</div>
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{btn.cancel}">Cancelar</button>
               <button type="submit" class="btn btn-create text-white">
-                <i class="bi bi-upload me-1"></i>Subir
+                <i class="bi bi-upload me-1"></i><span th:text="#{btn.upload}">Subir</span>
               </button>
             </div>
           </form>

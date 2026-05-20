@@ -1,161 +1,123 @@
 <!doctype html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Panel de Estudiantes</title>
     <link rel="icon" th:href="@{/assets/gestion-icon.png}" type="image/png">
-    <!-- Bootstrap -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <!-- Icons -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
     <link rel="stylesheet" th:href="@{/estilos/AdminEstudiante.css}" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   </head>
 
   <body>
-    <!-- NAVBAR -->
     <div th:replace="~{fragments/navbarAdmin :: navbar}"></div>
 
-    <!-- HEADER -->
     <br />
     <div class="header container">
-      <h2>Bienvenido Administrador,</h2>
+      <h2 th:text="#{admin.welcome}">Bienvenido Administrador,</h2>
       <h3 sec:authentication="principal.username"></h3>
-      <p class="text-muted">
-        Realiza los cambios necesarios a todos los estudiantes activos de los
-        cursos PreIcfes.
+      <p class="text-muted" th:text="#{students.subtitle}">
+        Realiza los cambios necesarios a todos los estudiantes activos.
       </p>
     </div>
 
-    <!-- TITLE -->
     <div class="title-section container">
-      <h2>Panel de Estudiantes</h2>
-      <a
-        class="btn btn-create text-white mt-3 bi bi-plus"
-        th:href="@{/registroEstudiante}"
-      >
-        Crear Estudiante
-      </a>
-
+      <h2 th:text="#{students.page.title}">Panel de Estudiantes</h2>
+      <a class="btn btn-create text-white mt-3 bi bi-plus"
+         th:href="@{/registroEstudiante}"
+         th:text="#{students.create}"> Crear Estudiante</a>
     </div>
 
     <!-- FILTROS DINÁMICOS -->
     <div class="container mb-4">
-
-      <!-- PASO 1: INSTITUCIÓN -->
       <div class="mb-3" th:if="${instituciones != null and !instituciones.isEmpty()}">
         <label for="institucionSelect" class="form-label fw-semibold">
-          <i class="bi bi-building me-1 text-primary"></i>Institución
+          <i class="bi bi-building me-1 text-primary"></i>
+          <span th:text="#{form.institution}">Institución</span>
         </label>
         <select id="institucionSelect" class="form-select">
-          <option value="">— Seleccione una institución —</option>
-          <option
-            th:each="inst : ${instituciones}"
-            th:value="${inst.id}"
-            th:text="${inst.nombre}"
-          ></option>
+          <option value="" th:text="#{form.select.institution}">— Seleccione una institución —</option>
+          <option th:each="inst : ${instituciones}"
+                  th:value="${inst.id}"
+                  th:text="${inst.nombre}"></option>
         </select>
       </div>
 
-      <!-- SIN INSTITUCIONES -->
       <div th:if="${instituciones == null or instituciones.isEmpty()}"
            class="alert alert-info mt-3">
-        No hay instituciones registradas.
-        <a th:href="@{/admin/AdminInstitucion}" class="btn btn-create ms-2 text-white">
-          Gestionar Instituciones
-        </a>
+        <span th:text="#{students.no.institutions}">No hay instituciones registradas.</span>
+        <a th:href="@{/admin/AdminInstitucion}" class="btn btn-create ms-2 text-white"
+           th:text="#{students.manage.institutions}">Gestionar Instituciones</a>
       </div>
 
-      <!-- PASO 2: SALÓN (oculto hasta elegir institución) -->
       <div class="mb-3 d-none" id="filtroSalon">
         <label for="salonSelect" class="form-label fw-semibold">
-          <i class="bi bi-door-open me-1 text-success"></i>Salón
+          <i class="bi bi-door-open me-1 text-success"></i>
+          <span th:text="#{form.classroom}">Salón</span>
         </label>
         <select id="salonSelect" class="form-select">
-          <option value="">— Seleccione un salón —</option>
-          <option value="1">Salón 1</option>
-          <option value="2">Salón 2</option>
+          <option value="" th:text="#{form.select.classroom}">— Seleccione un salón —</option>
+          <option value="1" th:text="#{form.classroom.1}">Salón 1</option>
+          <option value="2" th:text="#{form.classroom.2}">Salón 2</option>
         </select>
       </div>
     </div>
 
-    <!-- MENSAJE GUÍA (visible hasta completar los dos selects) -->
     <div class="container mb-4" id="filtroHint">
       <div class="table-card text-center py-5 text-muted">
         <i class="bi bi-funnel fs-1"></i>
-        <p class="mt-3 mb-0" id="filtroHintMsg">Selecciona una institución para ver los estudiantes.</p>
+        <p class="mt-3 mb-0" id="filtroHintMsg"
+           th:text="#{students.filter.hint}"
+           th:data-hint1="#{students.filter.hint}"
+           th:data-hint2="#{students.filter.hint2}">Selecciona una institución para ver los estudiantes.</p>
       </div>
     </div>
 
-    <!-- ALERTA DE ÉXITO -->
-    <div
-      th:if="${exitoInstitucion}"
-      class="alert alert-success alert-dismissible fade show mt-3"
-      role="alert"
-    >
+    <div th:if="${exitoInstitucion}" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
       <i class="bi bi-check-circle-fill"></i>
       <span th:text="${exitoInstitucion}"></span>
       <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
-
-    <!-- ALERTA DE ERROR -->
-    <div
-      th:if="${errorInstitucion}"
-      class="alert alert-danger alert-dismissible fade show mt-3"
-      role="alert"
-    >
+    <div th:if="${errorInstitucion}" class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
       <i class="bi bi-exclamation-triangle-fill"></i>
       <span th:text="${errorInstitucion}"></span>
       <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
+
     <!-- TABLA ESTUDIANTES -->
     <div class="container mb-5" id="tablaContainer" style="display:none">
-      <div
-        th:if="${exitoEliminar}"
-        class="alert alert-success alert-dismissible fade show mb-3"
-        role="alert"
-      >
+      <div th:if="${exitoEliminar}" class="alert alert-success alert-dismissible fade show mb-3" role="alert">
         <i class="bi bi-check-circle-fill"></i>
         <span th:text="${exitoEliminar}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
       </div>
-      <div
-        th:if="${errorEliminar}"
-        class="alert alert-danger alert-dismissible fade show mb-3"
-        role="alert"
-      >
+      <div th:if="${errorEliminar}" class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
         <i class="bi bi-exclamation-triangle-fill"></i>
         <span th:text="${errorEliminar}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
       </div>
       <div class="table-card">
-        <div
-          class="table-responsive"
-          th:if="${estudiantes != null and !estudiantes.isEmpty()}"
-        >
+        <div class="table-responsive"
+             th:if="${estudiantes != null and !estudiantes.isEmpty()}">
           <table class="table align-middle table-striped">
             <thead>
               <tr>
                 <th>#</th>
-                <th>Documento</th>
-                <th>Tipo Identificación</th>
-                <th>Primer Nombre</th>
-                <th>Segundo Nombre</th>
-                <th>Primer Apellido</th>
-                <th>Segundo Apellido</th>
-                <th>Celular</th>
-                <th>Email (Usuario)</th>
-                <th>Activo</th>
-                <th>Institución</th>
-                <th>Salón</th>
-                <th>Acciones</th>
+                <th th:text="#{students.col.document}">Documento</th>
+                <th th:text="#{students.col.idtype}">Tipo Identificación</th>
+                <th th:text="#{students.col.firstname}">Primer Nombre</th>
+                <th th:text="#{students.col.secondname}">Segundo Nombre</th>
+                <th th:text="#{students.col.lastname}">Primer Apellido</th>
+                <th th:text="#{students.col.secondlast}">Segundo Apellido</th>
+                <th th:text="#{students.col.phone}">Celular</th>
+                <th th:text="#{students.col.email}">Email (Usuario)</th>
+                <th th:text="#{students.col.active}">Activo</th>
+                <th th:text="#{students.col.institution}">Institución</th>
+                <th th:text="#{students.col.classroom}">Salón</th>
+                <th th:text="#{students.col.actions}">Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -170,48 +132,33 @@
                 <td th:text="${est.primerApellido}"></td>
                 <td th:text="${est.segundoApellido}"></td>
                 <td th:text="${est.celular}"></td>
-                <td
-                  th:text="${est.usuario != null ? est.usuario.username : 'Sin usuario'}"
-                ></td>
-                <td><span th:text="${est.activo ? 'Sí' : 'No'}"></span></td>
-                <td
-                  th:text="${est.institucion != null ? est.institucion.nombre : 'Sin institución'}"
-                ></td>
-                <td
-                  th:text="${est.usuario != null ? est.usuario.salon : 'Sin salón'}"
-                ></td>
+                <td th:text="${est.usuario != null ? est.usuario.username : #{students.no.user}}"></td>
+                <td><span th:text="${est.activo} ? #{students.active.yes} : #{students.active.no}"></span></td>
+                <td th:text="${est.institucion != null ? est.institucion.nombre : #{students.no.institution}}"></td>
+                <td th:text="${est.usuario != null ? est.usuario.salon : #{students.no.classroom}}"></td>
                 <td>
                   <div class="dropdown">
-                    <button
-                      class="btn btn-action btn-acciones dropdown-toggle"
-                      type="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
+                    <button class="btn btn-action btn-acciones dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                       <i class="bi bi-grid-3x3-gap-fill"></i>
-                      <span>Acciones</span>
+                      <span th:text="#{btn.actions}">Acciones</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow">
-
-                      <!-- Editar -->
                       <li>
                         <a class="dropdown-item"
                            th:href="@{/admin/AdminEstudiante/modificar/} + ${est.documentoIdentidad}">
-                          <i class="bi bi-pencil-square text-primary me-2"></i>Editar
+                          <i class="bi bi-pencil-square text-primary me-2"></i>
+                          <span th:text="#{btn.edit}">Editar</span>
                         </a>
                       </li>
-
-                      <!-- Subir PDF -->
                       <li>
-                        <button class="dropdown-item"
-                                type="button"
+                        <button class="dropdown-item" type="button"
                                 data-bs-toggle="modal"
                                 th:data-bs-target="'#uploadModal-' + ${est.documentoIdentidad}">
-                          <i class="bi bi-cloud-upload text-purple me-2"></i>Subir PDF
+                          <i class="bi bi-cloud-upload text-purple me-2"></i>
+                          <span th:text="#{btn.upload}">Subir PDF</span>
                         </button>
                       </li>
-
-                      <!-- Descargas (si existen) -->
                       <li th:if="${not #lists.isEmpty(est.resultados)}">
                         <hr class="dropdown-divider" />
                       </li>
@@ -224,31 +171,31 @@
                           </a>
                           <a th:href="@{/admin/eliminarResultado/{id}(id=${res.id})}"
                              class="text-danger"
-                             title="Eliminar resultado"
+                             th:data-confirm="#{students.confirm.delete.result}"
                              th:data-titulo="${res.simulacro.titulo}"
-                             onclick="return confirm('¿Eliminar el resultado de ' + this.dataset.titulo + '?');">
+                             onclick="return confirm(this.getAttribute('data-confirm') + ' ' + this.getAttribute('data-titulo') + '?')">
                             <i class="bi bi-trash3"></i>
                           </a>
                         </div>
                       </li>
-
-                      <!-- Eliminar -->
                       <li><hr class="dropdown-divider" /></li>
                       <li>
                         <a class="dropdown-item text-danger"
                            th:href="@{/admin/AdminEstudiante/} + ${est.documentoIdentidad}"
-                           onclick="return confirm('¿Estás seguro de eliminar este estudiante?');">
-                          <i class="bi bi-trash3 me-2"></i>Eliminar
+                           th:data-confirm="#{students.confirm.delete}"
+                           onclick="return confirm(this.getAttribute('data-confirm'))">
+                          <i class="bi bi-trash3 me-2"></i>
+                          <span th:text="#{btn.delete}">Eliminar</span>
                         </a>
                       </li>
-
                     </ul>
                   </div>
                 </td>
               </tr>
               <tr id="sinResultadosRow" style="display:none">
                 <td colspan="13" class="text-center text-muted py-4">
-                  <i class="bi bi-search me-2"></i>No hay estudiantes en este salón.
+                  <i class="bi bi-search me-2"></i>
+                  <span th:text="#{students.empty.salon}">No hay estudiantes en este salón.</span>
                 </td>
               </tr>
             </tbody>
@@ -257,81 +204,61 @@
 
         <!-- MODALES DE UPLOAD -->
         <div th:each="est : ${estudiantes}">
-          <div
-            class="modal fade"
-            th:id="'uploadModal-' + ${est.documentoIdentidad}"
-            tabindex="-1"
-          >
+          <div class="modal fade" th:id="'uploadModal-' + ${est.documentoIdentidad}" tabindex="-1">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title">
-                    Subir resultado de simulacro -
-                    <span
-                      th:text="${est.primerNombre + ' ' + est.primerApellido}"
-                    ></span>
+                    <span th:text="#{students.modal.upload.title}">Subir resultado de simulacro</span> —
+                    <span th:text="${est.primerNombre + ' ' + est.primerApellido}"></span>
                   </h5>
-                  <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                  ></button>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                  <form
-                    th:action="@{/admin/uploadSimulacro}"
-                    method="post"
-                    enctype="multipart/form-data"
-                  >
-                    <input
-                      type="hidden"
-                      name="documentoIdentidad"
-                      th:value="${est.documentoIdentidad}"
-                    />
+                  <form th:action="@{/admin/uploadSimulacro}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="documentoIdentidad" th:value="${est.documentoIdentidad}" />
 
                     <div class="mb-3">
-                      <label class="form-label">Simulacro</label>
+                      <label class="form-label" th:text="#{students.modal.simulacro}">Simulacro</label>
                       <select name="simulacroId" class="form-select" required>
-                        <option
-                          th:each="sim : ${simulacros}"
-                          th:value="${sim.id}"
-                          th:text="${sim.titulo}"
-                        ></option>
+                        <option th:each="sim : ${simulacros}"
+                                th:value="${sim.id}"
+                                th:text="${sim.titulo}"></option>
                       </select>
                     </div>
 
-                    <p class="fw-semibold mb-2 mt-3">Puntajes por materia (máx. 100 c/u)</p>
+                    <p class="fw-semibold mb-2 mt-3" th:text="#{students.modal.scores}">Puntajes por materia (máx. 100 c/u)</p>
                     <div class="row g-2 mb-2">
                       <div class="col-6">
-                        <label class="form-label form-label-sm mb-1">Sociales y Ciudadanas</label>
+                        <label class="form-label form-label-sm mb-1" th:text="#{register.subject.sociales}">Sociales y Ciudadanas</label>
                         <input type="number" th:id="'soc-' + ${est.documentoIdentidad}"
                                name="puntajeSociales" min="0" max="100"
                                class="form-control form-control-sm puntaje-input"
                                th:attr="data-target='total-' + ${est.documentoIdentidad}" required />
                       </div>
                       <div class="col-6">
-                        <label class="form-label form-label-sm mb-1">Ciencias Naturales</label>
+                        <label class="form-label form-label-sm mb-1" th:text="#{register.subject.naturales}">Ciencias Naturales</label>
                         <input type="number" th:id="'nat-' + ${est.documentoIdentidad}"
                                name="puntajeNaturales" min="0" max="100"
                                class="form-control form-control-sm puntaje-input"
                                th:attr="data-target='total-' + ${est.documentoIdentidad}" required />
                       </div>
                       <div class="col-6">
-                        <label class="form-label form-label-sm mb-1">Matemáticas</label>
+                        <label class="form-label form-label-sm mb-1" th:text="#{register.subject.matematicas}">Matemáticas</label>
                         <input type="number" th:id="'mat-' + ${est.documentoIdentidad}"
                                name="puntajeMatematicas" min="0" max="100"
                                class="form-control form-control-sm puntaje-input"
                                th:attr="data-target='total-' + ${est.documentoIdentidad}" required />
                       </div>
                       <div class="col-6">
-                        <label class="form-label form-label-sm mb-1">Lectura Crítica</label>
+                        <label class="form-label form-label-sm mb-1" th:text="#{register.subject.lectura}">Lectura Crítica</label>
                         <input type="number" th:id="'lec-' + ${est.documentoIdentidad}"
                                name="puntajelecturaCritica" min="0" max="100"
                                class="form-control form-control-sm puntaje-input"
                                th:attr="data-target='total-' + ${est.documentoIdentidad}" required />
                       </div>
                       <div class="col-6">
-                        <label class="form-label form-label-sm mb-1">Inglés</label>
+                        <label class="form-label form-label-sm mb-1" th:text="#{register.subject.ingles}">Inglés</label>
                         <input type="number" th:id="'ing-' + ${est.documentoIdentidad}"
                                name="puntajeIngles" min="0" max="100"
                                class="form-control form-control-sm puntaje-input"
@@ -339,28 +266,23 @@
                       </div>
                     </div>
                     <p class="text-muted small mb-3">
-                      Puntaje global: <strong th:id="'total-' + ${est.documentoIdentidad}">0</strong> / 500
+                      <span th:text="#{students.modal.global}">Puntaje global:</span>
+                      <strong th:id="'total-' + ${est.documentoIdentidad}">0</strong> / 500
                     </p>
 
-                    <p class="fw-semibold mb-2">Posición en el salón</p>
+                    <p class="fw-semibold mb-2" th:text="#{students.modal.position}">Posición en el salón</p>
                     <div class="mb-3">
-                      <label class="form-label form-label-sm mb-1">Puesto</label>
+                      <label class="form-label form-label-sm mb-1" th:text="#{students.modal.position.label}">Puesto</label>
                       <input type="number" name="puestoSalon" min="1"
                              class="form-control form-control-sm" required />
                     </div>
 
                     <div class="mb-3">
-                      <label class="form-label">Archivo PDF</label>
-                      <input
-                        type="file"
-                        class="form-control"
-                        name="archivo"
-                        accept="application/pdf"
-                        required
-                      />
+                      <label class="form-label" th:text="#{students.modal.pdf}">Archivo PDF</label>
+                      <input type="file" class="form-control" name="archivo" accept="application/pdf" required />
                     </div>
 
-                    <button type="submit" class="btn btn-success">Subir</button>
+                    <button type="submit" class="btn btn-success" th:text="#{students.modal.upload.btn}">Subir</button>
                   </form>
 
                   <script>
@@ -385,28 +307,23 @@
           </div>
         </div>
 
-        <!-- MENSAJE SI NO HAY ESTUDIANTES -->
-        <div
-          th:if="${estudiantes == null or estudiantes.isEmpty()}"
-          class="alert alert-info mt-3"
-        >
-          No hay estudiantes registrados.
+        <div th:if="${estudiantes == null or estudiantes.isEmpty()}" class="alert alert-info mt-3">
+          <span th:text="#{students.empty}">No hay estudiantes registrados.</span>
           <a th:href="@{/registroEstudiante}" class="btn btn-create ms-2"
-            >Crear su primer Estudiante</a
-          >
+             th:text="#{students.create.first}">Crear su primer Estudiante</a>
         </div>
       </div>
     </div>
 
   <script>
-    const instSelect   = document.getElementById('institucionSelect');
-    const filtroSalon  = document.getElementById('filtroSalon');
-    const salonSelect  = document.getElementById('salonSelect');
+    const instSelect    = document.getElementById('institucionSelect');
+    const filtroSalon   = document.getElementById('filtroSalon');
+    const salonSelect   = document.getElementById('salonSelect');
     const tablaContainer = document.getElementById('tablaContainer');
-    const hint         = document.getElementById('filtroHint');
-    const hintMsg      = document.getElementById('filtroHintMsg');
+    const hint          = document.getElementById('filtroHint');
+    const hintMsg       = document.getElementById('filtroHintMsg');
     const sinResultados = document.getElementById('sinResultadosRow');
-    const filas        = document.querySelectorAll('#tablaContainer tbody tr:not(#sinResultadosRow)');
+    const filas         = document.querySelectorAll('#tablaContainer tbody tr:not(#sinResultadosRow)');
 
     if (tablaContainer.querySelector('.alert')) {
       tablaContainer.style.display = 'block';
@@ -416,40 +333,25 @@
     if (instSelect) {
       instSelect.addEventListener('change', function () {
         const instId = this.value;
-
-        // Resetear salón
         salonSelect.value = '';
         filtroSalon.classList.toggle('d-none', !instId);
         tablaContainer.style.display = 'none';
-
-        if (instId) {
-          hint.style.display  = 'block';
-          hintMsg.textContent = 'Ahora selecciona el salón.';
-        } else {
-          hint.style.display  = 'block';
-          hintMsg.textContent = 'Selecciona una institución para ver los estudiantes.';
-        }
+        hint.style.display = 'block';
+        hintMsg.textContent = instId ? hintMsg.dataset.hint2 : hintMsg.dataset.hint1;
       });
 
       salonSelect.addEventListener('change', function () {
         const instId = instSelect.value;
         const salon  = this.value;
-
         if (!instId || !salon) return;
-
-        // Mostrar tabla, ocultar hint
         tablaContainer.style.display = 'block';
         hint.style.display = 'none';
-
-        // Filtrar filas
         let visibles = 0;
         filas.forEach(function (fila) {
-          const coincide = fila.dataset.institucion === instId
-                        && fila.dataset.salon === salon;
+          const coincide = fila.dataset.institucion === instId && fila.dataset.salon === salon;
           fila.style.display = coincide ? '' : 'none';
           if (coincide) visibles++;
         });
-
         sinResultados.style.display = visibles === 0 ? '' : 'none';
       });
     }

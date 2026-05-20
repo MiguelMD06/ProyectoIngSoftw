@@ -22,8 +22,8 @@
             <i class="bi bi-gear-fill fs-3 text-white"></i>
           </div>
           <div>
-            <h2 class="mb-0 fw-bold">Configuración</h2>
-            <span class="text-blue-light">Administra tu cuenta</span>
+            <h2 class="mb-0 fw-bold" th:text="#{config.title}">Configuración</h2>
+            <span class="text-blue-light" th:text="#{config.manage.account}">Administra tu cuenta</span>
           </div>
         </div>
       </div>
@@ -37,10 +37,11 @@
           <div class="info-card flex-column align-items-start gap-3 p-4">
             <div class="d-flex align-items-center gap-2 mb-1">
               <i class="bi bi-person-fill-gear text-primary fs-4"></i>
-              <h5 class="mb-0 fw-bold">Cambiar usuario</h5>
+              <h5 class="mb-0 fw-bold" th:text="#{config.change.username}">Cambiar usuario</h5>
             </div>
             <p class="text-muted small mb-2">
-              Usuario actual: <strong th:text="${docente.usuario.username}"></strong>
+              <span th:text="#{config.current.user}">Usuario actual:</span>
+              <strong th:text="${docente.usuario.username}"></strong>
             </p>
 
             <div th:if="${exitoUsername}" class="alert alert-success py-2 w-100">
@@ -55,13 +56,13 @@
             <form th:action="@{/docente/configuracion/cambiarUsername}" method="post" class="w-100">
               <input type="hidden" name="id" th:value="${docente.usuario.id}" />
               <div class="mb-3">
-                <label class="form-label fw-semibold">Nuevo usuario</label>
+                <label class="form-label fw-semibold" th:text="#{config.new.user}">Nuevo usuario</label>
                 <input type="text" name="nuevoUsername" class="form-control"
-                       placeholder="Ingresa el nuevo nombre de usuario" required minlength="4" />
-                <div class="form-text">Al guardar, deberás iniciar sesión de nuevo con el nuevo usuario.</div>
+                       th:placeholder="#{config.new.user.placeholder}" required minlength="4" />
+                <div class="form-text" th:text="#{config.user.hint}">Al guardar, deberás iniciar sesión de nuevo con el nuevo usuario.</div>
               </div>
               <button type="submit" class="btn btn-main text-white w-100">
-                <i class="bi bi-person-check me-1"></i>Guardar usuario
+                <i class="bi bi-person-check me-1"></i><span th:text="#{btn.save.user}">Guardar usuario</span>
               </button>
             </form>
           </div>
@@ -72,7 +73,7 @@
           <div class="info-card flex-column align-items-start gap-3 p-4">
             <div class="d-flex align-items-center gap-2 mb-1">
               <i class="bi bi-shield-lock-fill text-primary fs-4"></i>
-              <h5 class="mb-0 fw-bold">Cambiar contraseña</h5>
+              <h5 class="mb-0 fw-bold" th:text="#{config.change.password}">Cambiar contraseña</h5>
             </div>
 
             <div th:if="${exitoPassword}" class="alert alert-success py-2 w-100">
@@ -89,7 +90,7 @@
               <input type="hidden" name="id" th:value="${docente.usuario.id}" />
 
               <div class="mb-3">
-                <label class="form-label fw-semibold">Contraseña actual</label>
+                <label class="form-label fw-semibold" th:text="#{form.password.current}">Contraseña actual</label>
                 <div class="input-group">
                   <input type="password" name="passwordActual" id="passwordActual"
                          class="form-control" required />
@@ -101,7 +102,7 @@
               </div>
 
               <div class="mb-3">
-                <label class="form-label fw-semibold">Nueva contraseña</label>
+                <label class="form-label fw-semibold" th:text="#{form.password.new}">Nueva contraseña</label>
                 <div class="input-group">
                   <input type="password" name="passwordNueva" id="passwordNueva"
                          class="form-control" required minlength="6" />
@@ -113,7 +114,7 @@
               </div>
 
               <div class="mb-4">
-                <label class="form-label fw-semibold">Confirmar contraseña</label>
+                <label class="form-label fw-semibold" th:text="#{form.password.confirm}">Confirmar contraseña</label>
                 <div class="input-group">
                   <input type="password" name="confirmarPassword" id="confirmarPassword"
                          class="form-control" required minlength="6" />
@@ -122,13 +123,14 @@
                     <i class="bi bi-eye"></i>
                   </button>
                 </div>
-                <div id="msgConfirmar" class="form-text text-danger d-none">
+                <div id="msgConfirmar" class="form-text text-danger d-none"
+                     th:text="#{form.password.mismatch}">
                   Las contraseñas no coinciden.
                 </div>
               </div>
 
               <button type="submit" class="btn btn-main text-white w-100">
-                <i class="bi bi-shield-check me-1"></i>Actualizar contraseña
+                <i class="bi bi-shield-check me-1"></i><span th:text="#{btn.update.password}">Actualizar contraseña</span>
               </button>
             </form>
           </div>

@@ -10,7 +10,7 @@
         <!-- BRAND -->
         <a class="nav-admin-brand navbar-brand" th:href="@{/docente/pDocente}">
           <div class="nav-admin-brand-icon">GE</div>
-          <span class="nav-admin-brand-name">Gestión Escolar</span>
+          <span class="nav-admin-brand-name" th:text="#{nav.brand}">Gestión Escolar</span>
         </a>
 
         <!-- TOGGLER MOBILE -->
@@ -27,13 +27,13 @@
           <ul class="navbar-nav nav-admin-links me-auto ms-3">
             <li class="nav-item">
               <a class="nav-admin-link" th:href="@{/docente/pDocente}">
-                <i class="bi bi-house"></i>Inicio
+                <i class="bi bi-house"></i><span th:text="#{nav.home}">Inicio</span>
               </a>
             </li>
           </ul>
 
-          <!-- USUARIO + CONFIGURACIÓN + LOGOUT -->
-          <div class="d-flex align-items-center gap-3 py-2 py-lg-0">
+          <!-- USUARIO + CONFIGURACIÓN + IDIOMA + LOGOUT -->
+          <div class="d-flex align-items-center gap-2 py-2 py-lg-0 flex-wrap">
             <div class="nav-admin-user">
               <div class="nav-admin-avatar">
                 <i class="bi bi-person-fill"></i>
@@ -41,13 +41,24 @@
               <span class="nav-admin-username"
                     th:text="${docente.primerNombre + ' ' + docente.primerApellido}"></span>
             </div>
-            <a th:href="@{/docente/configuracion}" class="nav-admin-settings" title="Configuración">
+            <a th:href="@{/docente/configuracion}" class="nav-admin-settings" th:title="#{nav.config}">
               <i class="bi bi-gear-fill"></i>
             </a>
+            <!-- LANGUAGE SWITCHER -->
+            <div class="d-flex align-items-center gap-1">
+              <a href="?lang=es" class="badge border text-white text-decoration-none"
+                 style="border-color:rgba(255,255,255,0.3)!important;opacity:.7;font-size:.68rem;" title="Español">ES</a>
+              <a href="?lang=en" class="badge border text-white text-decoration-none"
+                 style="border-color:rgba(255,255,255,0.3)!important;opacity:.7;font-size:.68rem;" title="English">EN</a>
+              <a href="?lang=fr" class="badge border text-white text-decoration-none"
+                 style="border-color:rgba(255,255,255,0.3)!important;opacity:.7;font-size:.68rem;" title="Français">FR</a>
+              <a href="?lang=it" class="badge border text-white text-decoration-none"
+                 style="border-color:rgba(255,255,255,0.3)!important;opacity:.7;font-size:.68rem;" title="Italiano">IT</a>
+            </div>
             <form th:action="@{/logout}" method="post" class="m-0">
               <button type="submit" class="nav-admin-logout">
                 <i class="bi bi-box-arrow-right"></i>
-                <span>Salir</span>
+                <span th:text="#{nav.logout}">Salir</span>
               </button>
             </form>
           </div>

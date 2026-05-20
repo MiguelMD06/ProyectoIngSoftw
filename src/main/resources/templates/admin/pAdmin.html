@@ -1,20 +1,12 @@
 <!doctype html>
-
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Panel Administrativo</title>
     <link rel="icon" th:href="@{/assets/gestion-icon.png}" type="image/png">
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
-    />
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
     <link rel="stylesheet" th:href="@{/estilos/pAdmin.css}" />
   </head>
 
@@ -22,95 +14,82 @@
     <div th:replace="~{fragments/navbarAdmin :: navbar}"></div>
 
     <div class="hero container">
-      <span class="badge badge-custom">Panel de Control v2.0</span>
-      <h1 class="mt-3">Bienvenido al Panel Administrativo</h1>
-      <p class="text-muted">
+      <span class="badge badge-custom" th:text="#{admin.dashboard.badge}">Panel de Control v2.0</span>
+      <h1 class="mt-3" th:text="#{admin.dashboard.title}">Bienvenido al Panel Administrativo</h1>
+      <p class="text-muted" th:text="#{admin.dashboard.subtitle}">
         Gestiona estudiantes, docentes y documentos desde un solo lugar.
       </p>
 
       <div class="row mt-4 g-4">
         <div class="col-md-3">
           <div class="card card-custom p-3">
-            <h5>Estudiantes</h5>
-            <p class="text-muted">
-              Administra inscripciones, registros académicos y seguimiento de
-              almunnos matriculados
+            <h5 th:text="#{admin.card.students.title}">Estudiantes</h5>
+            <p class="text-muted" th:text="#{admin.card.students.desc}">
+              Administra inscripciones, registros académicos y seguimiento de alumnos matriculados
             </p>
-            <a class="btn btn-primary" th:href="@{/admin/AdminEstudiante}"
-              >Gestionar</a
-            >
+            <a class="btn btn-primary" th:href="@{/admin/AdminEstudiante}" th:text="#{btn.manage}">Gestionar</a>
           </div>
         </div>
 
         <div class="col-md-3">
           <div class="card card-custom p-3">
-            <h5>Docentes</h5>
-            <p class="text-muted">
-              Control de personal académico, asignación de materias y
-              evaluaciones de desempeño
+            <h5 th:text="#{admin.card.teachers.title}">Docentes</h5>
+            <p class="text-muted" th:text="#{admin.card.teachers.desc}">
+              Control de personal académico, asignación de materias y evaluaciones de desempeño
             </p>
-            <a class="btn btn-primary" th:href="@{/admin/AdminDocente}"
-              >Gestionar</a
-            >
+            <a class="btn btn-primary" th:href="@{/admin/AdminDocente}" th:text="#{btn.manage}">Gestionar</a>
           </div>
         </div>
 
         <div class="col-md-3">
           <div class="card card-custom p-3">
-            <h5>Simulacros</h5>
-            <p class="text-muted">
-              Control de simulacros, asignación de titulos y descripción de los
-              simulacrados aplicados
+            <h5 th:text="#{admin.card.simulacros.title}">Simulacros</h5>
+            <p class="text-muted" th:text="#{admin.card.simulacros.desc}">
+              Control de simulacros, asignación de títulos y descripción de los simulacros aplicados
             </p>
-            <a class="btn btn-primary" th:href="@{/admin/AdminSimulacro}"
-              >Gestionar</a
-            >
+            <a class="btn btn-primary" th:href="@{/admin/AdminSimulacro}" th:text="#{btn.manage}">Gestionar</a>
           </div>
         </div>
 
         <div class="col-md-3">
           <div class="card card-custom p-3">
-            <h5>Configuración</h5>
-            <p class="text-muted">
-              Ajustes del sistema, gestión de usuarios, roles y parámetros
-              institucionales
+            <h5 th:text="#{admin.card.config.title}">Configuración</h5>
+            <p class="text-muted" th:text="#{admin.card.config.desc}">
+              Ajustes del sistema, gestión de usuarios, roles y parámetros institucionales
             </p>
-            <a class="btn btn-primary" th:href="@{/admin/configuracion}">Configurar</a>
+            <a class="btn btn-primary" th:href="@{/admin/configuracion}" th:text="#{btn.configure}">Configurar</a>
           </div>
         </div>
       </div>
 
-      <h4 class="mt-5 mb-3">Resumen Institucional</h4>
+      <h4 class="mt-5 mb-3" th:text="#{admin.summary.title}">Resumen Institucional</h4>
       <div class="row g-3">
         <div class="col-md-3">
           <div class="summary-card">
-            <strong>Estudiantes</strong>
+            <strong th:text="#{admin.card.students.title}">Estudiantes</strong>
             <h3 th:text="${numeroEstudiantes}"></h3>
-            <small class="text-muted">Activos</small>
+            <small class="text-muted" th:text="#{admin.summary.active}">Activos</small>
           </div>
         </div>
-
         <div class="col-md-3">
           <div class="summary-card">
-            <strong>Docentes</strong>
+            <strong th:text="#{admin.card.teachers.title}">Docentes</strong>
             <h3 th:text="${numeroDocentes}"></h3>
-            <small class="text-muted">Activos</small>
+            <small class="text-muted" th:text="#{admin.summary.active}">Activos</small>
           </div>
         </div>
-
         <div class="col-md-3">
           <div class="summary-card">
-            <strong>Simulacros</strong>
+            <strong th:text="#{admin.card.simulacros.title}">Simulacros</strong>
             <h3 th:text="${numeroSimulacros}"></h3>
-            <small class="text-muted">Registrados</small>
+            <small class="text-muted" th:text="#{admin.summary.registered}">Registrados</small>
           </div>
         </div>
-
         <div class="col-md-3">
           <div class="summary-card">
-            <strong>Instituciones</strong>
+            <strong th:text="#{nav.institutions}">Instituciones</strong>
             <h3 th:text="${numeroInstituciones}"></h3>
-            <small class="text-muted">Activas</small>
+            <small class="text-muted" th:text="#{admin.summary.active}">Activas</small>
           </div>
         </div>
       </div>
@@ -120,21 +99,20 @@
           <div class="activity-card">
             <div class="d-flex align-items-center justify-content-between mb-3">
               <h5 class="mb-0 fw-bold">
-                <i class="bi bi-clock-history me-2 text-primary"></i>Actividad Reciente
+                <i class="bi bi-clock-history me-2 text-primary"></i>
+                <span th:text="#{admin.activity.title}">Actividad Reciente</span>
               </h5>
               <span class="badge bg-primary-subtle text-primary rounded-pill"
-                    th:text="${logs != null ? logs.size() + ' registros' : '0 registros'}"></span>
+                    th:text="${logs != null} ? |${logs.size()} #{admin.activity.records}| : |0 #{admin.activity.records}|"></span>
             </div>
 
             <div th:if="${logs == null or logs.isEmpty()}" class="log-empty">
               <i class="bi bi-inbox fs-2 text-muted"></i>
-              <p class="text-muted mt-2 mb-0">Sin actividades recientes</p>
+              <p class="text-muted mt-2 mb-0" th:text="#{admin.activity.empty}">Sin actividades recientes</p>
             </div>
 
             <div class="log-list" th:if="${logs != null and !logs.isEmpty()}">
               <div class="log-item" th:each="log : ${logs}">
-
-                <!-- Icono según origen -->
                 <div th:class="${'log-icon log-icon--' + (log.origenCambio != null ? log.origenCambio : 'default')}">
                   <i th:class="${log.origenCambio == 'estudiante'   ? 'bi bi-person-fill' :
                                  log.origenCambio == 'docente'     ? 'bi bi-person-workspace' :
@@ -145,7 +123,6 @@
                                  log.origenCambio == 'material'    ? 'bi bi-book' :
                                  'bi bi-gear-fill'}"></i>
                 </div>
-
                 <div class="log-content">
                   <p class="log-desc mb-1"
                      th:text="${log.descripcionCambio != null ? log.descripcionCambio : '—'}"></p>
@@ -158,7 +135,6 @@
                     <span class="log-time" th:if="${log.fechaHora == null}">#log.id</span>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
@@ -166,17 +142,15 @@
 
         <div class="col-md-4">
           <div class="support-card">
-            <h5>Ayuda y Soporte</h5>
-            <p class="text-muted">¿Necesitas asistencia?</p>
-            <h6>Contacto Directo</h6>
-            <p class="text-muted">Lunes a viernes 9:00am - 4:00pm</p>
-            <a
-              href="https://wa.me/573107740572?text=Hola%20Juan,%20necesito%20para%20la%20pagina."
-              target="_blank"
-              class="btn btn-whatsapp"
-            >
+            <h5 th:text="#{admin.support.title}">Ayuda y Soporte</h5>
+            <p class="text-muted" th:text="#{admin.support.subtitle}">¿Necesitas asistencia?</p>
+            <h6 th:text="#{admin.support.contact}">Contacto Directo</h6>
+            <p class="text-muted" th:text="#{admin.support.hours}">Lunes a viernes 9:00am - 4:00pm</p>
+            <a href="https://wa.me/573107740572?text=Hola%20Juan,%20necesito%20para%20la%20pagina."
+               target="_blank"
+               class="btn btn-whatsapp">
               <i class="bi bi-whatsapp"></i>
-              Contactar soporte
+              <span th:text="#{admin.support.btn}">Contactar soporte</span>
             </a>
           </div>
         </div>

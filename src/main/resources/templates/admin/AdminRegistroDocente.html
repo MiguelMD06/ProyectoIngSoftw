@@ -17,25 +17,25 @@
     <div class="register-header">
       <div class="nav-admin-brand-icon">GE</div>
       <div>
-        <h5 class="m-0">Gestión Escolar</h5>
-        <small>Registro Administrativo</small>
+        <h5 class="m-0" th:text="#{register.brand}">Gestión Escolar</h5>
+        <small th:text="#{register.header.subtitle}">Registro Administrativo</small>
       </div>
     </div>
 
     <!-- BODY -->
     <div class="register-body">
-      <h4 class="mb-4">Crear Docente</h4>
+      <h4 class="mb-4" th:text="#{register.teacher.title}">Crear Docente</h4>
 
       <div th:if="${param.exito}">
         <div class="alert alert-success">
           <i class="bi bi-check-circle-fill"></i>
-          Docente registrado exitosamente
+          <span th:text="#{register.teacher.success}">Docente registrado exitosamente</span>
         </div>
       </div>
       <div th:if="${param.error}">
         <div class="alert alert-danger">
           <i class="bi bi-exclamation-triangle-fill"></i>
-          Error al registrar docente
+          <span th:text="#{register.teacher.error}">Error al registrar docente</span>
         </div>
       </div>
 
@@ -45,9 +45,9 @@
         <div class="row">
           <!-- TIPO IDENTIFICACION -->
           <div class="col-md-6 mb-3">
-            <label class="form-label">Tipo de Identificación</label>
+            <label class="form-label" th:text="#{form.id.type}">Tipo de Identificación</label>
             <select id="tipoIdentificacion" name="tipoIdentificacion" class="form-select">
-              <option value="">Seleccione...</option>
+              <option value="" th:text="#{form.select}">Seleccione...</option>
               <option th:each="ti : ${tiposIdentificaciones}" th:value="${ti.name()}" th:text="${ti.descripcion}"
                 th:field="*{tipoIdentificacion}"></option>
             </select>
@@ -56,47 +56,47 @@
 
           <!-- NUMERO IDENTIFICACION -->
           <div class="col-md-6 mb-3">
-            <label class="form-label">Número de Identificación</label>
+            <label class="form-label" th:text="#{form.id.number}">Número de Identificación</label>
             <input type="text" id="numeroIdentificacion" name="numeroIdentificacion" class="form-control"
-              placeholder="Ingrese identificación" th:field="*{documentoIdentidad}" />
+              th:placeholder="#{form.id.number.placeholder}" th:field="*{documentoIdentidad}" />
             <div id="errorNumeroId" class="error"></div>
           </div>
 
           <!-- PRIMER NOMBRE -->
           <div class="col-md-6 mb-3">
-            <label class="form-label">Primer Nombre</label>
-            <input type="text" id="primerNombre" name="primerNombre" class="form-control" placeholder="Primer nombre"
-              th:field="*{primerNombre}" />
+            <label class="form-label" th:text="#{form.first.name}">Primer Nombre</label>
+            <input type="text" id="primerNombre" name="primerNombre" class="form-control"
+              th:placeholder="#{form.first.name.placeholder}" th:field="*{primerNombre}" />
             <div id="errorPrimerNombre" class="error"></div>
           </div>
 
           <!-- SEGUNDO NOMBRE -->
           <div class="col-md-6 mb-3">
-            <label class="form-label">Segundo Nombre</label>
-            <input type="text" id="segundoNombre" name="segundoNombre" class="form-control" placeholder="Segundo nombre"
-              th:field="*{segundoNombre}" />
+            <label class="form-label" th:text="#{form.second.name}">Segundo Nombre</label>
+            <input type="text" id="segundoNombre" name="segundoNombre" class="form-control"
+              th:placeholder="#{form.second.name.placeholder}" th:field="*{segundoNombre}" />
             <div id="errorSegundoNombre" class="error"></div>
           </div>
 
           <!-- PRIMER APELLIDO -->
           <div class="col-md-6 mb-3">
-            <label class="form-label">Primer Apellido</label>
+            <label class="form-label" th:text="#{form.first.last}">Primer Apellido</label>
             <input type="text" id="primerApellido" name="primerApellido" class="form-control"
-              placeholder="Primer apellido" th:field="*{primerApellido}" />
+              th:placeholder="#{form.first.last.placeholder}" th:field="*{primerApellido}" />
             <div id="errorPrimerApellido" class="error"></div>
           </div>
 
           <!-- SEGUNDO APELLIDO -->
           <div class="col-md-6 mb-3">
-            <label class="form-label">Segundo Apellido</label>
+            <label class="form-label" th:text="#{form.second.last}">Segundo Apellido</label>
             <input type="text" id="segundoApellido" name="segundoApellido" class="form-control"
-              placeholder="Segundo apellido" th:field="*{segundoApellido}" />
+              th:placeholder="#{form.second.last.placeholder}" th:field="*{segundoApellido}" />
             <div id="errorSegundoApellido" class="error"></div>
           </div>
 
           <!-- CELULAR -->
           <div class="col-md-6 mb-3">
-            <label class="form-label">Celular</label>
+            <label class="form-label" th:text="#{form.phone}">Celular</label>
             <input type="tel" id="celular" name="celular" class="form-control" placeholder="3001234567"
               th:field="*{celular}" />
             <div id="errorCelular" class="error"></div>
@@ -104,9 +104,9 @@
 
           <!-- INSTITUCION -->
           <div class="col-md-6 mb-3">
-            <label class="form-label">Institución</label>
+            <label class="form-label" th:text="#{form.institution}">Institución</label>
             <select id="institucion" name="institucion" class="form-select">
-              <option value="">Seleccione...</option>
+              <option value="" th:text="#{form.select}">Seleccione...</option>
               <option th:each="inst : ${instituciones}" th:value="${inst.id}" th:text="${inst.nombre}"
                 th:field="*{institucion}"></option>
             </select>
@@ -115,21 +115,22 @@
 
           <!-- SALON -->
           <div class="col-md-6 mb-3">
-            <label class="form-label">Salón</label>
-            <input type="text" id="salon" name="salon" class="form-control" placeholder="1 o 2" maxlength="1" />
+            <label class="form-label" th:text="#{form.classroom}">Salón</label>
+            <input type="text" id="salon" name="salon" class="form-control"
+              th:placeholder="#{form.classroom.placeholder}" maxlength="1" />
             <div id="errorSalon" class="error"></div>
           </div>
 
           <!-- ESPECIALIDAD -->
           <div class="col-md-6 mb-3">
-            <label class="form-label">Materia</label>
+            <label class="form-label" th:text="#{form.subject}">Materia</label>
             <select id="especialidad" name="especialidad" class="form-select" required th:field="*{especialidad}">
-              <option value="">Seleccione una materia...</option>
-              <option value="Sociales y Ciudadanas">Sociales y Ciudadanas</option>
-              <option value="Ciencias Naturales">Ciencias Naturales</option>
-              <option value="Matemáticas">Matemáticas</option>
-              <option value="Lectura Crítica">Lectura Crítica</option>
-              <option value="Inglés">Inglés</option>
+              <option value="" th:text="#{register.select.subject}">Seleccione una materia...</option>
+              <option value="Sociales y Ciudadanas" th:text="#{register.subject.sociales}">Sociales y Ciudadanas</option>
+              <option value="Ciencias Naturales" th:text="#{register.subject.naturales}">Ciencias Naturales</option>
+              <option value="Matemáticas" th:text="#{register.subject.matematicas}">Matemáticas</option>
+              <option value="Lectura Crítica" th:text="#{register.subject.lectura}">Lectura Crítica</option>
+              <option value="Inglés" th:text="#{register.subject.ingles}">Inglés</option>
             </select>
           </div>
 
@@ -139,11 +140,11 @@
 
         <button type="submit" class="btn btn-main text-white mt-3">
           <i class="bi bi-person-plus-fill"></i>
-          Registrar Docente
+          <span th:text="#{register.teacher.btn}">Registrar Docente</span>
         </button>
 
         <a class="btn btn-outline-secondary mt-3" th:href="@{/admin/AdminDocente}">
-          <i class="bi bi-arrow-left-circle me-1"></i>Volver
+          <i class="bi bi-arrow-left-circle me-1"></i><span th:text="#{btn.back}">Volver</span>
         </a>
       </form>
     </div>
