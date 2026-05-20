@@ -13,4 +13,6 @@ public interface AsistenciaRepositorio extends JpaRepository<Asistencia, Long> {
     List<Asistencia> findByEstudianteDocumentoIdentidadOrderByFechaAsc(String documentoIdentidad);
     Optional<Asistencia> findByEstudianteDocumentoIdentidadAndFecha(String documentoIdentidad, LocalDate fecha);
     List<Asistencia> findByFechaAndEstudiante_Institucion_IdAndEstudiante_Usuario_Salon(LocalDate fecha, Long institucionId, String salon);
+
+    void deleteByEstudianteInstitucionId(Long institucionId);
 }

@@ -141,7 +141,7 @@ public class AdminController {
             institucionService.eliminarInstitucion(id);
             redirectAttributes.addFlashAttribute("exitoInstitucion", "Institución eliminada correctamente.");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorInstitucion", "No se puede eliminar: la institución tiene datos asociados.");
+            redirectAttributes.addFlashAttribute("errorInstitucion", "Error al eliminar la institución: " + e.getMessage());
         }
         return "redirect:/admin/AdminInstitucion";
     }
