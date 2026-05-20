@@ -64,6 +64,7 @@
                 <th>Segundo Apellido</th>
                 <th>Celular</th>
                 <th>Email</th>
+                <th>Materia</th>
                 <th>Institución</th>
                 <th>Acciones</th>
               </tr>
@@ -81,7 +82,7 @@
                 <td
                   th:text="${doc.usuario != null ? doc.usuario.username : 'Sin usuario'}"
                 ></td>
-
+                <td th:text="${doc.especialidad != null ? doc.especialidad : '—'}"></td>
                 <td
                   th:text="${doc.institucion != null ? doc.institucion.nombre : 'Sin institución'}"
                 ></td>
