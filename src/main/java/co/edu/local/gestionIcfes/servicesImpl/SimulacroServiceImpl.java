@@ -67,7 +67,7 @@ public class SimulacroServiceImpl implements SimulacroService {
             resultado.setDatos(archivo.getBytes()); // ahora dentro del try
             resultado.setEstudiante(estudiante);
             resultado.setSimulacro(simulacro);
-            logService.registrarLog("Simulacro", "Nuevo simulacro subido");
+            logService.registrarLog("simulacro", "Nuevo simulacro subido");
             return resultadoRepo.save(resultado);
         } catch (IOException e) {
             throw new RuntimeException("Error al leer el archivo PDF", e);

@@ -136,9 +136,13 @@
 
                 <!-- Icono según origen -->
                 <div th:class="${'log-icon log-icon--' + (log.origenCambio != null ? log.origenCambio : 'default')}">
-                  <i th:class="${log.origenCambio == 'estudiante' ? 'bi bi-person-fill' :
-                                 log.origenCambio == 'docente'    ? 'bi bi-person-workspace' :
-                                 log.origenCambio == 'simulacro'  ? 'bi bi-file-earmark-text' :
+                  <i th:class="${log.origenCambio == 'estudiante'   ? 'bi bi-person-fill' :
+                                 log.origenCambio == 'docente'     ? 'bi bi-person-workspace' :
+                                 log.origenCambio == 'simulacro'   ? 'bi bi-file-earmark-text' :
+                                 log.origenCambio == 'asistencia'  ? 'bi bi-calendar-check' :
+                                 log.origenCambio == 'usuario'     ? 'bi bi-person-gear' :
+                                 log.origenCambio == 'institucion' ? 'bi bi-building' :
+                                 log.origenCambio == 'material'    ? 'bi bi-book' :
                                  'bi bi-gear-fill'}"></i>
                 </div>
 

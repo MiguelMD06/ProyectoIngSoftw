@@ -188,7 +188,7 @@ public class AdminController {
     public String eliminarResultado(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
             resultadoSimulacroRepositorio.deleteById(id);
-            logService.registrarLog("Resultado Simulacro", "Resultado simulacro eliminado (id=" + id + ")");
+            logService.registrarLog("simulacro", "Resultado simulacro eliminado (id=" + id + ")");
             redirectAttributes.addFlashAttribute("exitoInstitucion", "Resultado eliminado correctamente.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorInstitucion", "Error al eliminar el resultado.");
