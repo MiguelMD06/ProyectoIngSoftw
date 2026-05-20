@@ -86,6 +86,20 @@ public class SimulacroServiceImpl implements SimulacroService {
     }
     
     @Override
+    public Simulacro actualizarSimulacro(Simulacro simulacro) {
+        logService.registrarLog("simulacro", "Simulacro actualizado: " + simulacro.getTitulo());
+        return simulacroRepositorio.save(simulacro);
+    }
+
+    @Override
+    public void eliminarSimulacro(Long id) {
+        Simulacro simulacro = obtenerSimulacroPorId(id);
+        resultadoRepo.deleteBySimulacroId(id);
+        simulacroRepositorio.deleteById(id);
+        logService.registrarLog("simulacro", "Simulacro eliminado: " + simulacro.getTitulo());
+    }
+
+    @Override
     public Long cantidadSimulacros() {
     	return simulacroRepositorio.count();
     }

@@ -17,4 +17,6 @@ public interface ResultadoSimulacroRepositorio extends JpaRepository<ResultadoSi
     void deleteByEstudianteInstitucionId(Long institucionId);
 
     void deleteBySimulacroInstitucionId(Long institucionId);
+
+    void deleteBySimulacroId(Long simulacroId);
 }

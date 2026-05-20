@@ -198,15 +198,31 @@ public class AdminController {
 
     @GetMapping("/AdminSimulacro")
     public String mostrarFormularioSimulacro(Model model) {
-        model.addAttribute("simulacro", new Simulacro());
+        model.addAttribute("simulacros", simulacroService.listarSimulacros());
         return "admin/AdminSimulacro";
     }
 
     @PostMapping("/crearSimulacro")
-    public String crearSimulacro(@ModelAttribute Simulacro simulacro,
-                                 RedirectAttributes redirectAttributes) {
-        simulacroService.crearSimulacro(simulacro);
-        redirectAttributes.addFlashAttribute("exitoSimulacro", "Simulacro registrado correctamente.");
+    public String guardarSimulacro(@ModelAttribute Simulacro simulacro,
+                                   RedirectAttributes redirectAttributes) {
+        if (simulacro.getId() != null) {
+            simulacroService.actualizarSimulacro(simulacro);
+            redirectAttributes.addFlashAttribute("exitoSimulacro", "Simulacro actualizado correctamente.");
+        } else {
+            simulacroService.crearSimulacro(simulacro);
+            redirectAttributes.addFlashAttribute("exitoSimulacro", "Simulacro registrado correctamente.");
+        }
+        return "redirect:/admin/AdminSimulacro";
+    }
+
+    @GetMapping("/eliminarSimulacro/{id}")
+    public String eliminarSimulacro(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            simulacroService.eliminarSimulacro(id);
+            redirectAttributes.addFlashAttribute("exitoSimulacro", "Simulacro eliminado correctamente.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorSimulacro", "Error al eliminar el simulacro: " + e.getMessage());
+        }
         return "redirect:/admin/AdminSimulacro";
     }
 
