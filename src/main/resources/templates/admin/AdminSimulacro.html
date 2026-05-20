@@ -14,17 +14,23 @@
   <body>
     <div th:replace="~{fragments/navbarAdmin :: navbar}"></div>
 
+    <!-- i18n strings for JS modal -->
+    <span id="i18n-modal-new" class="d-none" th:text="#{simulacros.modal.new}"></span>
+    <span id="i18n-modal-edit" class="d-none" th:text="#{simulacros.modal.edit}"></span>
+    <span id="i18n-btn-save" class="d-none" th:text="#{simulacros.modal.save}"></span>
+    <span id="i18n-btn-update" class="d-none" th:text="#{simulacros.modal.update}"></span>
+
     <br />
     <div class="header container">
-      <h2>Panel de Simulacros</h2>
-      <p class="text-muted">Gestiona los simulacros registrados en el sistema.</p>
+      <h2 th:text="#{simulacros.page.title}">Panel de Simulacros</h2>
+      <p class="text-muted" th:text="#{simulacros.subtitle}">Gestiona los simulacros registrados en el sistema.</p>
     </div>
 
     <div class="title-section container">
-      <h2>Simulacros</h2>
+      <h2 th:text="#{admin.card.simulacros.title}">Simulacros</h2>
       <button class="btn btn-create text-white mt-3" data-bs-toggle="modal" data-bs-target="#modalSimulacro"
               onclick="abrirModalCrear()">
-        <i class="bi bi-plus"></i> Nuevo Simulacro
+        <i class="bi bi-plus"></i> <span th:text="#{simulacros.new}">Nuevo Simulacro</span>
       </button>
     </div>
 
@@ -49,10 +55,10 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>Título</th>
-                <th>Descripción</th>
-                <th>Fecha de Aplicación</th>
-                <th class="text-center">Acciones</th>
+                <th th:text="#{simulacros.col.title}">Título</th>
+                <th th:text="#{simulacros.col.desc}">Descripción</th>
+                <th th:text="#{simulacros.col.date}">Fecha de Aplicación</th>
+                <th class="text-center" th:text="#{students.col.actions}">Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -66,7 +72,7 @@
                     <button class="btn btn-action btn-acciones dropdown-toggle" type="button"
                             data-bs-toggle="dropdown">
                       <i class="bi bi-grid-3x3-gap-fill"></i>
-                      <span>Acciones</span>
+                      <span th:text="#{btn.actions}">Acciones</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow">
                       <li>
@@ -77,15 +83,16 @@
                                 th:data-descripcion="${sim.descripcion}"
                                 th:data-fecha="${sim.fechaAplicacion}"
                                 onclick="abrirModalEditar(this)">
-                          <i class="bi bi-pencil-square text-primary me-2"></i>Editar
+                          <i class="bi bi-pencil-square text-primary me-2"></i><span th:text="#{btn.edit}">Editar</span>
                         </button>
                       </li>
                       <li><hr class="dropdown-divider" /></li>
                       <li>
                         <a class="dropdown-item text-danger"
                            th:href="@{/admin/eliminarSimulacro/{id}(id=${sim.id})}"
-                           onclick="return confirm('¿Eliminar este simulacro y todos sus resultados?');">
-                          <i class="bi bi-trash3 me-2"></i>Eliminar
+                           th:data-confirm="#{simulacros.confirm.delete}"
+                           onclick="return confirm(this.getAttribute('data-confirm'))">
+                          <i class="bi bi-trash3 me-2"></i><span th:text="#{btn.delete}">Eliminar</span>
                         </a>
                       </li>
                     </ul>
@@ -96,7 +103,8 @@
           </table>
         </div>
 
-        <div class="alert alert-info mb-0" th:if="${simulacros == null or simulacros.isEmpty()}">
+        <div class="alert alert-info mb-0" th:if="${simulacros == null or simulacros.isEmpty()}"
+             th:text="#{simulacros.empty}">
           No hay simulacros registrados.
         </div>
       </div>
@@ -108,7 +116,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="modalTitulo">
-              <i class="bi bi-file-earmark-text me-2"></i>Nuevo Simulacro
+              <i class="bi bi-file-earmark-text me-2"></i><span th:text="#{simulacros.modal.new}">Nuevo Simulacro</span>
             </h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
@@ -117,26 +125,26 @@
               <input type="hidden" id="modalId" name="id" />
 
               <div class="mb-3">
-                <label class="form-label fw-semibold">Título</label>
+                <label class="form-label fw-semibold" th:text="#{form.title}">Título</label>
                 <input type="text" id="modalTituloInput" name="titulo" class="form-control" required />
               </div>
 
               <div class="mb-3">
-                <label class="form-label fw-semibold">Descripción</label>
+                <label class="form-label fw-semibold" th:text="#{form.description}">Descripción</label>
                 <textarea id="modalDescripcion" name="descripcion" class="form-control" rows="3" required></textarea>
               </div>
 
               <div class="mb-2">
-                <label class="form-label fw-semibold">Fecha de Aplicación</label>
+                <label class="form-label fw-semibold" th:text="#{simulacros.modal.date}">Fecha de Aplicación</label>
                 <input type="date" id="modalFecha" name="fechaAplicacion" class="form-control" required />
               </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                <i class="bi bi-x-circle me-1"></i>Cancelar
+                <i class="bi bi-x-circle me-1"></i><span th:text="#{btn.cancel}">Cancelar</span>
               </button>
               <button type="submit" class="btn btn-success">
-                <i class="bi bi-save me-1"></i><span id="modalBotonTexto">Guardar</span>
+                <i class="bi bi-save me-1"></i><span id="modalBotonTexto" th:text="#{simulacros.modal.save}">Guardar</span>
               </button>
             </div>
           </form>
@@ -146,8 +154,9 @@
 
     <script>
       function abrirModalCrear() {
-        document.getElementById('modalTitulo').innerHTML = '<i class="bi bi-file-earmark-plus me-2"></i>Nuevo Simulacro';
-        document.getElementById('modalBotonTexto').textContent = 'Guardar';
+        var txt = document.getElementById('i18n-modal-new').textContent;
+        document.getElementById('modalTitulo').innerHTML = '<i class="bi bi-file-earmark-plus me-2"></i>' + txt;
+        document.getElementById('modalBotonTexto').textContent = document.getElementById('i18n-btn-save').textContent;
         document.getElementById('modalId').value = '';
         document.getElementById('modalTituloInput').value = '';
         document.getElementById('modalDescripcion').value = '';
@@ -155,8 +164,9 @@
       }
 
       function abrirModalEditar(btn) {
-        document.getElementById('modalTitulo').innerHTML = '<i class="bi bi-pencil-square me-2"></i>Editar Simulacro';
-        document.getElementById('modalBotonTexto').textContent = 'Actualizar';
+        var txt = document.getElementById('i18n-modal-edit').textContent;
+        document.getElementById('modalTitulo').innerHTML = '<i class="bi bi-pencil-square me-2"></i>' + txt;
+        document.getElementById('modalBotonTexto').textContent = document.getElementById('i18n-btn-update').textContent;
         document.getElementById('modalId').value = btn.dataset.id;
         document.getElementById('modalTituloInput').value = btn.dataset.titulo;
         document.getElementById('modalDescripcion').value = btn.dataset.descripcion;

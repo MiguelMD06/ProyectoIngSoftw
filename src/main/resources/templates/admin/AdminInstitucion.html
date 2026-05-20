@@ -17,16 +17,16 @@
 
     <br />
     <div class="header container">
-      <h2>Bienvenido Administrador,</h2>
+      <h2 th:text="#{admin.welcome}">Bienvenido Administrador,</h2>
       <h3 sec:authentication="principal.username"></h3>
-      <p class="text-muted">Administra las instituciones registradas en el sistema.</p>
+      <p class="text-muted" th:text="#{institutions.subtitle}">Administra las instituciones registradas en el sistema.</p>
     </div>
 
     <div class="title-section container">
-      <h2>Panel de Instituciones</h2>
+      <h2 th:text="#{institutions.page.title}">Panel de Instituciones</h2>
       <button class="btn btn-create text-white mt-3"
               data-bs-toggle="modal" data-bs-target="#modalCrear">
-        <i class="bi bi-plus"></i> Nueva Institución
+        <i class="bi bi-plus"></i> <span th:text="#{institutions.new}">Nueva Institución</span>
       </button>
     </div>
 
@@ -51,7 +51,7 @@
       <div class="table-card">
 
         <div th:if="${instituciones == null or instituciones.isEmpty()}"
-             class="alert alert-info mt-2">
+             class="alert alert-info mt-2" th:text="#{institutions.empty}">
           No hay instituciones registradas.
         </div>
 
@@ -60,12 +60,12 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>Nombre</th>
-                <th>Dirección</th>
-                <th>Fecha Inicio</th>
-                <th>Fecha Final</th>
-                <th>Estado</th>
-                <th>Acciones</th>
+                <th th:text="#{institutions.col.name}">Nombre</th>
+                <th th:text="#{institutions.col.address}">Dirección</th>
+                <th th:text="#{institutions.col.start.date}">Fecha Inicio</th>
+                <th th:text="#{institutions.col.end.date}">Fecha Final</th>
+                <th th:text="#{institutions.col.state}">Estado</th>
+                <th th:text="#{students.col.actions}">Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -79,7 +79,7 @@
                   <span th:if="${inst.estado != null}"
                         class="badge"
                         th:classappend="${inst.estado.name() == 'ACTIVO'} ? 'bg-success' : 'bg-secondary'"
-                        th:text="${inst.estado}">
+                        th:text="${inst.estado.name() == 'ACTIVO'} ? #{institutions.state.active} : #{institutions.state.finished}">
                   </span>
                   <span th:if="${inst.estado == null}" class="text-muted">—</span>
                 </td>
@@ -90,7 +90,7 @@
                             data-bs-toggle="dropdown"
                             aria-expanded="false">
                       <i class="bi bi-grid-3x3-gap-fill"></i>
-                      <span>Acciones</span>
+                      <span th:text="#{btn.actions}">Acciones</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow">
                       <li>
@@ -104,15 +104,16 @@
                                 th:data-fecha-inicio="${inst.fechaInicio}"
                                 th:data-fecha-final="${inst.fechaFinal}"
                                 th:data-estado="${inst.estado}">
-                          <i class="bi bi-pencil-square text-primary me-2"></i>Editar
+                          <i class="bi bi-pencil-square text-primary me-2"></i><span th:text="#{btn.edit}">Editar</span>
                         </button>
                       </li>
                       <li><hr class="dropdown-divider" /></li>
                       <li>
                         <a class="dropdown-item text-danger"
                            th:href="@{/admin/eliminarInstitucion/{id}(id=${inst.id})}"
-                           onclick="return confirm('¿Eliminar esta institución? Se perderán todos sus datos asociados.');">
-                          <i class="bi bi-trash3 me-2"></i>Eliminar
+                           th:data-confirm="#{institutions.confirm.delete}"
+                           onclick="return confirm(this.getAttribute('data-confirm'))">
+                          <i class="bi bi-trash3 me-2"></i><span th:text="#{btn.delete}">Eliminar</span>
                         </a>
                       </li>
                     </ul>
@@ -131,7 +132,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="modalEditarLabel">
-              <i class="bi bi-pencil-square me-2"></i>Editar Institución
+              <i class="bi bi-pencil-square me-2"></i><span th:text="#{institutions.modal.edit.title}">Editar Institución</span>
             </h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
@@ -139,35 +140,35 @@
             <div class="modal-body">
               <input type="hidden" name="id" id="editId" />
               <div class="mb-3">
-                <label class="form-label fw-semibold">Nombre</label>
+                <label class="form-label fw-semibold" th:text="#{form.name}">Nombre</label>
                 <input type="text" name="nombre" id="editNombre" class="form-control" required />
               </div>
               <div class="mb-3">
-                <label class="form-label fw-semibold">Dirección</label>
+                <label class="form-label fw-semibold" th:text="#{form.address}">Dirección</label>
                 <input type="text" name="direccion" id="editDireccion" class="form-control" required />
               </div>
               <div class="row g-3">
                 <div class="col-md-6">
-                  <label class="form-label fw-semibold">Fecha Inicio</label>
+                  <label class="form-label fw-semibold" th:text="#{form.start.date}">Fecha Inicio</label>
                   <input type="date" name="fechaInicio" id="editFechaInicio" class="form-control" />
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label fw-semibold">Fecha Final</label>
+                  <label class="form-label fw-semibold" th:text="#{form.end.date}">Fecha Final</label>
                   <input type="date" name="fechaFinal" id="editFechaFinal" class="form-control" />
                 </div>
               </div>
               <div class="mb-3 mt-3">
-                <label class="form-label fw-semibold">Estado</label>
+                <label class="form-label fw-semibold" th:text="#{form.state}">Estado</label>
                 <select name="estado" id="editEstado" class="form-select">
-                  <option value="ACTIVO">Activo</option>
-                  <option value="FINALIZADO">Finalizado</option>
+                  <option value="ACTIVO" th:text="#{institutions.state.active}">Activo</option>
+                  <option value="FINALIZADO" th:text="#{institutions.state.finished}">Finalizado</option>
                 </select>
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{btn.cancel}">Cancelar</button>
               <button type="submit" class="btn btn-edit text-white">
-                <i class="bi bi-save me-1"></i>Guardar cambios
+                <i class="bi bi-save me-1"></i><span th:text="#{institutions.modal.save}">Guardar cambios</span>
               </button>
             </div>
           </form>
@@ -181,7 +182,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="modalCrearLabel">
-              <i class="bi bi-building-add me-2"></i>Nueva Institución
+              <i class="bi bi-building-add me-2"></i><span th:text="#{institutions.modal.create.title}">Nueva Institución</span>
             </h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
@@ -189,35 +190,35 @@
             <input type="hidden" name="origen" value="instituciones" />
             <div class="modal-body">
               <div class="mb-3">
-                <label class="form-label fw-semibold">Nombre</label>
+                <label class="form-label fw-semibold" th:text="#{form.name}">Nombre</label>
                 <input type="text" class="form-control" th:field="*{nombre}" required />
               </div>
               <div class="mb-3">
-                <label class="form-label fw-semibold">Dirección</label>
+                <label class="form-label fw-semibold" th:text="#{form.address}">Dirección</label>
                 <input type="text" class="form-control" th:field="*{direccion}" required />
               </div>
               <div class="row g-3">
                 <div class="col-md-6">
-                  <label class="form-label fw-semibold">Fecha Inicio</label>
+                  <label class="form-label fw-semibold" th:text="#{form.start.date}">Fecha Inicio</label>
                   <input type="date" class="form-control" th:field="*{fechaInicio}" />
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label fw-semibold">Fecha Final</label>
+                  <label class="form-label fw-semibold" th:text="#{form.end.date}">Fecha Final</label>
                   <input type="date" class="form-control" th:field="*{fechaFinal}" />
                 </div>
               </div>
               <div class="mb-3 mt-3">
-                <label class="form-label fw-semibold">Estado</label>
+                <label class="form-label fw-semibold" th:text="#{form.state}">Estado</label>
                 <select class="form-select" th:field="*{estado}" required>
-                  <option th:value="ACTIVO">Activo</option>
-                  <option th:value="FINALIZADO">Finalizado</option>
+                  <option th:value="ACTIVO" th:text="#{institutions.state.active}">Activo</option>
+                  <option th:value="FINALIZADO" th:text="#{institutions.state.finished}">Finalizado</option>
                 </select>
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{btn.cancel}">Cancelar</button>
               <button type="submit" class="btn btn-create text-white">
-                <i class="bi bi-plus me-1"></i>Registrar
+                <i class="bi bi-plus me-1"></i><span th:text="#{btn.register}">Registrar</span>
               </button>
             </div>
           </form>

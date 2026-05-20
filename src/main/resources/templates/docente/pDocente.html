@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Panel Docente</title>
     <link rel="icon" th:href="@{/assets/gestion-icon.png}" type="image/png">
-    <!-- Bootstrap -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <!-- Icons -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
@@ -51,7 +49,7 @@
               <i class="bi bi-building fs-4 text-primary"></i>
             </div>
             <div class="info-body">
-              <span class="info-label">Institución</span>
+              <span class="info-label" th:text="#{teacher.institution}">Institución</span>
               <span class="info-value" th:text="${institucionNombre}"></span>
             </div>
           </div>
@@ -64,7 +62,7 @@
               <i class="bi bi-door-open fs-4 text-success"></i>
             </div>
             <div class="info-body">
-              <span class="info-label">Mi Salón</span>
+              <span class="info-label" th:text="#{teacher.classroom}">Mi Salón</span>
               <span class="info-value" th:text="${salon}"></span>
             </div>
           </div>
@@ -77,7 +75,7 @@
               <i class="bi bi-people fs-4 text-warning"></i>
             </div>
             <div class="info-body">
-              <span class="info-label">Estudiantes en mi salón</span>
+              <span class="info-label" th:text="#{teacher.students.in.salon}">Estudiantes en mi salón</span>
               <span class="info-value" th:text="${totalEstudiantes}"></span>
             </div>
           </div>
@@ -94,7 +92,7 @@
         <div class="col-md-8">
           <div class="quick-card">
             <h6 class="fw-semibold mb-3">
-              <i class="bi bi-bar-chart-line me-2 text-primary"></i>Progreso del Curso
+              <i class="bi bi-bar-chart-line me-2 text-primary"></i><span th:text="#{teacher.progress.title}">Progreso del Curso</span>
             </h6>
             <div class="progress mb-2" style="height: 14px; border-radius: 8px;">
               <div class="progress-bar bg-primary"
@@ -106,8 +104,8 @@
                    style="border-radius: 8px;"></div>
             </div>
             <div class="d-flex justify-content-between">
-              <small class="text-muted" th:text="${progresoCurso} + '% completado'"></small>
-              <small class="text-muted" th:text="${diasRestantes} + ' días restantes'"></small>
+              <small class="text-muted" th:text="|${progresoCurso}#{teacher.progress.completed}|"></small>
+              <small class="text-muted" th:text="|${diasRestantes} #{teacher.days.remaining}|"></small>
             </div>
           </div>
         </div>
@@ -116,19 +114,19 @@
         <div class="col-md-4">
           <div class="quick-card h-100">
             <h6 class="fw-semibold mb-3">
-              <i class="bi bi-calendar-check me-2 text-success"></i>Asistencia Hoy
+              <i class="bi bi-calendar-check me-2 text-success"></i><span th:text="#{teacher.today.title}">Asistencia Hoy</span>
             </h6>
             <div class="d-flex flex-column gap-2">
               <div class="d-flex justify-content-between align-items-center">
-                <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill">Presentes</span>
+                <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill" th:text="#{teacher.present}">Presentes</span>
                 <strong th:text="${presentesHoy}"></strong>
               </div>
               <div class="d-flex justify-content-between align-items-center">
-                <span class="badge bg-danger-subtle text-danger px-3 py-2 rounded-pill">Ausentes</span>
+                <span class="badge bg-danger-subtle text-danger px-3 py-2 rounded-pill" th:text="#{teacher.absent}">Ausentes</span>
                 <strong th:text="${ausentesHoy}"></strong>
               </div>
               <div class="d-flex justify-content-between align-items-center">
-                <span class="badge bg-warning-subtle text-warning px-3 py-2 rounded-pill">Tardanzas</span>
+                <span class="badge bg-warning-subtle text-warning px-3 py-2 rounded-pill" th:text="#{teacher.late}">Tardanzas</span>
                 <strong th:text="${tardesHoy}"></strong>
               </div>
             </div>
@@ -142,25 +140,25 @@
     <div class="container mt-4 mb-5">
       <div class="row g-3">
 
-        <!-- Especialidad -->
+        <!-- Perfil docente -->
         <div class="col-md-6">
           <div class="simulacro-card">
             <div class="simulacro-icon">
               <i class="bi bi-person-badge fs-1 text-primary"></i>
             </div>
             <div class="simulacro-info">
-              <h6 class="fw-bold">Mi Perfil</h6>
+              <h6 class="fw-bold" th:text="#{teacher.profile.title}">Mi Perfil</h6>
               <p class="text-muted small mb-1">
-                <span class="fw-semibold">Documento:</span>
+                <span class="fw-semibold" th:text="#{teacher.document}">Documento:</span>
                 <span th:text="${docente.documentoIdentidad}"></span>
               </p>
               <p class="text-muted small mb-1">
-                <span class="fw-semibold">Celular:</span>
+                <span class="fw-semibold" th:text="#{teacher.phone}">Celular:</span>
                 <span th:text="${docente.celular}"></span>
               </p>
               <p class="text-muted small mb-3">
-                <span class="fw-semibold">Especialidad:</span>
-                <span th:text="${docente.especialidad != null and !#strings.isEmpty(docente.especialidad) ? docente.especialidad : 'No registrada'}"></span>
+                <span class="fw-semibold" th:text="#{teacher.specialty}">Especialidad:</span>
+                <span th:text="${docente.especialidad != null and !#strings.isEmpty(docente.especialidad)} ? ${docente.especialidad} : #{teacher.specialty.none}"></span>
               </p>
             </div>
           </div>
@@ -173,24 +171,23 @@
               <i class="bi bi-clipboard-data fs-1 text-success"></i>
             </div>
             <div class="simulacro-info">
-              <h6 class="fw-bold">Resumen de hoy</h6>
-              <p class="text-muted small mb-3">
-                De <strong th:text="${totalEstudiantes}"></strong> estudiantes en tu salón,
-                <strong th:text="${presentesHoy}"></strong> están presentes hoy.
+              <h6 class="fw-bold" th:text="#{teacher.today.summary.title}">Resumen de hoy</h6>
+              <p class="text-muted small mb-3" th:text="#{teacher.today.summary.text(${totalEstudiantes}, ${presentesHoy})}">
+                De X estudiantes en tu salón, Y están presentes hoy.
               </p>
             </div>
             <div class="d-flex gap-2 w-100">
               <span class="flex-fill text-center py-2 rounded-3 bg-success-subtle">
                 <div class="fw-bold text-success fs-5" th:text="${presentesHoy}"></div>
-                <small class="text-success">Presentes</small>
+                <small class="text-success" th:text="#{teacher.present}">Presentes</small>
               </span>
               <span class="flex-fill text-center py-2 rounded-3 bg-danger-subtle">
                 <div class="fw-bold text-danger fs-5" th:text="${ausentesHoy}"></div>
-                <small class="text-danger">Ausentes</small>
+                <small class="text-danger" th:text="#{teacher.absent}">Ausentes</small>
               </span>
               <span class="flex-fill text-center py-2 rounded-3 bg-warning-subtle">
                 <div class="fw-bold text-warning fs-5" th:text="${tardesHoy}"></div>
-                <small class="text-warning">Tardanzas</small>
+                <small class="text-warning" th:text="#{teacher.late}">Tardanzas</small>
               </span>
             </div>
           </div>

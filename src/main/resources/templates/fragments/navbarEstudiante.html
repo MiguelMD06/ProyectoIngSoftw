@@ -10,7 +10,7 @@
         <!-- BRAND -->
         <a class="nav-admin-brand navbar-brand" th:href="@{/estudiante/pEstudiante}">
           <div class="nav-admin-brand-icon">GE</div>
-          <span class="nav-admin-brand-name">Gestión Escolar</span>
+          <span class="nav-admin-brand-name" th:text="#{nav.brand}">Gestión Escolar</span>
         </a>
 
         <!-- TOGGLER MOBILE -->
@@ -27,23 +27,23 @@
           <ul class="navbar-nav nav-admin-links me-auto ms-3">
             <li class="nav-item">
               <a class="nav-admin-link" th:href="@{/estudiante/simulacrosEstudiante}">
-                <i class="bi bi-file-earmark-text"></i>Mis Simulacros
+                <i class="bi bi-file-earmark-text"></i><span th:text="#{nav.my.simulacros}">Mis Simulacros</span>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-admin-link" th:href="@{/estudiante/asistenciasEstudiante}">
-                <i class="bi bi-calendar-check"></i>Mi Asistencia
+                <i class="bi bi-calendar-check"></i><span th:text="#{nav.my.attendance}">Mi Asistencia</span>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-admin-link" th:href="@{/estudiante/materialEstudiante}">
-                <i class="bi bi-journal-bookmark"></i>Material
+                <i class="bi bi-journal-bookmark"></i><span th:text="#{nav.material}">Material</span>
               </a>
             </li>
           </ul>
 
-          <!-- USUARIO + CONFIGURACIÓN + LOGOUT -->
-          <div class="d-flex align-items-center gap-3 py-2 py-lg-0">
+          <!-- USUARIO + CONFIGURACIÓN + IDIOMA + LOGOUT -->
+          <div class="d-flex align-items-center gap-2 py-2 py-lg-0 flex-wrap">
             <div class="nav-admin-user">
               <div class="nav-admin-avatar">
                 <i class="bi bi-person-fill"></i>
@@ -51,13 +51,37 @@
               <span class="nav-admin-username"
                     th:text="${estudiante.primerNombre + ' ' + estudiante.primerApellido}"></span>
             </div>
-            <a th:href="@{/estudiante/configuracion}" class="nav-admin-settings" title="Configuración">
+            <a th:href="@{/estudiante/configuracion}" class="nav-admin-settings" th:title="#{nav.config}">
               <i class="bi bi-gear-fill"></i>
             </a>
+            <!-- LANGUAGE SWITCHER -->
+            <div class="dropdown">
+              <button class="dropdown-toggle d-flex align-items-center gap-1"
+                      style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.28);color:#fff;border-radius:6px;padding:3px 10px;font-size:0.78rem;cursor:pointer;"
+                      type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <img th:src="${'https://flagcdn.com/16x12/' + (#locale.language == 'en' ? 'gb' : #locale.language) + '.png'}"
+                     width="16" height="12" style="border-radius:2px;" alt="">
+                <span th:text="${#locale.language.toUpperCase()}">ES</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="min-width:5.5rem;">
+                <li><a class="dropdown-item d-flex align-items-center gap-2" href="?lang=es">
+                  <img src="https://flagcdn.com/16x12/es.png" width="16" height="12" style="border-radius:2px;" alt=""> ES
+                </a></li>
+                <li><a class="dropdown-item d-flex align-items-center gap-2" href="?lang=en">
+                  <img src="https://flagcdn.com/16x12/gb.png" width="16" height="12" style="border-radius:2px;" alt=""> EN
+                </a></li>
+                <li><a class="dropdown-item d-flex align-items-center gap-2" href="?lang=fr">
+                  <img src="https://flagcdn.com/16x12/fr.png" width="16" height="12" style="border-radius:2px;" alt=""> FR
+                </a></li>
+                <li><a class="dropdown-item d-flex align-items-center gap-2" href="?lang=it">
+                  <img src="https://flagcdn.com/16x12/it.png" width="16" height="12" style="border-radius:2px;" alt=""> IT
+                </a></li>
+              </ul>
+            </div>
             <form th:action="@{/logout}" method="post" class="m-0">
               <button type="submit" class="nav-admin-logout">
                 <i class="bi bi-box-arrow-right"></i>
-                <span>Salir</span>
+                <span th:text="#{nav.logout}">Salir</span>
               </button>
             </form>
           </div>
