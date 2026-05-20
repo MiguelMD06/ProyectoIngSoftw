@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 
 import co.edu.local.gestionIcfes.dto.PersonaDTO;
 import co.edu.local.gestionIcfes.model.Estudiante;
+import co.edu.local.gestionIcfes.repository.AsistenciaRepositorio;
 import co.edu.local.gestionIcfes.repository.EstudianteRepositorio;
+import co.edu.local.gestionIcfes.repository.ResultadoSimulacroRepositorio;
 import co.edu.local.gestionIcfes.services.EstudianteService;
 import co.edu.local.gestionIcfes.services.InstitucionService;
 import co.edu.local.gestionIcfes.services.LogService;
@@ -24,6 +26,12 @@ public class EstudianteServiceImpl implements EstudianteService{
 	private InstitucionService institucionService;
 	
 	@Autowired
+	private AsistenciaRepositorio asistenciaRepositorio;
+
+	@Autowired
+	private ResultadoSimulacroRepositorio resultadoSimulacroRepositorio;
+
+	@Autowired
 	private LogService logService;
 	
 	@Override
@@ -40,6 +48,10 @@ public class EstudianteServiceImpl implements EstudianteService{
 	@Override
 	public void eliminarEstudiante(String documentoIdentidad) {
 		Estudiante est = buscarEstudiante(documentoIdentidad);
+		asistenciaRepositorio.deleteAll(
+				asistenciaRepositorio.findByEstudianteDocumentoIdentidadOrderByFechaAsc(documentoIdentidad));
+		resultadoSimulacroRepositorio.deleteAll(
+				resultadoSimulacroRepositorio.findByEstudianteDocumentoIdentidad(documentoIdentidad));
 		estudianteRepository.deleteById(documentoIdentidad);
 		usuarioService.eliminarUsuario(est.getUsuario().getId());
 		logService.registrarLog("estudiante", "Estudiante " + est.getPrimerNombre() + " eliminado");

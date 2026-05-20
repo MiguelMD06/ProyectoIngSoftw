@@ -3,6 +3,7 @@ package co.edu.local.gestionIcfes.model;
 import java.time.LocalDate;
 
 import co.edu.local.gestionIcfes.enums.EstadoAsistencia;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -24,29 +25,16 @@ import lombok.NoArgsConstructor;
 @Table(name = "asistencias")
 public class Asistencia {
 
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private LocalDate fecha;
-	
+
 	@Enumerated(EnumType.STRING)
     private EstadoAsistencia estado;
-
-    /*
-     * MUCHAS ASISTENCIAS -> UN ESTUDIANTE
-     */
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "estudiante_id")
     private Estudiante estudiante;
-
-    /*
-     * MUCHAS ASISTENCIAS -> UN DOCENTE
-     */
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "docente_id")
-    private Docente docente;
 }

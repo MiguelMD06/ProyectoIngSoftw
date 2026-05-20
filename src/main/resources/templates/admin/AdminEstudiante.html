@@ -44,14 +44,6 @@
         Crear Estudiante
       </a>
 
-      <!-- BOTÓN PARA REGISTRAR INSTITUCIÓN -->
-      <a
-        class="btn btn-create text-white mt-3 bi bi-plus"
-        data-bs-toggle="modal"
-        data-bs-target="#modalInstitucion"
-      >
-        Registrar Institución
-      </a>
     </div>
 
     <!-- FILTROS DINÁMICOS -->
@@ -76,10 +68,9 @@
       <div th:if="${instituciones == null or instituciones.isEmpty()}"
            class="alert alert-info mt-3">
         No hay instituciones registradas.
-        <button class="btn btn-create ms-2"
-                data-bs-toggle="modal" data-bs-target="#modalInstitucion">
-          Registrar Institución
-        </button>
+        <a th:href="@{/admin/AdminInstitucion}" class="btn btn-create ms-2 text-white">
+          Gestionar Instituciones
+        </a>
       </div>
 
       <!-- PASO 2: SALÓN (oculto hasta elegir institución) -->
@@ -124,18 +115,26 @@
       <span th:text="${errorInstitucion}"></span>
       <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
-    <div
-      th:if="${errorEliminar}"
-      class="alert alert-danger alert-dismissible fade show mt-3"
-      role="alert"
-    >
-      <i class="bi bi-exclamation-triangle-fill"></i>
-      <span th:text="${errorEliminar}"></span>
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-
     <!-- TABLA ESTUDIANTES -->
     <div class="container mb-5" id="tablaContainer" style="display:none">
+      <div
+        th:if="${exitoEliminar}"
+        class="alert alert-success alert-dismissible fade show mb-3"
+        role="alert"
+      >
+        <i class="bi bi-check-circle-fill"></i>
+        <span th:text="${exitoEliminar}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+      <div
+        th:if="${errorEliminar}"
+        class="alert alert-danger alert-dismissible fade show mb-3"
+        role="alert"
+      >
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <span th:text="${errorEliminar}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
       <div class="table-card">
         <div
           class="table-responsive"
@@ -217,11 +216,20 @@
                         <hr class="dropdown-divider" />
                       </li>
                       <li th:each="res : ${est.resultados}">
-                        <a class="dropdown-item"
-                           th:href="@{/admin/descargarResultado/{id}(id=${res.id})}">
-                          <i class="bi bi-download text-success me-2"></i>
-                          <span th:text="${res.simulacro.titulo}">Descargar</span>
-                        </a>
+                        <div class="dropdown-item d-flex justify-content-between align-items-center gap-2 pe-2">
+                          <a th:href="@{/admin/descargarResultado/{id}(id=${res.id})}"
+                             class="text-decoration-none text-dark flex-grow-1">
+                            <i class="bi bi-download text-success me-2"></i>
+                            <span th:text="${res.simulacro.titulo}">Descargar</span>
+                          </a>
+                          <a th:href="@{/admin/eliminarResultado/{id}(id=${res.id})}"
+                             class="text-danger"
+                             title="Eliminar resultado"
+                             th:data-titulo="${res.simulacro.titulo}"
+                             onclick="return confirm('¿Eliminar el resultado de ' + this.dataset.titulo + '?');">
+                            <i class="bi bi-trash3"></i>
+                          </a>
+                        </div>
                       </li>
 
                       <!-- Eliminar -->
@@ -281,13 +289,65 @@
                       th:value="${est.documentoIdentidad}"
                     />
 
-                    <select name="simulacroId" class="form-select" required>
-                      <option
-                        th:each="sim : ${simulacros}"
-                        th:value="${sim.id}"
-                        th:text="${sim.titulo}"
-                      ></option>
-                    </select>
+                    <div class="mb-3">
+                      <label class="form-label">Simulacro</label>
+                      <select name="simulacroId" class="form-select" required>
+                        <option
+                          th:each="sim : ${simulacros}"
+                          th:value="${sim.id}"
+                          th:text="${sim.titulo}"
+                        ></option>
+                      </select>
+                    </div>
+
+                    <p class="fw-semibold mb-2 mt-3">Puntajes por materia (máx. 100 c/u)</p>
+                    <div class="row g-2 mb-2">
+                      <div class="col-6">
+                        <label class="form-label form-label-sm mb-1">Sociales y Ciudadanas</label>
+                        <input type="number" th:id="'soc-' + ${est.documentoIdentidad}"
+                               name="puntajeSociales" min="0" max="100"
+                               class="form-control form-control-sm puntaje-input"
+                               th:attr="data-target='total-' + ${est.documentoIdentidad}" required />
+                      </div>
+                      <div class="col-6">
+                        <label class="form-label form-label-sm mb-1">Ciencias Naturales</label>
+                        <input type="number" th:id="'nat-' + ${est.documentoIdentidad}"
+                               name="puntajeNaturales" min="0" max="100"
+                               class="form-control form-control-sm puntaje-input"
+                               th:attr="data-target='total-' + ${est.documentoIdentidad}" required />
+                      </div>
+                      <div class="col-6">
+                        <label class="form-label form-label-sm mb-1">Matemáticas</label>
+                        <input type="number" th:id="'mat-' + ${est.documentoIdentidad}"
+                               name="puntajeMatematicas" min="0" max="100"
+                               class="form-control form-control-sm puntaje-input"
+                               th:attr="data-target='total-' + ${est.documentoIdentidad}" required />
+                      </div>
+                      <div class="col-6">
+                        <label class="form-label form-label-sm mb-1">Lectura Crítica</label>
+                        <input type="number" th:id="'lec-' + ${est.documentoIdentidad}"
+                               name="puntajelecturaCritica" min="0" max="100"
+                               class="form-control form-control-sm puntaje-input"
+                               th:attr="data-target='total-' + ${est.documentoIdentidad}" required />
+                      </div>
+                      <div class="col-6">
+                        <label class="form-label form-label-sm mb-1">Inglés</label>
+                        <input type="number" th:id="'ing-' + ${est.documentoIdentidad}"
+                               name="puntajeIngles" min="0" max="100"
+                               class="form-control form-control-sm puntaje-input"
+                               th:attr="data-target='total-' + ${est.documentoIdentidad}" required />
+                      </div>
+                    </div>
+                    <p class="text-muted small mb-3">
+                      Puntaje global: <strong th:id="'total-' + ${est.documentoIdentidad}">0</strong> / 500
+                    </p>
+
+                    <p class="fw-semibold mb-2">Posición en el salón</p>
+                    <div class="mb-3">
+                      <label class="form-label form-label-sm mb-1">Puesto</label>
+                      <input type="number" name="puestoSalon" min="1"
+                             class="form-control form-control-sm" required />
+                    </div>
 
                     <div class="mb-3">
                       <label class="form-label">Archivo PDF</label>
@@ -302,6 +362,23 @@
 
                     <button type="submit" class="btn btn-success">Subir</button>
                   </form>
+
+                  <script>
+                    (function() {
+                      document.querySelectorAll('.puntaje-input').forEach(function(input) {
+                        input.addEventListener('input', function() {
+                          var targetId = this.getAttribute('data-target');
+                          var form = this.closest('form');
+                          var total = 0;
+                          form.querySelectorAll('.puntaje-input').forEach(function(i) {
+                            total += parseInt(i.value || 0) || 0;
+                          });
+                          var span = document.getElementById(targetId);
+                          if (span) span.textContent = total;
+                        });
+                      });
+                    })();
+                  </script>
                 </div>
               </div>
             </div>
@@ -321,73 +398,6 @@
       </div>
     </div>
 
-    <!-- MODAL REGISTRAR INSTITUCIÓN -->
-    <div class="modal fade" id="modalInstitucion" tabindex="-1">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Registrar Institución</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form
-              th:action="@{/admin/crearInstitucion}"
-              method="post"
-              th:object="${institucion}"
-            >
-              <div class="mb-3">
-                <label class="form-label">Nombre</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  th:field="*{nombre}"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Dirección</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  th:field="*{direccion}"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Fecha Inicio</label>
-                <input
-                  type="date"
-                  class="form-control"
-                  th:field="*{fechaInicio}"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Fecha Final</label>
-                <input
-                  type="date"
-                  class="form-control"
-                  th:field="*{fechaFinal}"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Estado</label>
-                <select class="form-select" th:field="*{estado}" required>
-                  <option th:value="ACTIVO">Activo</option>
-                  <option th:value="FINALIZADO">Finalizado</option>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-success">Guardar</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
   <script>
     const instSelect   = document.getElementById('institucionSelect');
     const filtroSalon  = document.getElementById('filtroSalon');
@@ -397,6 +407,11 @@
     const hintMsg      = document.getElementById('filtroHintMsg');
     const sinResultados = document.getElementById('sinResultadosRow');
     const filas        = document.querySelectorAll('#tablaContainer tbody tr:not(#sinResultadosRow)');
+
+    if (tablaContainer.querySelector('.alert')) {
+      tablaContainer.style.display = 'block';
+      hint.style.display = 'none';
+    }
 
     if (instSelect) {
       instSelect.addEventListener('change', function () {

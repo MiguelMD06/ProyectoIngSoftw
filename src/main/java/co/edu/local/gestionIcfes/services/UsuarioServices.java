@@ -26,6 +26,12 @@ public interface UsuarioServices extends UserDetailsService{
 	public Usuario editarSalonInstitucion(String salon,Institucion institucion, Long id);
 	public Long cantidadEstudiantes();
 	public Long cantidadDocentes();
-	
-	
+	public Long cantidadEstudiantesActivos();
+	public Long cantidadDocentesActivos();
+	public List<Usuario> listarTodosUsuarios();
+	public boolean cambiarPassword(Long id, String passwordActual, String passwordNueva);
+	public void cambiarPasswordAdmin(Long id, String passwordNueva);
+	public void toggleActivo(Long id);
+	public boolean restablecerPassword(Long id);
+	public boolean cambiarUsername(Long id, String nuevoUsername);
 }

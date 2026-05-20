@@ -32,6 +32,14 @@ public class ResultadoSimulacro {
     @Column(name = "datos", columnDefinition = "BYTEA")
     private byte[] datos;
 
+    private Integer puntajeSociales;
+    private Integer puntajeNaturales;
+    private Integer puntajeMatematicas;
+    private Integer puntajelecturaCritica;
+    private Integer puntajeIngles;
+    private Integer puntajeGlobal;
+    private Integer puestoSalon;
+
     @ManyToOne
     @JoinColumn(name = "estudiante_id")
     private Estudiante estudiante;

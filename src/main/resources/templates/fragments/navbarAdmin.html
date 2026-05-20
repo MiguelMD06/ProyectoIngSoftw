@@ -46,9 +46,19 @@
                 <i class="bi bi-file-earmark-text"></i>Simulacros
               </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-admin-link" th:href="@{/admin/AdminMaterial}">
+                <i class="bi bi-journal-bookmark"></i>Material
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-admin-link" th:href="@{/admin/AdminInstitucion}">
+                <i class="bi bi-building"></i>Instituciones
+              </a>
+            </li>
           </ul>
 
-          <!-- USUARIO + LOGOUT -->
+          <!-- USUARIO + CONFIGURACIÓN + LOGOUT -->
           <div class="d-flex align-items-center gap-3 py-2 py-lg-0">
             <div class="nav-admin-user">
               <div class="nav-admin-avatar">
@@ -57,6 +67,9 @@
               <span class="nav-admin-username"
                     sec:authentication="principal.username"></span>
             </div>
+            <a th:href="@{/admin/configuracion}" class="nav-admin-settings" title="Configuración">
+              <i class="bi bi-gear-fill"></i>
+            </a>
             <form th:action="@{/logout}" method="post" class="m-0">
               <button type="submit" class="nav-admin-logout">
                 <i class="bi bi-box-arrow-right"></i>

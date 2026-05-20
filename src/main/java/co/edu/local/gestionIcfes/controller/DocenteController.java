@@ -6,10 +6,16 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+
+import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.edu.local.gestionIcfes.model.Asistencia;
 import co.edu.local.gestionIcfes.model.Docente;
@@ -17,6 +23,7 @@ import co.edu.local.gestionIcfes.model.Institucion;
 import co.edu.local.gestionIcfes.repository.AsistenciaRepositorio;
 import co.edu.local.gestionIcfes.repository.EstudianteRepositorio;
 import co.edu.local.gestionIcfes.services.DocenteService;
+import co.edu.local.gestionIcfes.services.UsuarioServices;
 
 @Controller
 @RequestMapping("docente")
@@ -24,6 +31,9 @@ public class DocenteController {
 
     @Autowired
     private DocenteService docenteService;
+
+    @Autowired
+    private UsuarioServices usuarioServices;
 
     @Autowired
     private EstudianteRepositorio estudianteRepositorio;
@@ -87,5 +97,46 @@ public class DocenteController {
         model.addAttribute("ausentesHoy", ausentesHoy);
         model.addAttribute("tardesHoy", tardesHoy);
         return "docente/pDocente";
+    }
+
+    @GetMapping("/configuracion")
+    public String mostrarConfiguracion(Model model, Authentication authentication) {
+        Docente docente = docenteService.buscarPorUsername(authentication.getName());
+        model.addAttribute("docente", docente);
+        return "docente/configuracionDocente";
+    }
+
+    @PostMapping("/configuracion/cambiarPassword")
+    public String cambiarPassword(@RequestParam Long id,
+            @RequestParam String passwordActual,
+            @RequestParam String passwordNueva,
+            @RequestParam String confirmarPassword,
+            RedirectAttributes redirectAttributes) {
+        if (!passwordNueva.equals(confirmarPassword)) {
+            redirectAttributes.addFlashAttribute("errorPassword", "Las contraseñas nuevas no coinciden.");
+            return "redirect:/docente/configuracion";
+        }
+        boolean exito = usuarioServices.cambiarPassword(id, passwordActual, passwordNueva);
+        if (exito) {
+            redirectAttributes.addFlashAttribute("exitoPassword", "Contraseña actualizada correctamente.");
+        } else {
+            redirectAttributes.addFlashAttribute("errorPassword", "La contraseña actual es incorrecta.");
+        }
+        return "redirect:/docente/configuracion";
+    }
+
+    @PostMapping("/configuracion/cambiarUsername")
+    public String cambiarUsername(@RequestParam Long id,
+            @RequestParam String nuevoUsername,
+            HttpSession session,
+            RedirectAttributes redirectAttributes) {
+        boolean exito = usuarioServices.cambiarUsername(id, nuevoUsername);
+        if (exito) {
+            SecurityContextHolder.clearContext();
+            session.invalidate();
+            return "redirect:/login";
+        }
+        redirectAttributes.addFlashAttribute("errorUsername", "Ese nombre de usuario ya está en uso.");
+        return "redirect:/docente/configuracion";
     }
 }

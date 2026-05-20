@@ -9,21 +9,30 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+
+import jakarta.servlet.http.HttpSession;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.edu.local.gestionIcfes.model.Asistencia;
 import co.edu.local.gestionIcfes.model.Estudiante;
 import co.edu.local.gestionIcfes.model.Institucion;
+import co.edu.local.gestionIcfes.model.MaterialEstudio;
 import co.edu.local.gestionIcfes.model.ResultadoSimulacro;
 import co.edu.local.gestionIcfes.repository.ResultadoSimulacroRepositorio;
 import co.edu.local.gestionIcfes.repository.UsuarioRepositorio;
 import co.edu.local.gestionIcfes.services.AsistenciaService;
 import co.edu.local.gestionIcfes.services.EstudianteService;
+import co.edu.local.gestionIcfes.services.MaterialEstudioServices;
+import co.edu.local.gestionIcfes.services.UsuarioServices;
 
 @Controller
 @RequestMapping("estudiante")
@@ -41,8 +50,15 @@ public class EstudianteController {
     @Autowired
     private AsistenciaService asistenciaService;
 
+    @Autowired
+    private MaterialEstudioServices materialEstudioServices;
+
+    @Autowired
+    private UsuarioServices usuarioServices;
+
     @GetMapping("/pEstudiante")
-    public String mostrarPanelEstudiante(Model model, Authentication authentication) {
+    public String mostrarPanelEstudiante(Model model, Authentication authentication,
+            @RequestParam(required = false) Long simulacroSeleccionadoId) {
         Estudiante estudiante = estudianteService.buscarPorUsername(authentication.getName());
 
         String salon = estudiante.getUsuario() != null ? estudiante.getUsuario().getSalon() : "Sin asignar";
@@ -72,12 +88,51 @@ public class EstudianteController {
             }
         }
 
+        // Resultados de simulacros
+        List<ResultadoSimulacro> resultados = resultadoSimulacroRepositorio
+                .findByEstudianteDocumentoIdentidad(estudiante.getDocumentoIdentidad());
+
+        ResultadoSimulacro resultadoSeleccionado = null;
+        if (simulacroSeleccionadoId != null) {
+            resultadoSeleccionado = resultadoSimulacroRepositorio
+                    .findByEstudianteDocumentoIdentidadAndSimulacroId(
+                            estudiante.getDocumentoIdentidad(), simulacroSeleccionadoId)
+                    .orElse(null);
+        }
+
+        double promedioSociales = 0.0, promedioNaturales = 0.0, promedioMatematicas = 0.0;
+        double promedioLecturaCritica = 0.0, promedioIngles = 0.0, promedioGlobal = 0.0;
+
+        if (!resultados.isEmpty()) {
+            promedioSociales    = Math.round(resultados.stream().filter(r -> r.getPuntajeSociales() != null)
+                    .mapToInt(ResultadoSimulacro::getPuntajeSociales).average().orElse(0.0) * 10.0) / 10.0;
+            promedioNaturales   = Math.round(resultados.stream().filter(r -> r.getPuntajeNaturales() != null)
+                    .mapToInt(ResultadoSimulacro::getPuntajeNaturales).average().orElse(0.0) * 10.0) / 10.0;
+            promedioMatematicas = Math.round(resultados.stream().filter(r -> r.getPuntajeMatematicas() != null)
+                    .mapToInt(ResultadoSimulacro::getPuntajeMatematicas).average().orElse(0.0) * 10.0) / 10.0;
+            promedioLecturaCritica = Math.round(resultados.stream().filter(r -> r.getPuntajelecturaCritica() != null)
+                    .mapToInt(ResultadoSimulacro::getPuntajelecturaCritica).average().orElse(0.0) * 10.0) / 10.0;
+            promedioIngles      = Math.round(resultados.stream().filter(r -> r.getPuntajeIngles() != null)
+                    .mapToInt(ResultadoSimulacro::getPuntajeIngles).average().orElse(0.0) * 10.0) / 10.0;
+            promedioGlobal      = Math.round(resultados.stream().filter(r -> r.getPuntajeGlobal() != null)
+                    .mapToInt(ResultadoSimulacro::getPuntajeGlobal).average().orElse(0.0) * 10.0) / 10.0;
+        }
+
         model.addAttribute("estudiante", estudiante);
         model.addAttribute("salon", salon);
         model.addAttribute("institucionNombre", institucionNombre);
         model.addAttribute("adminNombre", adminNombre);
         model.addAttribute("progresoCurso", progresoCurso);
         model.addAttribute("diasRestantes", diasRestantes);
+        model.addAttribute("resultados", resultados);
+        model.addAttribute("simulacroSeleccionadoId", simulacroSeleccionadoId);
+        model.addAttribute("resultadoSeleccionado", resultadoSeleccionado);
+        model.addAttribute("promedioSociales", promedioSociales);
+        model.addAttribute("promedioNaturales", promedioNaturales);
+        model.addAttribute("promedioMatematicas", promedioMatematicas);
+        model.addAttribute("promedioLecturaCritica", promedioLecturaCritica);
+        model.addAttribute("promedioIngles", promedioIngles);
+        model.addAttribute("promedioGlobal", promedioGlobal);
         return "estudiante/pEstudiante";
     }
 
@@ -125,6 +180,73 @@ public class EstudianteController {
                 .header(HttpHeaders.CONTENT_DISPOSITION,
                         "attachment; filename=\"" + resultado.getNombreArchivo() + "\"")
                 .contentType(MediaType.APPLICATION_PDF)
+                .contentLength(archivo.length)
+                .body(archivo);
+    }
+
+    @GetMapping("/materialEstudiante")
+    public String mostrarMaterial(Model model, Authentication authentication) {
+        Estudiante estudiante = estudianteService.buscarPorUsername(authentication.getName());
+        Long institucionId = estudiante.getInstitucion() != null ? estudiante.getInstitucion().getId() : null;
+        model.addAttribute("estudiante", estudiante);
+        if (institucionId != null) {
+            model.addAttribute("materiales", materialEstudioServices.listarPorInstitucion(institucionId));
+        } else {
+            model.addAttribute("materiales", java.util.Collections.emptyList());
+        }
+        return "estudiante/materialEstudiante";
+    }
+
+    @GetMapping("/configuracion")
+    public String mostrarConfiguracion(Model model, Authentication authentication) {
+        Estudiante estudiante = estudianteService.buscarPorUsername(authentication.getName());
+        model.addAttribute("estudiante", estudiante);
+        return "estudiante/configuracionEstudiante";
+    }
+
+    @PostMapping("/configuracion/cambiarPassword")
+    public String cambiarPassword(@RequestParam Long id,
+            @RequestParam String passwordActual,
+            @RequestParam String passwordNueva,
+            @RequestParam String confirmarPassword,
+            RedirectAttributes redirectAttributes) {
+        if (!passwordNueva.equals(confirmarPassword)) {
+            redirectAttributes.addFlashAttribute("errorPassword", "Las contraseñas nuevas no coinciden.");
+            return "redirect:/estudiante/configuracion";
+        }
+        boolean exito = usuarioServices.cambiarPassword(id, passwordActual, passwordNueva);
+        if (exito) {
+            redirectAttributes.addFlashAttribute("exitoPassword", "Contraseña actualizada correctamente.");
+        } else {
+            redirectAttributes.addFlashAttribute("errorPassword", "La contraseña actual es incorrecta.");
+        }
+        return "redirect:/estudiante/configuracion";
+    }
+
+    @PostMapping("/configuracion/cambiarUsername")
+    public String cambiarUsername(@RequestParam Long id,
+            @RequestParam String nuevoUsername,
+            HttpSession session,
+            RedirectAttributes redirectAttributes) {
+        boolean exito = usuarioServices.cambiarUsername(id, nuevoUsername);
+        if (exito) {
+            SecurityContextHolder.clearContext();
+            session.invalidate();
+            return "redirect:/login";
+        }
+        redirectAttributes.addFlashAttribute("errorUsername", "Ese nombre de usuario ya está en uso.");
+        return "redirect:/estudiante/configuracion";
+    }
+
+    @GetMapping("/descargarMaterial/{id}")
+    @Transactional(readOnly = true)
+    public ResponseEntity<byte[]> descargarMaterial(@PathVariable Long id) {
+        MaterialEstudio material = materialEstudioServices.descargarMaterial(id);
+        byte[] archivo = material.getArchivo();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + material.getNombreArchivo() + "\"")
+                .contentType(MediaType.parseMediaType(material.getTipoArchivo()))
                 .contentLength(archivo.length)
                 .body(archivo);
     }
