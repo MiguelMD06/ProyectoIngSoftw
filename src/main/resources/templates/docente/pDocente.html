@@ -158,7 +158,7 @@
               </p>
               <p class="text-muted small mb-3">
                 <span class="fw-semibold" th:text="#{teacher.specialty}">Especialidad:</span>
-                <span th:text="${docente.especialidad != null and !#strings.isEmpty(docente.especialidad) ? docente.especialidad : #{teacher.specialty.none}}"></span>
+                <span th:text="${docente.especialidad != null and !#strings.isEmpty(docente.especialidad)} ? ${docente.especialidad} : #{teacher.specialty.none}"></span>
               </p>
             </div>
           </div>

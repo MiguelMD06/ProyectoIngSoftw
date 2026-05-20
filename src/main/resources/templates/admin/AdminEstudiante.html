@@ -132,10 +132,10 @@
                 <td th:text="${est.primerApellido}"></td>
                 <td th:text="${est.segundoApellido}"></td>
                 <td th:text="${est.celular}"></td>
-                <td th:text="${est.usuario != null ? est.usuario.username : #{students.no.user}}"></td>
+                <td th:text="${est.usuario != null} ? ${est.usuario.username} : #{students.no.user}"></td>
                 <td><span th:text="${est.activo} ? #{students.active.yes} : #{students.active.no}"></span></td>
-                <td th:text="${est.institucion != null ? est.institucion.nombre : #{students.no.institution}}"></td>
-                <td th:text="${est.usuario != null ? est.usuario.salon : #{students.no.classroom}}"></td>
+                <td th:text="${est.institucion != null} ? ${est.institucion.nombre} : #{students.no.institution}"></td>
+                <td th:text="${est.usuario != null} ? ${est.usuario.salon} : #{students.no.classroom}"></td>
                 <td>
                   <div class="dropdown">
                     <button class="btn btn-action btn-acciones dropdown-toggle" type="button"

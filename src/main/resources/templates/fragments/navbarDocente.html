@@ -45,15 +45,28 @@
               <i class="bi bi-gear-fill"></i>
             </a>
             <!-- LANGUAGE SWITCHER -->
-            <div class="d-flex align-items-center gap-1">
-              <a href="?lang=es" class="badge border text-white text-decoration-none"
-                 style="border-color:rgba(255,255,255,0.3)!important;opacity:.7;font-size:.68rem;" title="Español">ES</a>
-              <a href="?lang=en" class="badge border text-white text-decoration-none"
-                 style="border-color:rgba(255,255,255,0.3)!important;opacity:.7;font-size:.68rem;" title="English">EN</a>
-              <a href="?lang=fr" class="badge border text-white text-decoration-none"
-                 style="border-color:rgba(255,255,255,0.3)!important;opacity:.7;font-size:.68rem;" title="Français">FR</a>
-              <a href="?lang=it" class="badge border text-white text-decoration-none"
-                 style="border-color:rgba(255,255,255,0.3)!important;opacity:.7;font-size:.68rem;" title="Italiano">IT</a>
+            <div class="dropdown">
+              <button class="dropdown-toggle d-flex align-items-center gap-1"
+                      style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.28);color:#fff;border-radius:6px;padding:3px 10px;font-size:0.78rem;cursor:pointer;"
+                      type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <img th:src="${'https://flagcdn.com/16x12/' + (#locale.language == 'en' ? 'gb' : #locale.language) + '.png'}"
+                     width="16" height="12" style="border-radius:2px;" alt="">
+                <span th:text="${#locale.language.toUpperCase()}">ES</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="min-width:5.5rem;">
+                <li><a class="dropdown-item d-flex align-items-center gap-2" href="?lang=es">
+                  <img src="https://flagcdn.com/16x12/es.png" width="16" height="12" style="border-radius:2px;" alt=""> ES
+                </a></li>
+                <li><a class="dropdown-item d-flex align-items-center gap-2" href="?lang=en">
+                  <img src="https://flagcdn.com/16x12/gb.png" width="16" height="12" style="border-radius:2px;" alt=""> EN
+                </a></li>
+                <li><a class="dropdown-item d-flex align-items-center gap-2" href="?lang=fr">
+                  <img src="https://flagcdn.com/16x12/fr.png" width="16" height="12" style="border-radius:2px;" alt=""> FR
+                </a></li>
+                <li><a class="dropdown-item d-flex align-items-center gap-2" href="?lang=it">
+                  <img src="https://flagcdn.com/16x12/it.png" width="16" height="12" style="border-radius:2px;" alt=""> IT
+                </a></li>
+              </ul>
             </div>
             <form th:action="@{/logout}" method="post" class="m-0">
               <button type="submit" class="nav-admin-logout">

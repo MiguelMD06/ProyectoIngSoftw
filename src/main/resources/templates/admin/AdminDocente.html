@@ -61,9 +61,9 @@
                 <td th:text="${doc.primerApellido}"></td>
                 <td th:text="${doc.segundoApellido}"></td>
                 <td th:text="${doc.celular}"></td>
-                <td th:text="${doc.usuario != null ? doc.usuario.username : #{students.no.user}}"></td>
+                <td th:text="${doc.usuario != null} ? ${doc.usuario.username} : #{students.no.user}"></td>
                 <td th:text="${doc.especialidad != null ? doc.especialidad : '—'}"></td>
-                <td th:text="${doc.institucion != null ? doc.institucion.nombre : #{students.no.institution}}"></td>
+                <td th:text="${doc.institucion != null} ? ${doc.institucion.nombre} : #{students.no.institution}"></td>
                 <td>
                   <div class="dropdown">
                     <button class="btn btn-action btn-acciones dropdown-toggle" type="button"
