@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Configuración</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+    <link rel="stylesheet" th:href="@{/estilos/AdminEstudiante.css}" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </head>
+
+  <body>
+    <div th:replace="~{fragments/navbarAdmin :: navbar}"></div>
+
+    <br />
+    <div class="header container">
+      <h2>Configuración del Sistema</h2>
+      <p class="text-muted">Administra tu perfil y las cuentas de usuarios registrados.</p>
+    </div>
+
+    <div class="container mb-5">
+      <div class="row g-4 align-items-start">
+
+        <!-- ── SECCIÓN A: MI PERFIL ─────────────────────────── -->
+        <div class="col-lg-4">
+          <div class="table-card h-100">
+            <div class="d-flex align-items-center gap-2 mb-4">
+              <div class="perfil-avatar">
+                <i class="bi bi-person-fill fs-4 text-white"></i>
+              </div>
+              <div>
+                <h5 class="mb-0 fw-bold">Mi Perfil</h5>
+                <small class="text-muted" sec:authentication="principal.username"></small>
+              </div>
+            </div>
+
+            <!-- Alertas contraseña -->
+            <div th:if="${exitoPassword}"
+                 class="alert alert-success alert-dismissible fade show py-2" role="alert">
+              <i class="bi bi-check-circle me-1"></i>
+              <span th:text="${exitoPassword}"></span>
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div th:if="${errorPassword}"
+                 class="alert alert-danger alert-dismissible fade show py-2" role="alert">
+              <i class="bi bi-exclamation-triangle me-1"></i>
+              <span th:text="${errorPassword}"></span>
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <form th:action="@{/admin/configuracion/cambiarPassword}" method="post" id="formPassword">
+              <input type="hidden" name="id" th:value="${adminActual.id}" />
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Contraseña actual</label>
+                <div class="input-group">
+                  <input type="password" name="passwordActual" id="passwordActual"
+                         class="form-control" required />
+                  <button class="btn btn-outline-secondary" type="button"
+                          onclick="toggleVer('passwordActual', this)">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Nueva contraseña</label>
+                <div class="input-group">
+                  <input type="password" name="passwordNueva" id="passwordNueva"
+                         class="form-control" required minlength="6" />
+                  <button class="btn btn-outline-secondary" type="button"
+                          onclick="toggleVer('passwordNueva', this)">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label fw-semibold">Confirmar contraseña</label>
+                <div class="input-group">
+                  <input type="password" name="confirmarPassword" id="confirmarPassword"
+                         class="form-control" required minlength="6" />
+                  <button class="btn btn-outline-secondary" type="button"
+                          onclick="toggleVer('confirmarPassword', this)">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </div>
+                <div id="msgConfirmar" class="form-text text-danger d-none">
+                  Las contraseñas no coinciden.
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-edit text-white w-100">
+                <i class="bi bi-shield-lock me-1"></i>Actualizar contraseña
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- ── SECCIÓN C: GESTIÓN DE USUARIOS ──────────────── -->
+        <div class="col-lg-8">
+          <div class="table-card">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <h5 class="mb-0 fw-bold">
+                <i class="bi bi-people-fill me-2 text-primary"></i>Gestión de Usuarios
+              </h5>
+              <span class="badge bg-primary-subtle text-primary rounded-pill"
+                    th:text="${usuarios != null ? usuarios.size() + ' cuentas' : '0 cuentas'}"></span>
+            </div>
+
+            <!-- Alertas usuarios -->
+            <div th:if="${exitoUsuarios}"
+                 class="alert alert-success alert-dismissible fade show py-2" role="alert">
+              <i class="bi bi-check-circle me-1"></i>
+              <span th:text="${exitoUsuarios}"></span>
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div th:if="${errorUsuarios}"
+                 class="alert alert-danger alert-dismissible fade show py-2" role="alert">
+              <i class="bi bi-exclamation-triangle me-1"></i>
+              <span th:text="${errorUsuarios}"></span>
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <!-- FILTROS -->
+            <div class="row g-2 mb-3">
+              <div class="col-sm-6">
+                <label class="form-label fw-semibold small text-muted mb-1">
+                  <i class="bi bi-shield me-1"></i>Filtrar por rol
+                </label>
+                <select id="filtroRol" class="form-select form-select-sm">
+                  <option value="">— Todos los roles —</option>
+                  <option value="ADMIN">Admin</option>
+                  <option value="DOCENTE">Docente</option>
+                  <option value="ESTUDIANTE">Estudiante</option>
+                </select>
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label fw-semibold small text-muted mb-1">
+                  <i class="bi bi-building me-1"></i>Filtrar por institución
+                </label>
+                <select id="filtroInstitucion" class="form-select form-select-sm">
+                  <option value="">— Todas las instituciones —</option>
+                  <option th:each="inst : ${instituciones}"
+                          th:value="${inst.id}"
+                          th:text="${inst.nombre}">
+                  </option>
+                  <option value="sin">Sin institución</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table align-middle table-striped mb-0" id="tablaUsuarios">
+                <thead>
+                  <tr>
+                    <th>Usuario</th>
+                    <th>Rol</th>
+                    <th>Institución</th>
+                    <th class="text-center">Estado</th>
+                    <th class="text-center">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="usr : ${usuarios}"
+                      th:attr="data-rol=${usr.roles != null and !usr.roles.isEmpty() ? usr.roles.iterator().next().nombre.replace('ROLE_','') : ''},
+                               data-institucion=${usr.institucion != null ? usr.institucion.id : 'sin'}">
+                    <td>
+                      <div class="d-flex align-items-center gap-2">
+                        <div class="usuario-avatar">
+                          <i class="bi bi-person-fill text-white" style="font-size:0.75rem"></i>
+                        </div>
+                        <span class="fw-semibold" th:text="${usr.username}"></span>
+                      </div>
+                    </td>
+                    <td>
+                      <span th:each="rol : ${usr.roles}"
+                            class="badge"
+                            th:classappend="${rol.nombre == 'ROLE_ADMIN'} ? 'bg-danger' :
+                                            (${rol.nombre == 'ROLE_DOCENTE'} ? 'bg-success' : 'bg-primary')"
+                            th:text="${rol.nombre.replace('ROLE_', '')}">
+                      </span>
+                    </td>
+                    <td th:text="${usr.institucion != null ? usr.institucion.nombre : '—'}"></td>
+                    <td class="text-center">
+                      <span th:if="${usr.enabled}"
+                            class="badge bg-success-subtle text-success border border-success-subtle">
+                        <i class="bi bi-circle-fill me-1" style="font-size:0.5rem"></i>Activo
+                      </span>
+                      <span th:if="${!usr.enabled}"
+                            class="badge bg-danger-subtle text-danger border border-danger-subtle">
+                        <i class="bi bi-circle-fill me-1" style="font-size:0.5rem"></i>Inactivo
+                      </span>
+                    </td>
+                    <td class="text-center">
+                      <div class="dropdown">
+                        <button class="btn btn-action btn-acciones dropdown-toggle"
+                                type="button" data-bs-toggle="dropdown">
+                          <i class="bi bi-grid-3x3-gap-fill"></i>
+                          <span>Acciones</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow">
+
+                          <!-- Toggle activo -->
+                          <li th:if="${usr.id != adminActual.id}">
+                            <a class="dropdown-item"
+                               th:href="@{/admin/configuracion/toggleActivo/{id}(id=${usr.id})}">
+                              <i th:if="${usr.enabled}" class="bi bi-toggle-on text-warning me-2"></i>
+                              <i th:if="${!usr.enabled}" class="bi bi-toggle-off text-secondary me-2"></i>
+                              <span th:text="${usr.enabled ? 'Desactivar' : 'Activar'}"></span>
+                            </a>
+                          </li>
+                          <li th:if="${usr.id == adminActual.id}">
+                            <span class="dropdown-item text-muted disabled">
+                              <i class="bi bi-lock me-2"></i>Tu cuenta
+                            </span>
+                          </li>
+
+                          <li><hr class="dropdown-divider" /></li>
+
+                          <!-- Cambiar contraseña -->
+                          <li>
+                            <button class="dropdown-item"
+                                    type="button"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalCambiarPassword"
+                                    th:data-id="${usr.id}"
+                                    th:data-username="${usr.username}">
+                              <i class="bi bi-pencil-square text-primary me-2"></i>Cambiar contraseña
+                            </button>
+                          </li>
+
+                          <!-- Restablecer contraseña -->
+                          <li>
+                            <a class="dropdown-item"
+                               th:href="@{/admin/configuracion/restablecerPassword/{id}(id=${usr.id})}"
+                               onclick="return confirm('¿Restablecer la contraseña de este usuario a su número de documento?');">
+                              <i class="bi bi-key text-warning me-2"></i>Restablecer a documento
+                            </a>
+                          </li>
+
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr id="sinResultados" style="display:none">
+                    <td colspan="5" class="text-center text-muted py-4">
+                      <i class="bi bi-search me-2"></i>No hay usuarios con ese filtro.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p class="text-muted small mt-3 mb-0">
+              <i class="bi bi-info-circle me-1"></i>
+              "Restablecer a documento" pone la contraseña al número de documento del usuario.
+              Los admins no tienen documento y no pueden restablecerse.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MODAL CAMBIAR CONTRASEÑA DE USUARIO -->
+    <div class="modal fade" id="modalCambiarPassword" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="bi bi-shield-lock me-2"></i>Cambiar contraseña
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <form th:action="@{/admin/configuracion/cambiarPasswordUsuario}" method="post" id="formCambioAdmin">
+            <div class="modal-body">
+              <p class="text-muted small mb-3">
+                Cambiando contraseña de: <strong id="modalUsername"></strong>
+              </p>
+              <input type="hidden" name="id" id="modalUserId" />
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Nueva contraseña</label>
+                <div class="input-group">
+                  <input type="password" name="passwordNueva" id="modalNueva"
+                         class="form-control" required minlength="6"
+                         placeholder="Mínimo 6 caracteres" />
+                  <button class="btn btn-outline-secondary" type="button"
+                          onclick="toggleVer('modalNueva', this)">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="mb-2">
+                <label class="form-label fw-semibold">Confirmar contraseña</label>
+                <div class="input-group">
+                  <input type="password" name="confirmarPassword" id="modalConfirmar"
+                         class="form-control" required minlength="6"
+                         placeholder="Repite la contraseña" />
+                  <button class="btn btn-outline-secondary" type="button"
+                          onclick="toggleVer('modalConfirmar', this)">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </div>
+                <div id="msgModalConfirmar" class="form-text text-danger d-none">
+                  Las contraseñas no coinciden.
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-edit text-white">
+                <i class="bi bi-save me-1"></i>Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      .perfil-avatar {
+        width: 48px; height: 48px;
+        background: linear-gradient(135deg, #3b82f6, #6366f1);
+        border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+      }
+      .usuario-avatar {
+        width: 28px; height: 28px;
+        background: linear-gradient(135deg, #3b82f6, #6366f1);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+      }
+    </style>
+
+    <script>
+      function toggleVer(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const icon  = btn.querySelector('i');
+        if (input.type === 'password') {
+          input.type = 'text';
+          icon.className = 'bi bi-eye-slash';
+        } else {
+          input.type = 'password';
+          icon.className = 'bi bi-eye';
+        }
+      }
+
+      const nueva      = document.getElementById('passwordNueva');
+      const confirmar  = document.getElementById('confirmarPassword');
+      const msgError   = document.getElementById('msgConfirmar');
+      const form       = document.getElementById('formPassword');
+
+      function validarCoincidencia() {
+        if (confirmar.value && nueva.value !== confirmar.value) {
+          msgError.classList.remove('d-none');
+          confirmar.classList.add('is-invalid');
+        } else {
+          msgError.classList.add('d-none');
+          confirmar.classList.remove('is-invalid');
+        }
+      }
+
+      nueva.addEventListener('input', validarCoincidencia);
+      confirmar.addEventListener('input', validarCoincidencia);
+
+      form.addEventListener('submit', function (e) {
+        if (nueva.value !== confirmar.value) {
+          e.preventDefault();
+          validarCoincidencia();
+        }
+      });
+
+      // ── MODAL CAMBIAR CONTRASEÑA ──────────────────────────────
+      const modalCambiar = document.getElementById('modalCambiarPassword');
+      modalCambiar.addEventListener('show.bs.modal', function (e) {
+        const btn = e.relatedTarget;
+        document.getElementById('modalUserId').value  = btn.dataset.id;
+        document.getElementById('modalUsername').textContent = btn.dataset.username;
+        document.getElementById('modalNueva').value    = '';
+        document.getElementById('modalConfirmar').value = '';
+        document.getElementById('msgModalConfirmar').classList.add('d-none');
+      });
+
+      const modalNueva     = document.getElementById('modalNueva');
+      const modalConfirmar = document.getElementById('modalConfirmar');
+      const msgModalError  = document.getElementById('msgModalConfirmar');
+
+      function validarModal() {
+        if (modalConfirmar.value && modalNueva.value !== modalConfirmar.value) {
+          msgModalError.classList.remove('d-none');
+          modalConfirmar.classList.add('is-invalid');
+        } else {
+          msgModalError.classList.add('d-none');
+          modalConfirmar.classList.remove('is-invalid');
+        }
+      }
+
+      modalNueva.addEventListener('input', validarModal);
+      modalConfirmar.addEventListener('input', validarModal);
+
+      document.getElementById('formCambioAdmin').addEventListener('submit', function (e) {
+        if (modalNueva.value !== modalConfirmar.value) {
+          e.preventDefault();
+          validarModal();
+        }
+      });
+
+      // ── FILTROS ───────────────────────────────────────────────
+      const filtroRol         = document.getElementById('filtroRol');
+      const filtroInstitucion = document.getElementById('filtroInstitucion');
+      const filas             = document.querySelectorAll('#tablaUsuarios tbody tr:not(#sinResultados)');
+      const sinResultados     = document.getElementById('sinResultados');
+
+      function aplicarFiltros() {
+        const rol   = filtroRol.value;
+        const inst  = filtroInstitucion.value;
+        let visibles = 0;
+
+        filas.forEach(function (fila) {
+          const filRol  = !rol  || fila.dataset.rol === rol;
+          const filInst = !inst || fila.dataset.institucion === inst;
+          const mostrar = filRol && filInst;
+          fila.style.display = mostrar ? '' : 'none';
+          if (mostrar) visibles++;
+        });
+
+        sinResultados.style.display = visibles === 0 ? '' : 'none';
+      }
+
+      filtroRol.addEventListener('change', aplicarFiltros);
+      filtroInstitucion.addEventListener('change', aplicarFiltros);
+    </script>
+  </body>
+</html>
