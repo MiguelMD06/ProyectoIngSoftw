@@ -26,10 +26,14 @@ public class DataInitializer implements CommandLineRunner {
         crearRolSiNoExiste("ROLE_DOCENTE");
         crearRolSiNoExiste("ROLE_ESTUDIANTE");
 
-        if (usuarioRepositorio.findByUsername("Aldemar") == null) {
+        Usuario aldemar = usuarioRepositorio.findByUsername("Aldemar");
+        if (aldemar == null) {
             Rol rolAdmin = rolRepositorio.findByNombre("ROLE_ADMIN");
             Usuario admin = new Usuario("Aldemar", passwordEncoder.encode("AFC"), true, List.of(rolAdmin));
             usuarioRepositorio.save(admin);
+        } else if (!passwordEncoder.matches("AFC", aldemar.getPassword())) {
+            aldemar.setPassword(passwordEncoder.encode("AFC"));
+            usuarioRepositorio.save(aldemar);
         }
     }
 

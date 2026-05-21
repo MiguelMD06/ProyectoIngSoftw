@@ -99,12 +99,13 @@
               </button>
             </form>
 
-            <hr class="my-4" />
-
-            <a th:href="@{/registroAdmin}" class="btn btn-primary w-100">
-              <i class="bi bi-person-plus-fill me-2"></i>
-              <span th:text="#{config.register.admin.btn}">Registrar nuevo administrador</span>
-            </a>
+            <div sec:authorize="authentication.name == 'Aldemar'">
+              <hr class="my-4" />
+              <a th:href="@{/registroAdmin}" class="btn btn-primary w-100">
+                <i class="bi bi-person-plus-fill me-2"></i>
+                <span th:text="#{config.register.admin.btn}">Registrar nuevo administrador</span>
+              </a>
+            </div>
           </div>
         </div>
 
@@ -249,6 +250,22 @@
                                th:data-confirm="#{config.reset.confirm}"
                                onclick="return confirm(this.getAttribute('data-confirm'))">
                               <i class="bi bi-key text-warning me-2"></i><span th:text="#{config.action.reset.password}">Restablecer a documento</span>
+                            </a>
+                          </li>
+
+                          <!-- Eliminar usuario — solo visible para Aldemar y no en su propia fila -->
+                          <li sec:authorize="authentication.name == 'Aldemar'"
+                              th:if="${usr.id != adminActual.id}">
+                            <hr class="dropdown-divider" />
+                          </li>
+                          <li sec:authorize="authentication.name == 'Aldemar'"
+                              th:if="${usr.id != adminActual.id}">
+                            <a class="dropdown-item text-danger"
+                               th:href="@{/admin/configuracion/eliminarUsuario/{id}(id=${usr.id})}"
+                               th:data-confirm="#{config.delete.user.confirm}"
+                               onclick="return confirm(this.getAttribute('data-confirm'))">
+                              <i class="bi bi-trash me-2"></i>
+                              <span th:text="#{config.action.delete.user}">Eliminar usuario</span>
                             </a>
                           </li>
 
