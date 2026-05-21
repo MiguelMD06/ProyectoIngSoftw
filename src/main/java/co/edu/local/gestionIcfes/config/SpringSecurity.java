@@ -14,50 +14,42 @@ import co.edu.local.gestionIcfes.services.UsuarioServices;
 @Configuration
 @EnableWebSecurity
 public class SpringSecurity {
-	
+
 	@Autowired
 	private UsuarioServices usuarioServices;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Autowired
 	private CustomAuthSuccessHandler successHandler;
 
 	@Autowired
 	private CustomAuthFailureHandler failureHandler;
-	
+
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider auth = new DaoAuthenticationProvider(usuarioServices);
 		auth.setPasswordEncoder(passwordEncoder);
 		return auth;
 	}
-	
-	@Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .authenticationProvider(authenticationProvider()) 
-            .authorizeHttpRequests(auth -> auth
-            		.requestMatchers("/estilos/**", "/js/**", "/img/**", "/css/**","/registroAdmin").permitAll()
-            		.requestMatchers("/login").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/docente/**").hasAnyRole("DOCENTE")
-                .requestMatchers("/estudiante/**").hasAnyRole("ESTUDIANTE")
-                .anyRequest().authenticated()                                  
-            )
-            .formLogin(form -> form
-                .loginPage("/login")
-                .successHandler(successHandler)
-                .failureHandler(failureHandler)
-                .permitAll()
-            )
-            .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
-                .permitAll()
-            ).exceptionHandling(exception -> exception.accessDeniedPage("/403"));
 
-        return http.build();
-    }
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		http.authenticationProvider(authenticationProvider())
+				.authorizeHttpRequests(auth -> auth
+						.requestMatchers("/estilos/**", "/js/**", "/img/**", "/css/**", "/assets/**", "/login")
+						.permitAll()
+						.requestMatchers("/registroAdmin").hasRole("ADMIN")
+						.requestMatchers("/admin/**").hasRole("ADMIN")
+						.requestMatchers("/docente/**").hasAnyRole("DOCENTE")
+						.requestMatchers("/estudiante/**").hasAnyRole("ESTUDIANTE")
+						.anyRequest().authenticated())
+				.formLogin(form -> form.loginPage("/login").successHandler(successHandler)
+						.failureHandler(failureHandler).permitAll())
+				.logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/login").permitAll())
+				.exceptionHandling(exception -> exception.accessDeniedPage("/403"));
+
+		return http.build();
+	}
 }

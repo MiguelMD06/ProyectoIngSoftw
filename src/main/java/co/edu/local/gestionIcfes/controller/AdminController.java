@@ -398,6 +398,23 @@ public class AdminController {
         return "redirect:/admin/configuracion";
     }
 
+    @GetMapping("/configuracion/eliminarUsuario/{id}")
+    public String eliminarUsuario(@PathVariable Long id, Authentication authentication,
+                                  RedirectAttributes redirectAttributes) {
+        Usuario adminActual = usuarioRepositorio.findByUsername(authentication.getName());
+        if (adminActual.getId().equals(id)) {
+            redirectAttributes.addFlashAttribute("errorUsuarios", "No puedes eliminar tu propia cuenta.");
+            return "redirect:/admin/configuracion";
+        }
+        try {
+            usuarioService.eliminarUsuario(id);
+            redirectAttributes.addFlashAttribute("exitoUsuarios", "Usuario eliminado correctamente.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorUsuarios", "Error al eliminar el usuario: " + e.getMessage());
+        }
+        return "redirect:/admin/configuracion";
+    }
+
     @GetMapping("/configuracion/restablecerPassword/{id}")
     public String restablecerPassword(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         boolean exito = usuarioService.restablecerPassword(id);
