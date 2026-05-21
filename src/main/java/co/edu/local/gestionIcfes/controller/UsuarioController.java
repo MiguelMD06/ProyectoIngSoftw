@@ -13,7 +13,6 @@ import co.edu.local.gestionIcfes.dto.UsuarioDTO;
 import co.edu.local.gestionIcfes.enums.TipoIdentificacion;
 import co.edu.local.gestionIcfes.model.Docente;
 import co.edu.local.gestionIcfes.services.InstitucionService;
-import co.edu.local.gestionIcfes.services.RolServices;
 import co.edu.local.gestionIcfes.services.UsuarioServices;
 
 
@@ -25,10 +24,6 @@ public class UsuarioController {
 	
 	@Autowired
 	private InstitucionService institucionService;
-	
-	@Autowired
-	private RolServices rolService;
-	
 	
 	@GetMapping("/login")
 	public String mostrarLogin() {
@@ -68,15 +63,6 @@ public class UsuarioController {
 		return exito ? "redirect:/registroAdmin?exito" : "redirect:/registroAdmin?error";
 	}
 	
-	@GetMapping("/registro")
-	public String mostrarRegistro(Model model) {
-		model.addAttribute("persona", new PersonaDTO());
-		model.addAttribute("tiposIdentificaciones", TipoIdentificacion.values());
-		model.addAttribute("instituciones", institucionService.listarInstituciones());
-		model.addAttribute("roles", rolService.listarRoles());
-		return "admin/AdminRegistro";
-	}
-
 	@GetMapping("/registroEstudiante")
 	public String mostrarRegistroEstudiante(Model model) {
 		model.addAttribute("persona", new PersonaDTO());
