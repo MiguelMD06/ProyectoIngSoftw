@@ -50,7 +50,7 @@ public class UsuarioController {
 	public String mostrarRegistroAdmin(Model model) {
 		model.addAttribute("usuario", new UsuarioDTO());
 		model.addAttribute("instituciones", institucionService.listarInstituciones());
-		return "auth/registro";
+		return "admin/AdminRegistroAdmin";
 	}
 	
 	@PostMapping("/registroAdmin")
