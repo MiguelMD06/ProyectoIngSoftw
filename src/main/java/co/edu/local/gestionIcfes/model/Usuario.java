@@ -18,6 +18,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+/**
+ * Entidad que representa las credenciales de acceso y el perfil de sesión de un usuario.
+ * <p>
+ * Cada {@link co.edu.local.gestionIcfes.model.Estudiante} y
+ * {@link co.edu.local.gestionIcfes.model.Docente} está vinculado a un {@code Usuario}
+ * a través de una relación {@code @OneToOne} en {@link Persona}. Los administradores
+ * también son {@code Usuario}, pero sin entidad {@code Persona} asociada.
+ * </p>
+ * <ul>
+ *   <li>{@code salon} indica el aula asignada ("1" o "2") dentro de la institución.</li>
+ *   <li>{@code enabled = false} bloquea el acceso al sistema sin eliminar el registro.</li>
+ *   <li>Los roles se cargan de forma {@code EAGER} para que Spring Security los tenga
+ *       disponibles en cada petición sin una transacción activa.</li>
+ * </ul>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

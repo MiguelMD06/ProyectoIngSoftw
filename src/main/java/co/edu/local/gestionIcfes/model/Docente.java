@@ -10,6 +10,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entidad que representa a un docente vinculado a una institución.
+ * <p>
+ * Extiende {@link co.edu.local.gestionIcfes.model.Persona} con el campo {@code especialidad},
+ * que describe el área de conocimiento que imparte. Cada docente está asignado a una
+ * {@link co.edu.local.gestionIcfes.model.Institucion} y tiene acceso al sistema a través
+ * de su {@link co.edu.local.gestionIcfes.model.Usuario} (heredado de {@code Persona}).
+ * </p>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

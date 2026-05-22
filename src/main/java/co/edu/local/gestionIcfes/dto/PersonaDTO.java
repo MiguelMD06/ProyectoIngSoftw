@@ -7,6 +7,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DTO de formulario para crear y actualizar estudiantes y docentes.
+ * <p>
+ * El campo {@code rol} usa valores numéricos: {@code 2} = {@code ROLE_DOCENTE},
+ * {@code 3} = {@code ROLE_ESTUDIANTE}, correspondientes a los IDs sembrados en la
+ * tabla {@code roles} por {@link co.edu.local.gestionIcfes.config.DataInitializer}.
+ * </p>
+ * <p>
+ * {@code institucion} es el {@code id} de la {@link co.edu.local.gestionIcfes.model.Institucion}
+ * a la que se asignará la persona. {@code salon} indica el aula dentro de esa institución.
+ * {@code especialidad} solo se usa cuando el DTO representa a un docente.
+ * </p>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

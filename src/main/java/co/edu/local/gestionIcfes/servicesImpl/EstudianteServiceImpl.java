@@ -13,6 +13,14 @@ import co.edu.local.gestionIcfes.services.InstitucionService;
 import co.edu.local.gestionIcfes.services.LogService;
 import co.edu.local.gestionIcfes.services.UsuarioServices;
 
+/**
+ * Implementación de {@link co.edu.local.gestionIcfes.services.EstudianteService}.
+ * <p>
+ * La eliminación de un estudiante limpia manualmente sus asistencias y resultados de
+ * simulacro antes de borrar la entidad y su usuario, dado que no todas las relaciones
+ * tienen {@code CascadeType.ALL} configurado en la entidad.
+ * </p>
+ */
 @Service
 public class EstudianteServiceImpl implements EstudianteService{
 

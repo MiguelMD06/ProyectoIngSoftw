@@ -10,6 +10,14 @@ import co.edu.local.gestionIcfes.model.LogCambio;
 import co.edu.local.gestionIcfes.repository.LogRepository;
 import co.edu.local.gestionIcfes.services.LogService;
 
+/**
+ * Implementación de {@link co.edu.local.gestionIcfes.services.LogService}.
+ * <p>
+ * {@link #listarLogs()} retorna únicamente los últimos 5 registros para no sobrecargar
+ * el panel de administración. El constructor de dos argumentos de
+ * {@link co.edu.local.gestionIcfes.model.LogCambio} asigna automáticamente la fecha y hora.
+ * </p>
+ */
 @Service
 public class LogServiceImpl implements LogService{
 

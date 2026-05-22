@@ -10,6 +10,15 @@ import org.springframework.stereotype.Component;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * Manejador de autenticación fallida que distingue entre credenciales incorrectas
+ * y cuenta deshabilitada.
+ * <ul>
+ *   <li>{@link org.springframework.security.authentication.DisabledException} →
+ *       redirige a {@code /login?disabled} (cuenta inactiva).</li>
+ *   <li>Cualquier otro error → redirige a {@code /login?error} (credenciales inválidas).</li>
+ * </ul>
+ */
 @Component
 public class CustomAuthFailureHandler implements AuthenticationFailureHandler {
 

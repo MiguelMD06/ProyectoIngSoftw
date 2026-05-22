@@ -15,6 +15,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entidad que representa un material de estudio subido por el administrador
+ * para los estudiantes de una institución.
+ * <p>
+ * El contenido del archivo se persiste como {@code BYTEA} en PostgreSQL en el campo
+ * {@code archivo}. Los controladores que descargan este campo deben anotar el método
+ * con {@code @Transactional(readOnly = true)} para mantener la sesión de Hibernate
+ * abierta mientras se transmite el arreglo de bytes.
+ * </p>
+ * <p>
+ * Los materiales se agrupan por {@code semana} dentro de cada institución; la vista
+ * de estudiante los lista en orden descendente de semana.
+ * </p>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

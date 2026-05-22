@@ -12,6 +12,16 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * Manejador de autenticación exitosa que redirige al usuario al panel correspondiente
+ * según su rol.
+ * <ul>
+ *   <li>{@code ROLE_ADMIN} → {@code /admin/pAdmin}</li>
+ *   <li>{@code ROLE_DOCENTE} → {@code /docente/pDocente}</li>
+ *   <li>{@code ROLE_ESTUDIANTE} → {@code /estudiante/pEstudiante}</li>
+ * </ul>
+ * Si ningún rol coincide, redirige a {@code /login?error}.
+ */
 @Component
 public class CustomAuthSuccessHandler implements AuthenticationSuccessHandler {
 

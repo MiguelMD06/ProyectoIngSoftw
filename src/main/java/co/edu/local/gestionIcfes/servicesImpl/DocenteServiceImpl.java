@@ -13,6 +13,14 @@ import co.edu.local.gestionIcfes.services.DocenteService;
 import co.edu.local.gestionIcfes.services.LogService;
 import co.edu.local.gestionIcfes.services.UsuarioServices;
 
+/**
+ * Implementación de {@link co.edu.local.gestionIcfes.services.DocenteService}.
+ * <p>
+ * La eliminación de un docente borra primero la entidad {@code Docente} y luego llama a
+ * {@link co.edu.local.gestionIcfes.services.UsuarioServices#eliminarUsuario} para borrar
+ * el usuario de acceso asociado. Todas las operaciones quedan registradas en el log de auditoría.
+ * </p>
+ */
 @Service
 public class DocenteServiceImpl implements DocenteService{
 	

@@ -11,6 +11,22 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import co.edu.local.gestionIcfes.services.UsuarioServices;
 
+/**
+ * Configuración central de Spring Security para la aplicación.
+ * <p>
+ * Define la cadena de filtros de seguridad con las siguientes reglas de acceso:
+ * recursos estáticos y {@code /login} son públicos; {@code /registroAdmin} y
+ * {@code /admin/**} requieren {@code ROLE_ADMIN}; {@code /docente/**} requiere
+ * {@code ROLE_DOCENTE}; {@code /estudiante/**} requiere {@code ROLE_ESTUDIANTE};
+ * cualquier otra ruta requiere autenticación.
+ * </p>
+ * <p>
+ * El proveedor de autenticación usa {@link co.edu.local.gestionIcfes.services.UsuarioServices}
+ * como {@code UserDetailsService} con contraseñas BCrypt.
+ * Los manejadores personalizados {@link CustomAuthSuccessHandler} y
+ * {@link CustomAuthFailureHandler} controlan el redireccionamiento tras el login.
+ * </p>
+ */
 @Configuration
 @EnableWebSecurity
 public class SpringSecurity {

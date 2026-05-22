@@ -17,6 +17,13 @@ import co.edu.local.gestionIcfes.services.LogService;
 import co.edu.local.gestionIcfes.services.ResultadoSimulacroService;
 import jakarta.transaction.Transactional;
 
+/**
+ * Implementación de {@link co.edu.local.gestionIcfes.services.ResultadoSimulacroService}.
+ * <p>
+ * Calcula el {@code puntajeGlobal} como la suma de los cinco puntajes por área antes
+ * de persistir el resultado. Solo acepta archivos de tipo {@code application/pdf}.
+ * </p>
+ */
 @Service
 @Transactional
 public class ResultadoSimulacroServiceImpl implements ResultadoSimulacroService {

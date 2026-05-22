@@ -10,6 +10,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
+/**
+ * Configuración de Spring MVC para la internacionalización (i18n) de la aplicación.
+ * <p>
+ * Registra un {@link org.springframework.web.servlet.i18n.SessionLocaleResolver} con
+ * español como idioma predeterminado, y un
+ * {@link org.springframework.web.servlet.i18n.LocaleChangeInterceptor} que cambia el
+ * idioma de la sesión cuando se pasa el parámetro {@code ?lang=} en cualquier URL.
+ * Idiomas soportados: {@code es} (español), {@code en} (inglés), {@code fr} (francés),
+ * {@code it} (italiano).
+ * </p>
+ */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 

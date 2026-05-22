@@ -34,6 +34,21 @@ import co.edu.local.gestionIcfes.services.EstudianteService;
 import co.edu.local.gestionIcfes.services.MaterialEstudioServices;
 import co.edu.local.gestionIcfes.services.UsuarioServices;
 
+/**
+ * Controlador del panel del estudiante. Requiere {@code ROLE_ESTUDIANTE}.
+ * <p>
+ * Gestiona el dashboard con promedios de puntajes por área y progreso del curso,
+ * la vista de simulacros con resultados descargables, el historial de asistencias
+ * con conteos por estado, los materiales de estudio de su institución y la
+ * pantalla de configuración de cuenta.
+ * </p>
+ * <p>
+ * Los métodos de descarga de archivos están anotados con {@code @Transactional(readOnly = true)}
+ * para mantener la sesión de Hibernate abierta mientras se transmite el campo {@code BYTEA}.
+ * La descarga de resultados valida que el resultado pertenezca al estudiante autenticado
+ * antes de enviarlo, retornando HTTP 403 en caso contrario.
+ * </p>
+ */
 @Controller
 @RequestMapping("estudiante")
 public class EstudianteController {

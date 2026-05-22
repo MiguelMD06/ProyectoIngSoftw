@@ -16,6 +16,15 @@ import co.edu.local.gestionIcfes.services.InstitucionService;
 import co.edu.local.gestionIcfes.services.UsuarioServices;
 
 
+/**
+ * Controlador que gestiona las rutas de autenticación y registro de usuarios.
+ * <p>
+ * Maneja el formulario de login, la página de acceso denegado, y la creación de
+ * administradores ({@code /registroAdmin}), estudiantes ({@code /registroEstudiante})
+ * y docentes ({@code /registroDocente} + {@code POST /registro}).
+ * {@code /registroAdmin} está restringido a {@code ROLE_ADMIN} por Spring Security.
+ * </p>
+ */
 @Controller
 public class UsuarioController {
 	

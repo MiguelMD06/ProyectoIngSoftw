@@ -14,6 +14,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entidad que representa a un estudiante matriculado en una institución.
+ * <p>
+ * Hereda los datos de identidad de {@link co.edu.local.gestionIcfes.model.Persona} y
+ * agrega la relación con su {@link co.edu.local.gestionIcfes.model.Institucion}, sus
+ * registros de {@link co.edu.local.gestionIcfes.model.Asistencia} y sus
+ * {@link co.edu.local.gestionIcfes.model.ResultadoSimulacro}.
+ * </p>
+ * <p>
+ * El campo {@code activo} indica si el estudiante está habilitado en la plataforma;
+ * difiere de {@code Usuario.enabled}, que bloquea el acceso al sistema.
+ * Los resultados de simulacro se eliminan en cascada si el estudiante es borrado.
+ * </p>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

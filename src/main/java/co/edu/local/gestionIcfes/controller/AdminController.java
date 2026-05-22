@@ -48,6 +48,24 @@ import co.edu.local.gestionIcfes.services.ResultadoSimulacroService;
 import co.edu.local.gestionIcfes.services.SimulacroService;
 import co.edu.local.gestionIcfes.services.UsuarioServices;
 
+/**
+ * Controlador principal del panel de administración. Requiere {@code ROLE_ADMIN}.
+ * <p>
+ * Gestiona los módulos de estudiantes, docentes, simulacros, asistencias,
+ * materiales de estudio, instituciones, configuración de usuarios y log de cambios.
+ * </p>
+ * <p>
+ * Inyecta repositorios directamente ({@code UsuarioRepositorio}, {@code EstudianteRepositorio},
+ * {@code AsistenciaRepositorio}, {@code ResultadoSimulacroRepositorio}) cuando un handler
+ * necesita consultas que cruzan múltiples repositorios en una sola operación y no justifica
+ * crear un método de servicio dedicado.
+ * </p>
+ * <p>
+ * Los métodos de descarga de archivos ({@code descargarResultado}, {@code descargarMaterial})
+ * están anotados con {@code @Transactional(readOnly = true)} para mantener la sesión
+ * de Hibernate abierta mientras se transmite el campo {@code BYTEA}.
+ * </p>
+ */
 @Controller
 @RequestMapping("/admin")
 public class AdminController {

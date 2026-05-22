@@ -8,6 +8,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DTO de formulario para el registro y visualización de usuarios administrativos.
+ * <p>
+ * Se utiliza principalmente en el flujo de creación de administradores
+ * ({@code GET/POST /registroAdmin}) y en la pantalla de configuración de usuarios.
+ * {@code institucionId} se emplea al crear el usuario para resolver la
+ * {@link co.edu.local.gestionIcfes.model.Institucion} desde el repositorio;
+ * {@code institucion} expone el objeto completo en las vistas que lo necesitan.
+ * </p>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -12,6 +12,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DTO de proyección para mostrar el resumen de una institución en las vistas administrativas.
+ * <p>
+ * Contiene las listas de {@link co.edu.local.gestionIcfes.model.Usuario}s,
+ * {@link co.edu.local.gestionIcfes.model.Estudiante}s, {@link co.edu.local.gestionIcfes.model.Docente}s
+ * y {@link co.edu.local.gestionIcfes.model.Simulacro}s asociados a la institución,
+ * útiles para poblar tablas y controles de selección en Thymeleaf.
+ * </p>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

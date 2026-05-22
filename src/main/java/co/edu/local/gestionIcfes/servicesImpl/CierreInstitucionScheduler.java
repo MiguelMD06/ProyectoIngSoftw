@@ -18,6 +18,16 @@ import co.edu.local.gestionIcfes.repository.InstitucionRepositorio;
 import co.edu.local.gestionIcfes.repository.UsuarioRepositorio;
 import co.edu.local.gestionIcfes.services.LogService;
 
+/**
+ * Tarea programada que desactiva automáticamente los usuarios de las instituciones
+ * cuyo período académico ha finalizado.
+ * <p>
+ * Se ejecuta diariamente a medianoche ({@code cron = "0 0 0 * * *"}).
+ * Consulta todas las instituciones cuya {@code fechaFinal} ya ha pasado y, para cada una,
+ * deshabilita ({@code enabled = false}) los usuarios de todos sus estudiantes y docentes.
+ * Registra el evento en el log de auditoría indicando cuántos usuarios fueron desactivados.
+ * </p>
+ */
 @Service
 public class CierreInstitucionScheduler {
 

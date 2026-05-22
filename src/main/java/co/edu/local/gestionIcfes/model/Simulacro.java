@@ -16,6 +16,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entidad que describe un simulacro de examen ICFES dentro de una institución.
+ * <p>
+ * Almacena únicamente los metadatos del simulacro (título, descripción, nombre del PDF
+ * de enunciado y fecha de aplicación). El contenido binario de los resultados individuales
+ * de cada estudiante se guarda en {@link co.edu.local.gestionIcfes.model.ResultadoSimulacro}.
+ * </p>
+ * <p>
+ * Al eliminar un simulacro, {@link co.edu.local.gestionIcfes.servicesImpl.SimulacroServiceImpl}
+ * borra primero todos sus {@code ResultadoSimulacro} asociados para respetar la integridad
+ * referencial.
+ * </p>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

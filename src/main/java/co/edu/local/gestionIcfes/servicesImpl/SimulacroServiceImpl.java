@@ -20,6 +20,16 @@ import co.edu.local.gestionIcfes.repository.SimulacroRepositorio;
 import co.edu.local.gestionIcfes.services.LogService;
 import co.edu.local.gestionIcfes.services.SimulacroService;
 
+/**
+ * Implementación de {@link co.edu.local.gestionIcfes.services.SimulacroService}.
+ * <p>
+ * Todos los métodos son transaccionales por defecto ({@code @Transactional} a nivel de clase).
+ * Al subir un resultado, valida que el archivo sea {@code application/pdf} antes de
+ * persistir los bytes. La eliminación de un simulacro borra primero sus
+ * {@link co.edu.local.gestionIcfes.model.ResultadoSimulacro} mediante el repositorio
+ * antes de eliminar el simulacro.
+ * </p>
+ */
 @Service
 @Transactional
 public class SimulacroServiceImpl implements SimulacroService {

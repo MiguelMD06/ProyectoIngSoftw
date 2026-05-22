@@ -16,6 +16,14 @@ import co.edu.local.gestionIcfes.repository.EstudianteRepositorio;
 import co.edu.local.gestionIcfes.services.AsistenciaService;
 import co.edu.local.gestionIcfes.services.LogService;
 
+/**
+ * Implementación de {@link co.edu.local.gestionIcfes.services.AsistenciaService}.
+ * <p>
+ * La lógica de upsert en {@link #registrarOActualizar} verifica primero si existe
+ * un registro para el par (documento, fecha); si existe lo actualiza, si no lo crea.
+ * Esto garantiza que no se dupliquen asistencias para el mismo día.
+ * </p>
+ */
 @Service
 @Transactional
 public class AsistenciaServiceImpl implements AsistenciaService {

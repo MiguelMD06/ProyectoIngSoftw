@@ -24,6 +24,16 @@ import co.edu.local.gestionIcfes.repository.UsuarioRepositorio;
 import co.edu.local.gestionIcfes.services.InstitucionService;
 import co.edu.local.gestionIcfes.services.LogService;
 
+/**
+ * Implementación de {@link co.edu.local.gestionIcfes.services.InstitucionService}.
+ * <p>
+ * {@link #eliminarInstitucion} ejecuta la eliminación en cascada en el siguiente orden
+ * para respetar las restricciones de clave foránea de PostgreSQL:
+ * asistencias → resultados de simulacro (por estudiante) → resultados de simulacro (por simulacro)
+ * → estudiantes y sus usuarios → docentes y sus usuarios → simulacros → materiales de estudio
+ * → usuarios admin vinculados → institución.
+ * </p>
+ */
 @Service
 public class InstitucionServicesImpl implements InstitucionService{
 

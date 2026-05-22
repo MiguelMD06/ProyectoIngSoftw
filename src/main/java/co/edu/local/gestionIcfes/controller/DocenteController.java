@@ -25,6 +25,18 @@ import co.edu.local.gestionIcfes.repository.EstudianteRepositorio;
 import co.edu.local.gestionIcfes.services.DocenteService;
 import co.edu.local.gestionIcfes.services.UsuarioServices;
 
+/**
+ * Controlador del panel del docente. Requiere {@code ROLE_DOCENTE}.
+ * <p>
+ * Expone el dashboard del docente con estadísticas de asistencia del día para su salón,
+ * y la pantalla de configuración donde puede cambiar contraseña y nombre de usuario.
+ * Al cambiar el username, la sesión se invalida y el docente debe volver a iniciar sesión.
+ * </p>
+ * <p>
+ * Inyecta {@code EstudianteRepositorio} y {@code AsistenciaRepositorio} directamente
+ * para calcular estadísticas de asistencia del salón sin pasar por la capa de servicio.
+ * </p>
+ */
 @Controller
 @RequestMapping("docente")
 public class DocenteController {

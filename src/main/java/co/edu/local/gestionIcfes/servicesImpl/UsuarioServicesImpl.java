@@ -33,6 +33,15 @@ import co.edu.local.gestionIcfes.services.RolServices;
 import co.edu.local.gestionIcfes.services.UsuarioServices;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * Implementación de {@link co.edu.local.gestionIcfes.services.UsuarioServices}.
+ * <p>
+ * Actúa también como proveedor de autenticación de Spring Security implementando
+ * {@link org.springframework.security.core.userdetails.UserDetailsService}.
+ * Al cargar el usuario, guarda su ID en la sesión HTTP bajo la clave {@code "idusuario"}
+ * para que los controladores puedan identificar al usuario actual sin consultar la BD.
+ * </p>
+ */
 @Service
 public class UsuarioServicesImpl implements UsuarioServices {
 

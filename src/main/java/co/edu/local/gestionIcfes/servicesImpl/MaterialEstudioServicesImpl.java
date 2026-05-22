@@ -15,6 +15,14 @@ import co.edu.local.gestionIcfes.repository.MaterialEstudioRepositorio;
 import co.edu.local.gestionIcfes.services.InstitucionService;
 import co.edu.local.gestionIcfes.services.MaterialEstudioServices;
 
+/**
+ * Implementación de {@link co.edu.local.gestionIcfes.services.MaterialEstudioServices}.
+ * <p>
+ * Al subir un material, asigna automáticamente la fecha de subida ({@code LocalDate.now()}).
+ * Los métodos de lectura están anotados con {@code @Transactional(readOnly = true)} para
+ * mantener la sesión de Hibernate activa mientras se accede al campo {@code archivo} (BYTEA).
+ * </p>
+ */
 @Service
 @Transactional
 public class MaterialEstudioServicesImpl implements MaterialEstudioServices {

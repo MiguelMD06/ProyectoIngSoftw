@@ -12,6 +12,21 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entidad de auditoría que registra cada operación relevante ejecutada en el sistema.
+ * <p>
+ * {@code origenCambio} identifica el módulo que generó el evento: {@code "estudiante"},
+ * {@code "docente"}, {@code "simulacro"}, {@code "asistencia"}, {@code "usuario"},
+ * {@code "institucion"} o {@code "material"}.
+ * </p>
+ * <p>
+ * Al usar el constructor de dos argumentos {@link #LogCambio(String, String)},
+ * {@code fechaHora} se asigna automáticamente a {@code LocalDateTime.now()}, por lo que
+ * nunca debe setearse manualmente.
+ * El panel de administrador muestra únicamente los últimos 5 registros (ver
+ * {@link co.edu.local.gestionIcfes.servicesImpl.LogServiceImpl#listarLogs()}).
+ * </p>
+ */
 @Entity
 @Data
 @AllArgsConstructor

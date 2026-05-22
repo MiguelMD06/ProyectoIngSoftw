@@ -18,6 +18,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entidad que registra la asistencia de un estudiante a una clase en una fecha determinada.
+ * <p>
+ * Existe un máximo de un registro por estudiante por día; si ya existe uno para la misma
+ * fecha, {@link co.edu.local.gestionIcfes.servicesImpl.AsistenciaServiceImpl#registrarOActualizar}
+ * actualiza su estado en lugar de crear un duplicado.
+ * El estado posible se define en {@link co.edu.local.gestionIcfes.enums.EstadoAsistencia}.
+ * </p>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

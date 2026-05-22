@@ -15,6 +15,21 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entidad que almacena el resultado individual de un estudiante en un simulacro ICFES.
+ * <p>
+ * Contiene el PDF con el resultado completo ({@code datos} como {@code BYTEA}) junto con
+ * los puntajes desglosados por área ({@code puntajeSociales}, {@code puntajeNaturales},
+ * {@code puntajeMatematicas}, {@code puntajelecturaCritica}, {@code puntajeIngles}) y el
+ * puntaje global (suma de los anteriores calculada en
+ * {@link co.edu.local.gestionIcfes.servicesImpl.ResultadoSimulacroServiceImpl}).
+ * </p>
+ * <p>
+ * {@code puestoSalon} indica la posición del estudiante dentro de su salón en ese simulacro.
+ * Los métodos de descarga requieren {@code @Transactional(readOnly = true)} para que
+ * Hibernate mantenga la sesión abierta al leer el campo {@code datos}.
+ * </p>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

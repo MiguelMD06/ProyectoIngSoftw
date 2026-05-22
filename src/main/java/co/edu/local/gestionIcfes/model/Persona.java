@@ -10,6 +10,15 @@ import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 
+/**
+ * Superclase abstracta que centraliza los datos de identidad comunes a estudiantes y docentes.
+ * <p>
+ * No genera tabla propia en la base de datos ({@code @MappedSuperclass}); sus campos se
+ * mapean directamente en las tablas {@code estudiantes} y {@code docentes}.
+ * La clave primaria {@code documentoIdentidad} es un {@code String} con el número de
+ * documento del individuo (ver {@link co.edu.local.gestionIcfes.enums.TipoIdentificacion}).
+ * </p>
+ */
 @Data
 @MappedSuperclass
 public class Persona {

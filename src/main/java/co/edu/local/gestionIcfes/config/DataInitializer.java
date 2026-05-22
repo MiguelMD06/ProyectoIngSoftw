@@ -12,6 +12,16 @@ import co.edu.local.gestionIcfes.repository.RolRepositorio;
 import co.edu.local.gestionIcfes.repository.UsuarioRepositorio;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Inicializador de datos que se ejecuta automáticamente al arrancar la aplicación.
+ * <p>
+ * Garantiza que los tres roles base ({@code ROLE_ADMIN}, {@code ROLE_DOCENTE},
+ * {@code ROLE_ESTUDIANTE}) existan en la tabla {@code roles}, y que el usuario
+ * administrador por defecto {@code Aldemar} (contraseña {@code AFC}) esté creado
+ * y con su contraseña correcta. Si la contraseña del usuario hubiese cambiado
+ * manualmente en la BD, este inicializador la restablece en cada reinicio.
+ * </p>
+ */
 @Configuration
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {

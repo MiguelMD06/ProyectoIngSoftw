@@ -9,6 +9,14 @@ import co.edu.local.gestionIcfes.model.Rol;
 import co.edu.local.gestionIcfes.repository.RolRepositorio;
 import co.edu.local.gestionIcfes.services.RolServices;
 
+/**
+ * Implementación de {@link co.edu.local.gestionIcfes.services.RolServices}.
+ * <p>
+ * Delega directamente en {@link co.edu.local.gestionIcfes.repository.RolRepositorio}.
+ * Se usa principalmente al crear usuarios para asignarles el rol correspondiente
+ * según el valor numérico de {@code PersonaDTO.rol}.
+ * </p>
+ */
 @Service
 public class RolServicesImpl implements RolServices{
 

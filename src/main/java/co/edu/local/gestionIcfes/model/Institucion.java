@@ -18,6 +18,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+/**
+ * Entidad que representa una institución educativa preparatoria para el ICFES.
+ * <p>
+ * Actúa como agregado raíz: agrupa a sus {@link co.edu.local.gestionIcfes.model.Estudiante}s,
+ * {@link co.edu.local.gestionIcfes.model.Docente}s, {@link co.edu.local.gestionIcfes.model.Usuario}s
+ * administrativos y {@link co.edu.local.gestionIcfes.model.Simulacro}s.
+ * </p>
+ * <p>
+ * {@code fechaInicio} y {@code fechaFinal} se usan en los tres paneles de usuario para
+ * calcular el porcentaje de progreso del curso. Cuando {@code fechaFinal} se alcanza,
+ * {@link co.edu.local.gestionIcfes.servicesImpl.CierreInstitucionScheduler} deshabilita
+ * automáticamente todos los usuarios asociados.
+ * </p>
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
